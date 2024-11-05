@@ -1,0 +1,10 @@
+import json
+
+word_dict = json.load(open('urdu_word_dict2.json', 'r', encoding='utf-8'))
+
+for word in word_dict:
+    POS = list()
+    feats = list()
+    for word in word_dict[word]:
+        POS.append(word['POS'])
+        

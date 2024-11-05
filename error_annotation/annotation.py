@@ -4,6 +4,7 @@ import time
 import urduhack
 # from data_generation.generate_word_dict import generate_word_dict
 import json
+from constants import *
 
 # Downloading models
 # urduhack.download()
@@ -11,68 +12,78 @@ import json
 # Initializing the pipeline
 nlp = urduhack.Pipeline()
 
-orig_text = """
-میں یک بلی ہوں۔    
-"""
-
-cor_text = """
-میں ایک بلی ہوں۔
-"""
+orig_text = open('incorrect.txt', 'r', encoding='utf-8').read()
+cor_text = open('correct.txt', 'r', encoding='utf-8').read()
 
 doc1 = nlp(orig_text)
 doc2 = nlp(cor_text)
 
-
-# algorithm(incorrect, correct):
-# get pos tags for both
-# get alignment
-# compare the Alignment:
-#     if substitution, then:
-#         store the difference in pos tags, feats of the substitute generate_word_dict
-#     if deletion, then:
-#         store the pos tags, feats of that words and words on left and right
-#     if insertion, then:
-#         store the pos tags, feats of that words and words on left and right
-
-
 word_dict = json.load(open('urdu_word_dict2.json', 'r', encoding='utf-8'))
-
-def lookup_xpos_feats(word, upos):
-    if word in word_dict:
-        for token in word_dict[word]:
-            if token['upos'] == upos:
-                return token['xpos'], token['feats']
-    else:
-        return None, None
+words = open('urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
+dictionary = {word.strip(): None for word in words}
 
 
-
-def annotate(incorrect, correct):
+def annotate(incorrect, correct, kernel_sorted_annotations):
     '''
-    incorrect and correct are both of class sentence
+    incorrect and correct are both of class Sentence from urduhack library
     '''
     alignment = Alignment(incorrect, correct)
     seq = alignment.align_seq
     type_annotation = {}
+    spelling_issues_dataset = []
+    
     for op, i1, i2, j1, j2 in seq:
-        if op == 'S':
-            type_annotation['type'] = 'S'
-            type_annotation['prior_upos'] = incorrect.words[i1].upos
-            type_annotation['prior_xpos'], type_annotation['prior_feats'] = lookup_xpos_feats(incorrect.words[i1].text, incorrect.words[i1].upos)
-            type_annotation['post_upos'] = incorrect.words[i2].upos
-            type_annotation['post_xpos'], type_annotation['post_feats'] = lookup_xpos_feats(incorrect.words[i2].text, incorrect.words[i2].upos)
-
-            print(type_annotation)
-        elif op == 'D':
-            type_annotation['type'] = 'D'
-            print(f"Deletion: {incorrect.words[i1].text}")
-        elif op == 'I':
-            type_annotation['type'] = 'I'
-            print(f"Insertion: {correct.words[j1].text}")
-    return type_annotation
+        kernel = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
+        if op == SUBSTITUTION:
+            # check if there is not a spelling issue:
+            if incorrect.words[i1].text not in dictionary:
+                spelling_issues_dataset.append((incorrect.text, correct.text))
+                print(f"Spelling issue: {incorrect.words[i1].text}")
+            else:
+                # if not a spelling issue then its an easy substitution in which case we would add the information of the substitution
+                type_annotation['type'] = SUBSTITUTION
+                type_annotation['incorrect_sentence'] = incorrect.to_dict()
+                type_annotation['correct_sentence'] = correct.to_dict()
+                type_annotation['index'] = i1
+                if i1 > 0:
+                    kernel[0] = incorrect.words[i1-1].upos 
+                kernel[1] = incorrect.words[i1].upos
+                if i1 < len(incorrect.words)-1:
+                    kernel[2] = incorrect.words[i1+1].upos
+                tup_kernel = " ".join(kernel)
+                if tup_kernel in kernel_sorted_annotations:
+                    kernel_sorted_annotations[tup_kernel].append(type_annotation)
+                else:
+                    kernel_sorted_annotations[tup_kernel] = [type_annotation]
+        elif op == DELETION:
+            pass
+        elif op == INSERTION:
+            # its a bit counter intuitive. So I means that the correct sentence has an extra word.
+            # But our task is to generate the incorrect sentence from the correct sentence, so we would delte the extra word from the correct sentence
+            # when we get a similar structure in the correct sentence
+            type_annotation['type'] = INSERTION
+            type_annotation['incorrect_sentence'] = incorrect.to_dict()
+            type_annotation['index'] = j1
+            if j1 > 0:
+                kernel[0] = correct.words[j1-1].upos
+            kernel[1] = correct.words[j1].upos
+            if j1 < len(correct.words)-1:
+                kernel[2] = correct.words[j1+1].upos
+            tup_kernel = " ".join(kernel)
+            if tup_kernel in kernel_sorted_annotations:
+                kernel_sorted_annotations[tup_kernel].append(type_annotation)
+            else:
+                kernel_sorted_annotations[tup_kernel] = [type_annotation]
+    return kernel_sorted_annotations
     
 
+abc = {}
 for sentence1, sentence2 in zip(doc1.sentences, doc2.sentences):
     align = Alignment(sentence1, sentence2)
     print(align.align_seq)
-    annotate(sentence1, sentence2)  
+    annotate(sentence1, sentence2, abc)
+print(abc)
+
+# write in a json file
+with open('annotations.json', 'w', encoding='utf-8') as f:
+    json.dump(abc, f, ensure_ascii=False, indent=4)
