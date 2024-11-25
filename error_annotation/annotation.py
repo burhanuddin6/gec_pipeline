@@ -5,6 +5,7 @@ import urduhack
 # from data_generation.generate_word_dict import generate_word_dict
 import json
 from constants import *
+from urduhack.normalization import normalize_characters
 
 # Downloading models
 # urduhack.download()
@@ -15,8 +16,11 @@ nlp = urduhack.Pipeline()
 orig_text = open('incorrect.txt', 'r', encoding='utf-8').read()
 cor_text = open('correct.txt', 'r', encoding='utf-8').read()
 
-doc1 = nlp(orig_text)
-doc2 = nlp(cor_text)
+orig_text = normalize_characters(orig_text)
+cor_text = normalize_characters(cor_text)
+
+orig_text = orig_text.split('\n')
+cor_text = cor_text.split('\n')
 
 word_dict = json.load(open('urdu_word_dict2.json', 'r', encoding='utf-8'))
 words = open('urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
@@ -78,10 +82,15 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
     
 
 abc = {}
-for sentence1, sentence2 in zip(doc1.sentences, doc2.sentences):
-    align = Alignment(sentence1, sentence2)
-    print(align.align_seq)
-    annotate(sentence1, sentence2, abc)
+for sentence1, sentence2 in zip(orig_text, cor_text):
+    doc1 = nlp(sentence1)
+    doc2 = nlp(sentence2)
+    # inefficient but had to do this way cuz there is no exception handling in the urduhack library
+    for orig, cor in zip(doc1.sentences, doc2.sentences):
+        align = Alignment(orig, cor)
+        print(align.align_seq)
+        annotate(orig, cor, abc)
+
 print(abc)
 
 # write in a json file

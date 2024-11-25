@@ -2,9 +2,11 @@ import urduhack
 # from data_generation.generate_word_dict import generate_word_dict
 import json
 from constants import *
+from urduhack.normalization import normalize_characters
 
 
-word_dict = json.load(open('urdu_word_dict2.json', 'r', encoding='utf-8'))
+
+word_dict = json.load(open('urdu_word_dict2.json', 'r', encodi++ng='utf-8'))
 annotations = json.load(open('annotations.json', 'r', encoding='utf-8'))
 words = open('urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
 dictionary = {word.strip(): None for word in words}
@@ -71,20 +73,28 @@ def inflict(correct_doc):
 
     returns None
     '''
+    sentence_pairs = []
     for sentence in correct_doc.sentences: # this loop is slower (guess) therefore above
         for kernel in annotations:
+
             for i, token in enumerate(sentence.words):
                 token_kernel = " ".join([sentence.words[i-1].upos if i > 0 else NONE_LABEL, token.upos, sentence.words[i+1].upos if i < len(sentence.words)-1 else NONE_LABEL])
+                
                 if token_kernel == kernel:
                     try:
                         replace = perform_infliction(sentence, i, kernel, annotations[kernel])
                         # print(f"Replacing {sentence.words[i].text} with {replace}")
                         # print(f"Replacing {sentence.words[i].text}")
                         print("pure replacemnet ", replace)
+                        for replacement in replace:
+                            err_sentence = sentence.text.replace(sentence.words[i].text, replacement)
+                            sentence_pairs.append((sentence.text, err_sentence, i, replacement))
+
                     
                     except Exception as e:
                         print(e)
-                        continue                    
+                        continue
+    return sentence_pairs                    
 
 if __name__ == '__main__':
     # Downloading models
@@ -94,7 +104,22 @@ if __name__ == '__main__':
     nlp = urduhack.Pipeline()
 
     correct_text = open('to_inflict.txt', 'r', encoding='utf-8').read()
+    correct_text = normalize_characters(correct_text)
+    chunked_text = correct_text.split('\n')
 
-    doc1 = nlp(correct_text)
 
-    inflict(doc1)
+    f = open('inflicted_pairs.txt', 'w', encoding='utf-8')
+    for i in range(0, len(chunked_text), 10):
+        try:
+            chunk = chunked_text[i:i+10]
+            to_inflict = "\n".join(chunk)
+            doc1 = nlp(to_inflict)
+
+            pairs = inflict(doc1)
+            
+            # write the pairs to a file
+            
+            for pair in pairs:
+                f.write(f"{pair[0]}\n{pair[1]}\n{pair[2]}\n{pair[3]}\n\n")
+        except:
+            continue
