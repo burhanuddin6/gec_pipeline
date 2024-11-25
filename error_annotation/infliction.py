@@ -6,11 +6,11 @@ from urduhack.normalization import normalize_characters
 
 
 
-word_dict = json.load(open('urdu_word_dict2.json', 'r', encodi++ng='utf-8'))
-annotations = json.load(open('annotations.json', 'r', encoding='utf-8'))
-words = open('urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
+word_dict = json.load(open('data/urdu_word_dict2.json', 'r', encoding='utf-8'))
+annotations = json.load(open('data/annotations_with_ids.json', 'r', encoding='utf-8'))
+words = open('data/urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
 dictionary = {word.strip(): None for word in words}
-lemma_dict = json.load(open('lemma_word_dict.json', 'r', encoding='utf-8'))
+lemma_dict = json.load(open('data/lemma_word_dict.json', 'r', encoding='utf-8'))
 
 
 
@@ -46,17 +46,15 @@ def perform_infliction(sentence, word_ind, kernel, error_annotations):
     replacements = []
     for error_annotation in error_annotations:
         if error_annotation['type'] == SUBSTITUTION:
-            change_upos = error_annotation['correct_sentence'][error_annotation['index']]['upos']
-            change_word = error_annotation['correct_sentence'][error_annotation['index']]['text']
-            change_feats = [temp["feats"] for temp in word_dict[change_word]]
-            change_feats = "|".join(change_feats)
-            print(change_feats)
+            change_upos = error_annotation['correct_word_upos']
+            change_feats = error_annotation['correct_feats']
             for form in word_forms:
                 form_features = form['feats'].split('|')
                 if form['text'] != original_word and form['upos'] == change_upos and all([feature in change_feats for feature in form_features]):
                     replacement = form['text']
                     if replacement not in replacements:
-                        replacements.append(replacement)
+                        replacements.append((replacement, error_annotation['id']))
+                        
                 
 
         elif error_annotation['type'] == INSERTION:
@@ -86,9 +84,11 @@ def inflict(correct_doc):
                         # print(f"Replacing {sentence.words[i].text} with {replace}")
                         # print(f"Replacing {sentence.words[i].text}")
                         print("pure replacemnet ", replace)
-                        for replacement in replace:
+                        for replacement, error_id in replace:
+                            print("SENTENCE", sentence.text)
+                            print("REPLACEMENT", replacement)
                             err_sentence = sentence.text.replace(sentence.words[i].text, replacement)
-                            sentence_pairs.append((sentence.text, err_sentence, i, replacement))
+                            sentence_pairs.append((sentence.text, err_sentence, error_id))
 
                     
                     except Exception as e:
@@ -103,12 +103,14 @@ if __name__ == '__main__':
     # Initializing the pipeline
     nlp = urduhack.Pipeline()
 
-    correct_text = open('to_inflict.txt', 'r', encoding='utf-8').read()
+    correct_text = open('data/data_00.txt', 'r', encoding='utf-8').read()
     correct_text = normalize_characters(correct_text)
     chunked_text = correct_text.split('\n')
 
 
-    f = open('inflicted_pairs.txt', 'w', encoding='utf-8')
+    corr_out_file = open('data/out/correct.txt', 'a', encoding='utf-8')
+    incorr_out_file = open('data/out/incorrect.txt', 'a', encoding='utf-8')
+    error_id_file = open('data/out/error_id.txt', 'a', encoding='utf-8')
     for i in range(0, len(chunked_text), 10):
         try:
             chunk = chunked_text[i:i+10]
@@ -117,9 +119,11 @@ if __name__ == '__main__':
 
             pairs = inflict(doc1)
             
-            # write the pairs to a file
+            # write the 3-tuples to output files
             
-            for pair in pairs:
-                f.write(f"{pair[0]}\n{pair[1]}\n{pair[2]}\n{pair[3]}\n\n")
+            # for pair in pairs:
+            #     corr_out_file.write(pair[0] + '\n')
+            #     incorr_out_file.write(pair[1] + '\n')
+            #     error_id_file.write(pair[2] + '\n')
         except:
             continue

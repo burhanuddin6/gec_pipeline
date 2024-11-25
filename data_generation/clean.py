@@ -1,14 +1,17 @@
 # Sample text with lines
-textfiles = ['correct.txt', 'incorrect.txt']
-for file in textfiles:
-    text = open(file, 'r', encoding='utf-8').read()
-    # Remove periods at the end of each line
-    lines = text.strip().split('\n')  # Split text into lines
-    cleaned_lines = [line.rstrip('.') for line in lines]  # Remove trailing periods
+corrfile, incorrfile = [open(file, 'r', encoding='utf-8').read().strip().split('\n') for file in ['data/wikiedits/correct.txt', 'data/wikiedits/incorrect.txt']]
+incorrfile_copy = incorrfile.copy()
 
-    # Join lines back into a single text
-    cleaned_text = '\n'.join(cleaned_lines)
+for line in incorrfile_copy:
+    try:
+        index = corrfile.index(line)
+        incorrfile.pop(index)
+        corrfile.pop(index)
+    except:
+        pass
 
-    # Write cleaned text back to file
-    with open(file, 'w', encoding='utf-8') as f:
-        f.write(cleaned_text)
+# save back
+with open('data/wikiedits/correct.txt', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(corrfile))
+with open('data/wikiedits/incorrect.txt', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(incorrfile))

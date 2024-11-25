@@ -1,0 +1,2894 @@
+{
+    "NOUN PROPN PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "ADP VERB SCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "NUM NOUN NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 2
+        }
+    ],
+    "PROPN PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Case=Acc|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 7
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Ind|Case=Nom|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 5
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PART",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Ind|Case=Nom|_",
+            "correct_feats": "Number=Sing|Case=Nom|Person=3|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN PROPN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        }
+    ],
+    "ADP VERB ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "VerbForm=Conv",
+            "correct_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Aspect=Perf|Number=Sing|Mood=Sub|VerbForm=Fin|Person=3|VerbForm=Inf|Case=Acc|Voice=Act|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADP ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|Number=Sing|NumType=Ord|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        }
+    ],
+    "% ADJ ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "_",
+            "correct_feats": "Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "ADP VERB AUX": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Case=Nom|Number=Plur|Aspect=Perf|PronType=Int|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Fem|Number=Sing|VerbForm=Part|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Polarity=Neg|Aspect=Perf|Voice=Pass|Number=Sing|Person=3|PronType=Neg|Case=Acc|Voice=Act|_",
+            "correct_feats": "Case=Nom|Case=Acc|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Act|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Voice=Act|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADP NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 5
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 4
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "ADP ADJ NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Ind|Case=Acc|PronType=Prs|PronType=Dem|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|NumType=Ord",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|NumType=Ord|Person=3|Case=Nom|Case=Acc|Number=Plur|NumType=Card",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "_",
+            "correct_feats": "AdvType=Deg|Case=Nom",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "AdvType=Deg|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|AdvType=Deg",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Fem|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Masc|Number=Sing|NumType=Ord|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "VERB AUX NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        }
+    ],
+    "VERB AUX %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Aspect=Perf|Number=Sing|Person=3|Case=Nom|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Voice=Pass|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Case=Acc|Number=Plur|Tense=Fut|Mood=Ind|Aspect=Perf|_",
+            "occurence": 5
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Number=Plur|Aspect=Perf",
+            "occurence": 10
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "correct_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 14
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Voice=Pass|Mood=Sub|VerbForm=Fin|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Polite=Form|Aspect=Perf|Voice=Pass|Number=Sing|Mood=Sub|VerbForm=Fin|Person=1|Person=3|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Voice=Pass|Voice=Act|_",
+            "correct_feats": "Voice=Pass|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "% NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|_",
+            "correct_feats": "AdpType=Post",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "% ADJ NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "DET",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Number=Sing|Person=1|Case=Nom|PronType=Prs|Case=Acc|Number=Plur",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "VERB SCONJ PUNCT": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "SCONJ",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Person=2|Case=Nom|Case=Acc|_",
+            "correct_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "occurence": 3
+        }
+    ],
+    "AUX AUX %": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 4
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Polite=Form|Aspect=Perf|Voice=Pass|Number=Sing|Mood=Sub|VerbForm=Fin|Person=1|Person=3|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 1
+        }
+    ],
+    "PART PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|PronType=Dem",
+            "occurence": 3
+        }
+    ],
+    "VERB AUX AUX": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Aspect=Imp|Number=Sing|Person=3",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Aspect=Imp|Number=Sing|Person=3|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=2|PronType=Prs|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "AdpType=Post|Case=Nom|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Aspect=Imp|Number=Sing|Person=3|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "PRON ADP NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 3
+        }
+    ],
+    "NOUN ADP %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 7
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 10
+        }
+    ],
+    "ADJ NUM ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NUM",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "ADJ NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 6
+        },
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Case=Acc|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NOUN NOUN ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 4
+        }
+    ],
+    "PROPN PROPN ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 4
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 4
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADP PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "NOUN NOUN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "NOUN VERB SCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 3
+        }
+    ],
+    "VERB SCONJ PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "SCONJ",
+            "change_feats": "_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "SCONJ",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 4
+        }
+    ],
+    "SCONJ PROPN PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "PROPN ADP NUM": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "ADP NUM ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NUM",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|Echo=Rdp|NumType=Card|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NUM",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 2
+        }
+    ],
+    "NUM ADJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|_",
+            "correct_feats": "Case=Nom|Echo=Rdp|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|Case=Acc",
+            "correct_feats": "Case=Nom|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|Echo=Rdp|Case=Acc|_",
+            "correct_feats": "Case=Nom|_",
+            "occurence": 1
+        }
+    ],
+    "ADP NOUN ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|Echo=Rdp|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADJ VERB": [
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "ADJ VERB AUX": [
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|VerbForm=Part|Aspect=Imp|Number=Sing|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|Person=3|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Fem|VerbForm=Part|Aspect=Imp|Number=Sing|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Polite=Form|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 7
+        }
+    ],
+    "ADP NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Acc|_",
+            "correct_feats": "_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "DET NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "NOUN VERB AUX": [
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Polite=Form|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 5
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Polite=Form|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 6
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Case=Acc|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Voice=Pass|Aspect=Imp|Number=Sing|Person=3|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Aspect=Imp|Number=Sing|Person=3|Number=Plur|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Gender=Fem|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Number=Plur|Tense=Fut|Mood=Ind|Aspect=Perf",
+            "correct_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Aspect=Perf|Number=Sing|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "ADJ NOUN ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Case=Acc|Aspect=Perf",
+            "occurence": 3
+        }
+    ],
+    "PROPN PROPN ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 3
+        }
+    ],
+    "PROPN PROPN %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 2
+        }
+    ],
+    "NOUN VERB CCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Person=2|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        }
+    ],
+    "% CCONJ ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "_",
+            "occurence": 3
+        }
+    ],
+    "% DET NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "DET",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|PronType=Dem|_",
+            "occurence": 6
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Fem|Number=Sing|Case=Nom",
+            "correct_feats": "Gender=Fem|Number=Sing|Case=Nom",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "DET",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|Number=Plur|PronType=Dem|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN ADP ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "DET",
+            "incorrect_feats": "AdpType=Post|_",
+            "correct_feats": "AdvType=Deg|PronType=Ind|Case=Nom|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN PUNCT %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PUNCT",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "correct_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 6
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PUNCT",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 1
+        }
+    ],
+    "ADP ADP PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 6
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP ADP PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 4
+        }
+    ],
+    "ADP PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "NOUN NOUN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "NOUN PRON ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "PRON",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|Echo=Rdp|NumType=Card|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|PronType=Prs|Case=Acc",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "ADP NUM NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NUM",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 4
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NUM",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|NumType=Card",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "NOUN VERB %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Polite=Form|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Case=Nom|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Case=Nom|Number=Plur|Aspect=Perf|PronType=Int|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Voice=Pass|Voice=Act|_",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "ADJ NOUN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "NOUN ADJ NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 6
+        }
+    ],
+    "CCONJ ADJ NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 1
+        }
+    ],
+    "PROPN ADP NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP ADP VERB": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 8
+        }
+    ],
+    "PRON VERB NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|VerbForm=Conv|Aspect=Perf|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Ind|Case=Acc|PronType=Prs|PronType=Dem|_",
+            "occurence": 3
+        }
+    ],
+    "VERB NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Person=3|Case=Acc|Number=Plur",
+            "occurence": 3
+        }
+    ],
+    "NOUN PROPN PUNCT": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Case=Acc|Aspect=Perf",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 3
+        }
+    ],
+    "PROPN ADP VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 6
+        }
+    ],
+    "ADP ADP NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Echo=Rdp|Case=Acc|_",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 13
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|PronType=Dem|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN CCONJ ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "_",
+            "occurence": 3
+        }
+    ],
+    "NOUN ADP ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADP NUM": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        }
+    ],
+    "% PROPN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 9
+        }
+    ],
+    "VERB PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 3
+        }
+    ],
+    "% PRON ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 9
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|PronType=Prs|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "ADP ADP ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 18
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 4
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "ADP NOUN VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 3
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom",
+            "occurence": 2
+        }
+    ],
+    "ADP ADJ AUX": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|_",
+            "occurence": 2
+        }
+    ],
+    "ADP DET NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "DET",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|PronType=Dem|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Acc|Echo=Rdp|NumType=Card",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|NumType=Card|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "DET",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|Number=Plur|PronType=Dem|_",
+            "occurence": 2
+        }
+    ],
+    "VERB PRON CCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "PRON",
+            "change_feats": "Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|PronType=Dem",
+            "occurence": 2
+        }
+    ],
+    "ADJ NOUN VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|_",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "PRON NOUN ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "VERB PRON ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Echo=Rdp|Number=Plur|PronType=Dem|_",
+            "occurence": 2
+        }
+    ],
+    "ADP NOUN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Person=3|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|AdvType=Deg|Person=3|Case=Nom",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Case=Nom|Case=Acc|Aspect=Perf",
+            "occurence": 2
+        }
+    ],
+    "ADJ VERB CCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 6
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Person=2|Number=Plur|Aspect=Perf",
+            "occurence": 4
+        }
+    ],
+    "CCONJ DET NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "DET",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|PronType=Dem|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 1
+        }
+    ],
+    "PART PROPN %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 6
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Voice=Act",
+            "correct_feats": "Gender=Masc|VerbForm=Part|Number=Sing|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "AUX AUX AUX": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 4
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "SCONJ PROPN CCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "VERB VERB %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Person=2|Number=Plur|Aspect=Perf",
+            "occurence": 4
+        }
+    ],
+    "ADP ADP NUM": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 4
+        }
+    ],
+    "ADJ NUM NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "NUM",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 2
+        }
+    ],
+    "ADJ DET NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "DET",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 2
+        }
+    ],
+    "SCONJ DET NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "DET",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "PROPN ADP PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP PRON ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 2
+        }
+    ],
+    "NOUN NUM NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "NUM",
+            "change_feats": "Case=Nom|Case=Acc|NumType=Card",
+            "occurence": 2
+        }
+    ],
+    "ADP ADP ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN CCONJ ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "CCONJ",
+            "correct_word_upos": "CCONJ",
+            "incorrect_feats": "Gender=Masc|Number=Sing|AdvType=Deg|Person=3|Case=Nom|PronType=Ind|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Number=Sing|AdvType=Deg|Person=3|Case=Nom|PronType=Ind|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN PRON PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Number=Sing|PronType=Prs|Person=3|Case=Acc,Dat",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|AdvType=Deg|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "VERB SCONJ ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "SCONJ",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 2
+        }
+    ],
+    "PART NUM NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NUM",
+            "correct_word_upos": "NUM",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|NumType=Card",
+            "correct_feats": "Case=Nom|Case=Acc|NumType=Card",
+            "occurence": 2
+        }
+    ],
+    "ADP VERB %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Fem|VerbForm=Part|Number=Sing|Voice=Act|Aspect=Perf",
+            "correct_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 4
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Person=2|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Case=Nom|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "NOUN CCONJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "NUM PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 2
+        }
+    ],
+    "% ADJ DET": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "ADP ADP PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom",
+            "correct_feats": "Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "CCONJ PROPN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "occurence": 2
+        }
+    ],
+    "PROPN ADP PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "NUM PROPN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Foreign=Yes|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "NOUN NOUN CCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "NOUN PUNCT %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PUNCT",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Polite=Form|Aspect=Perf|Voice=Pass|Number=Sing|Mood=Sub|VerbForm=Fin|Person=1|Person=3|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "correct_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 2
+        }
+    ],
+    "PROPN PART %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PART",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "PronType=Neg|Polarity=Neg|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 4
+        }
+    ],
+    "VERB AUX SCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Number=Sing|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Mood=Sub|VerbForm=Fin|Person=1|Person=3|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "correct_feats": "Gender=Fem|Person=3|Case=Acc|Number=Plur",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "VERB ADP VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=1|Person=3|Case=Acc,Dat|PronType=Prs|Number=Plur",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN NOUN VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NUM",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Acc|Person=3",
+            "correct_feats": "NumType=Card",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom",
+            "correct_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NUM ADP VERB": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        }
+    ],
+    "CCONJ NOUN PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 2
+        }
+    ],
+    "NOUN ADP VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "correct_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=1|Person=3|Case=Acc,Dat|PronType=Prs|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "NOUN NOUN %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 2
+        }
+    ],
+    "PRON ADP PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Aspect=Perf|Number=Sing|Mood=Sub|VerbForm=Fin|Person=3|VerbForm=Inf|Case=Acc|Voice=Act|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "PRON VERB PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Number=Sing|Voice=Act|Person=3|Case=Nom|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        }
+    ],
+    "PRON ADP ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 2
+        }
+    ],
+    "ADJ CCONJ ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "CCONJ",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "_",
+            "correct_feats": "_",
+            "occurence": 2
+        }
+    ],
+    "ADP PRON NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "PRON",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|PronType=Ind|Number=Plur|PronType=Dem",
+            "occurence": 3
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PRON",
+            "change_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=1|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "VERB ADV PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADV",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "PronType=Ind|Case=Nom|Echo=Rdp|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 3
+        }
+    ],
+    "PRON ADP ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "ADP ADP DET": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "ADP",
+            "correct_word_upos": "ADP",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Number=Sing|Case=Acc|Aspect=Perf|_",
+            "correct_feats": "Gender=Masc|AdpType=Post|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN VERB PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|Gender=Fem|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Gender=Fem|Polite=Form|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Acc|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "% SCONJ PRON": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "SCONJ",
+            "correct_word_upos": "SCONJ",
+            "incorrect_feats": "_",
+            "correct_feats": "_",
+            "occurence": 1
+        }
+    ],
+    "PROPN CCONJ PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=1|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen",
+            "occurence": 1
+        }
+    ],
+    "% PROPN PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NOUN PRON PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Polite=Form|Number=Sing|Person=2|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|PronType=Dem",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 1
+        }
+    ],
+    "NOUN PART PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "PART",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP PRON ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Acc|Number=Plur",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|PronType=Prs|Case=Acc",
+            "occurence": 1
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 4
+        }
+    ],
+    "% PROPN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADJ CCONJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "% VERB NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 1
+        }
+    ],
+    "NOUN VERB NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 1
+        }
+    ],
+    "ADP VERB NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 1
+        }
+    ],
+    "ADP VERB PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "_",
+            "correct_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "occurence": 1
+        }
+    ],
+    "CCONJ NOUN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "CCONJ PRON ADP": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Voice=Act",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "VERB AUX PRON": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Number=Plur|Mood=Ind|Aspect=Perf|Tense=Pres",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "VERB AUX CCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 2
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Aspect=Perf",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "occurence": 1
+        },
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|Gender=Fem|VerbForm=Part|Polite=Form|Aspect=Perf|Voice=Pass|Number=Sing|Mood=Sub|VerbForm=Fin|Person=1|Person=3|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 1
+        }
+    ],
+    "NOUN PROPN ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        },
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "PROPN AUX AUX": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "correct_feats": "Voice=Pass|Voice=Act|_",
+            "occurence": 1
+        }
+    ],
+    "SCONJ PRON NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "% PRON NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "correct_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|Case=Acc,Dat|Case=Nom|PronType=Prs|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "% PROPN VERB": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "VERB SCONJ PRON": [
+        {
+            "type": "I",
+            "change_word_upos": "SCONJ",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Person=2|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "PART AUX %": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Masc|VerbForm=Part|Polite=Form|AdpType=Post|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "AUX CCONJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Number=Sing|AdvType=Deg|Person=3|Case=Nom|PronType=Ind|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "PROPN CCONJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "CCONJ",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP NOUN CCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Case=Nom|Person=3",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 2
+        }
+    ],
+    "ADJ VERB ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Aspect=Perf|Number=Sing|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "VERB ADP ADP": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Polite=Form|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|_",
+            "occurence": 3
+        }
+    ],
+    "VERB ADP NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Fem|Voice=Pass|AdpType=Post|VerbForm=Part|Gender=Masc|Number=Sing|Voice=Act|Person=3|VerbForm=Inf|Case=Nom|Case=Acc|Number=Plur|Aspect=Perf|_",
+            "occurence": 1
+        }
+    ],
+    "PART PRON PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|PronType=Dem",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "PRON PART NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PART",
+            "correct_word_upos": "PART",
+            "incorrect_feats": "AdpType=Post|_",
+            "correct_feats": "Number=Sing|Case=Nom|Person=3|_",
+            "occurence": 1
+        }
+    ],
+    "PART ADJ NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "ADJ",
+            "change_feats": "PronType=Ind|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "PRON NOUN ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "PRON PRON ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "PRON",
+            "change_feats": "Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "PART NOUN VERB": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADP DET": [
+        {
+            "type": "I",
+            "change_word_upos": "ADP",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=1|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP NOUN NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "ADP PUNCT %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PUNCT",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Masc|Number=Sing|VerbForm=Fin|Person=3|Tense=Fut|Number=Plur|Mood=Ind|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "ADP VERB CCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "VERB",
+            "correct_word_upos": "VERB",
+            "incorrect_feats": "Voice=Pass|Number=Sing|VerbForm=Fin|Person=2|Tense=Pres|Case=Acc|Mood=Ind|Voice=Act|_",
+            "correct_feats": "Gender=Masc|Voice=Pass|VerbForm=Part|Polite=Form|Number=Sing|Mood=Sub|VerbForm=Fin|Voice=Act|Person=3|Person=2|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "% PROPN ADJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NOUN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "PROPN PROPN CCONJ": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "CCONJ NOUN PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "PROPN",
+            "incorrect_feats": "Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "% PRON PROPN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PRON",
+            "correct_word_upos": "DET",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|_",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|Poss=Yes|PronType=Dem|Case=Acc,Gen|_",
+            "occurence": 1
+        }
+    ],
+    "DET NOUN PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Gender=Fem|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NOUN PROPN %": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "VERB AUX PUNCT": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "AUX",
+            "correct_word_upos": "AUX",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf|_",
+            "correct_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Number=Sing|Voice=Act|Person=3|Number=Plur|Aspect=Perf",
+            "occurence": 1
+        }
+    ],
+    "AUX PUNCT %": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PUNCT",
+            "correct_word_upos": "PUNCT",
+            "incorrect_feats": "Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Case=Nom|Tense=Past|Number=Plur|Mood=Ind|Voice=Act",
+            "correct_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Polite=Form|Aspect=Perf|Aspect=Imp|Number=Sing|VerbForm=Fin|Person=3|Tense=Past|Mood=Ind|Voice=Act",
+            "occurence": 1
+        }
+    ],
+    "VERB AUX ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Voice=Pass|Gender=Masc|VerbForm=Part|VerbForm=Conv|Aspect=Perf|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur|Voice=Act|_",
+            "occurence": 1
+        }
+    ],
+    "DET NOUN ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|Number=Plur",
+            "occurence": 1
+        }
+    ],
+    "NOUN NUM ADJ": [
+        {
+            "type": "I",
+            "change_word_upos": "NUM",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|NumType=Card",
+            "occurence": 1
+        }
+    ],
+    "PART DET NOUN": [
+        {
+            "type": "I",
+            "change_word_upos": "DET",
+            "change_feats": "Gender=Masc|Number=Sing|Person=3|PronType=Ind|Case=Nom|PronType=Prs|Case=Acc|Number=Plur|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN ADV PRON": [
+        {
+            "type": "I",
+            "change_word_upos": "ADV",
+            "change_feats": "Gender=Masc|Number=Sing|NumType=Ord|Person=3|PronType=Ind|Case=Nom|Case=Acc|Number=Plur|NumType=Card|_",
+            "occurence": 1
+        }
+    ],
+    "ADJ NOUN AUX": [
+        {
+            "type": "I",
+            "change_word_upos": "NOUN",
+            "change_feats": "Gender=Masc|Gender=Fem|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "NOUN AUX SCONJ": [
+        {
+            "type": "I",
+            "change_word_upos": "AUX",
+            "change_feats": "Gender=Fem|Gender=Masc|VerbForm=Part|Voice=Pass|Aspect=Perf|Number=Sing|VerbForm=Fin|Person=1|_|Person=3|Person=2|Case=Nom|Number=Plur|Mood=Ind|Voice=Act|Tense=Pres",
+            "occurence": 1
+        }
+    ],
+    "AUX SCONJ PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "SCONJ",
+            "change_feats": "_",
+            "occurence": 1
+        }
+    ],
+    "ADP PART PROPN": [
+        {
+            "type": "I",
+            "change_word_upos": "PART",
+            "change_feats": "AdpType=Post|_",
+            "occurence": 1
+        }
+    ],
+    "AUX SCONJ DET": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "SCONJ",
+            "correct_word_upos": "PRON",
+            "incorrect_feats": "_",
+            "correct_feats": "Number=Sing|Person=3|Case=Nom|PronType=Prs|Case=Acc|Number=Plur|PronType=Dem|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN NOUN PART": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "NOUN",
+            "correct_word_upos": "ADJ",
+            "incorrect_feats": "Gender=Masc|AdpType=Post|Number=Sing|Person=3|Case=Nom|Case=Acc|_",
+            "correct_feats": "Case=Nom|Case=Acc|_",
+            "occurence": 1
+        }
+    ],
+    "ADP PROPN NOUN": [
+        {
+            "type": "S",
+            "incorrect_word_upos": "PROPN",
+            "correct_word_upos": "NUM",
+            "incorrect_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "correct_feats": "Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc|NumType=Card",
+            "occurence": 1
+        }
+    ],
+    "ADP PART PRON": [
+        {
+            "type": "I",
+            "change_word_upos": "PART",
+            "change_feats": "AdpType=Post|_",
+            "occurence": 1
+        }
+    ],
+    "ADP PROPN NUM": [
+        {
+            "type": "I",
+            "change_word_upos": "PROPN",
+            "change_feats": "Gender=Fem|Gender=Masc|Number=Sing|Person=3|Case=Nom|Case=Acc",
+            "occurence": 1
+        }
+    ],
+    "ADP VERB PUNCT": [
+        {
+            "type": "I",
+            "change_word_upos": "VERB",
+            "change_feats": "Gender=Masc|Polite=Form|Number=Sing|Person=3|PronType=Prs|Case=Nom|Case=Acc|Number=Plur|PronType=Dem|_",
+            "occurence": 1
+        }
+    ],
+    "NOUN PART VERB": [
+        {
+            "type": "I",
+            "change_word_upos": "PART",
+            "change_feats": "Number=Sing|Case=Nom|Person=3|_",
+            "occurence": 2
+        }
+    ]
+}

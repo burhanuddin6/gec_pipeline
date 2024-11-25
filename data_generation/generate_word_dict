@@ -1,4 +1,0 @@
-!rm ur_udtb-ud-train.conllu
-!rm words.txt
-!wget https://raw.githubusercontent.com/UniversalDependencies/UD_Urdu-UDTB/refs/heads/master/ur_udtb-ud-train.conllu
-!wget https://github.com/urduhack/urdu-words/raw/refs/heads/master/words.txt
