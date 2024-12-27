@@ -1,7 +1,7 @@
 from itertools import groupby
 from rapidfuzz.distance import Indel
 import spacy.parts_of_speech as POS
-from errant.edit import Edit
+from edit import Edit
 
 class Alignment:
     # Protected class resource
