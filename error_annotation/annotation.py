@@ -176,15 +176,27 @@ if __name__ == '__main__':
     # Initializing the pipeline
     nlp = urduhack.Pipeline()
 
-    orig_text = open('data/wikiedits/incorrect2.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/correct2.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
+    
+    try:
+        num_processed_lines = open('logs/num_processed_lines.txt', 'r').read()
+        num_processed_lines = int(num_processed_lines)
+    except:
+        num_processed_lines = 0
+    orig_text = orig_text.split('\n')[num_processed_lines:]
+    cor_text = cor_text.split('\n')[num_processed_lines:]
+    
+    if num_processed_lines == 0:
+        annotations = {}
+    else:
+        annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'))
 
-    orig_text = orig_text.split('\n')
-    cor_text = cor_text.split('\n')
-    abc = {}
+    print(f"Starting from line number: {num_processed_lines}")
+    print(f"annotations: {annotations}")
     for sentence1, sentence2 in zip(orig_text, cor_text):
         doc1 = nlp(sentence1)
         doc2 = nlp(sentence2)
@@ -192,10 +204,12 @@ if __name__ == '__main__':
         for orig, cor in zip(doc1.sentences, doc2.sentences):
             align = Alignment(orig, cor)
             print(align.align_seq)
-            annotate(orig, cor, abc)
-
-    print(abc)
-
-    # write in a json file
-    with open('data/annotations.json', 'w', encoding='utf-8') as f:
-        json.dump(abc, f, ensure_ascii=False, indent=4)
+            annotate(orig, cor, annotations)
+        num_processed_lines += 1
+        if num_processed_lines % 100 == 0:
+            with open('logs/num_processed_lines.txt', 'w') as f:
+                f.write(str(num_processed_lines))
+            # write in a json file
+            with open('data/annotations.json', 'w', encoding='utf-8') as f:
+                json.dump(annotations, f, ensure_ascii=False, indent=4)
+            
