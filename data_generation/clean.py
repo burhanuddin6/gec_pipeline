@@ -87,15 +87,30 @@ def remove_similar_ones(corrfilename='data/wikiedits/correct.txt', incorrfilenam
 
     
 '''
+Removed:
+
+1) removed pairs in which the edited sentence existed in as original in some other pair
+
+2) removed pairs in which the edited sentence was too similar to the original sentence (this helped to get rid of sentence like "karachi is a city in Pakistan", "lahore is a city in Pakistan",.. for all cities in Pakistan etc)
+
+3) some sentences only contain dates so remove them by using ratio of numbers to total characters to remove them
+
+
+
 Issues with numeric characters:
+
 1) Unnecessary spaces between numbers and commas, these sentences are reversed so need to correct that too
-2) sentences starting with numbers have numbers at the end instead of the start
+
 3) dates and times don't have - or : instead have spaces
-4) some sentences only are dates so remove them by using ratio of numbers to total characters
+
+
 
 Issues with punctuation:
+
 1) Extra spaces after punctuation but that can be ignored
+
 2) Only one quotation mark is present instead of two, so need to remove that
+
 
 '''
 

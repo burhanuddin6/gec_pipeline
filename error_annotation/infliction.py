@@ -3,6 +3,7 @@ import urduhack
 import json
 from constants import *
 from urduhack.normalization import normalize_characters
+from annotation import features_are_similar, get_features
 
 
 
@@ -14,7 +15,7 @@ lemma_dict = json.load(open('data/lemma_word_dict.json', 'r', encoding='utf-8'))
 
 
 
-def perform_infliction(sentence, word_ind, kernel, error_annotations):
+def substitution_infliction(sentence, word_ind, kernel, sub_err_annotations):
     """
     sentence is of type Sentence from urduhack library
     word_ind is the index of the word in the sentence to be changed/deleted
@@ -26,7 +27,7 @@ def perform_infliction(sentence, word_ind, kernel, error_annotations):
     returns the incorrect sentence
     """
     replacement = None
-    #
+    
     original_word = (sentence.words[word_ind].text).strip('۔').strip('،').strip('؟')
 
     # extract lemma of the original word
@@ -44,22 +45,16 @@ def perform_infliction(sentence, word_ind, kernel, error_annotations):
         raise Exception(f"Word {original_word}'s other forms not found in the word_dict")
     
     replacements = []
-    for error_annotation in error_annotations:
-        if error_annotation['type'] == SUBSTITUTION:
-            change_upos = error_annotation['correct_word_upos']
-            change_feats = error_annotation['correct_feats']
-            for form in word_forms:
-                form_features = form['feats'].split('|')
-                if form['text'] != original_word and form['upos'] == change_upos and all([feature in change_feats for feature in form_features]):
-                    replacement = form['text']
-                    if replacement not in replacements:
-                        replacements.append((replacement, error_annotation['id']))
-                        
-                
-
-        elif error_annotation['type'] == INSERTION:
-            pass
-    
+    for sub_err_annotation in sub_err_annotations:
+        change_upos = sub_err_annotation['correct_word_upos']
+        change_feats = sub_err_annotation['correct_feats']
+        for form in word_forms:
+            form_features = form['feats']
+            if form['text'] != original_word and form['upos'] == change_upos and features_are_similar(change_feats, [form_features]):
+                replacement = form['text']
+                if replacement not in replacements:
+                    replacements.append((replacement, sub_err_annotation['id']))
+                    
     return replacements
 
 
@@ -74,15 +69,11 @@ def inflict(correct_doc):
     sentence_pairs = []
     for sentence in correct_doc.sentences: # this loop is slower (guess) therefore above
         for kernel in annotations:
-
             for i, token in enumerate(sentence.words):
-                token_kernel = " ".join([sentence.words[i-1].upos if i > 0 else NONE_LABEL, token.upos, sentence.words[i+1].upos if i < len(sentence.words)-1 else NONE_LABEL])
-                
+                token_kernel = [sentence.words[i-1].upos if i > 0 else NONE_LABEL, token.upos, sentence.words[i+1].upos if i < len(sentence.words)-1 else NONE_LABEL]
                 if token_kernel == kernel:
                     try:
-                        replace = perform_infliction(sentence, i, kernel, annotations[kernel])
-                        # print(f"Replacing {sentence.words[i].text} with {replace}")
-                        # print(f"Replacing {sentence.words[i].text}")
+                        replace = substitution_infliction(sentence, i, kernel, annotations[kernel])
                         print("pure replacemnet ", replace)
                         for replacement, error_id in replace:
                             print("SENTENCE", sentence.text)
@@ -119,11 +110,5 @@ if __name__ == '__main__':
 
             pairs = inflict(doc1)
             
-            # write the 3-tuples to output files
-            
-            # for pair in pairs:
-            #     corr_out_file.write(pair[0] + '\n')
-            #     incorr_out_file.write(pair[1] + '\n')
-            #     error_id_file.write(pair[2] + '\n')
         except:
             continue

@@ -24,37 +24,40 @@ def init_urduhack_pipeline():
     nlp = urduhack.Pipeline()
 
 def init_urdu_word_dict():
-    with open('words.txt', 'r', encoding='utf-8') as file:
+    with open('data/urdu_words.txt', 'r', encoding='utf-8') as file:
         words = file.read().splitlines()
 
     return {word: None for word in words}
 
 def build_urdu_word_dict(words_dict):
-    CONLL_DATA = CoNLL.load_file('ur_udtb-ud-train.conllu')
-    for sentence in CONLL_DATA:
-        sent_meta, tokens = sentence
-        # print(f"Sentence ID: {sent_meta['sent_id']}")
-        # print(f"Sentence Text: {sent_meta['text']}")
-        for token in tokens:
-            # print(token)
-            try:
-                if words_dict[token['text']] is None:
-                    words_dict[token['text']] = []
-                # words_dict[token['text']].append(token)
-                append=False
-                for word_token in words_dict[token['text']]:
-                    if word_token['upos'] != token['upos'] or word_token['xpos'] != token['xpos'] or word_token['feats'] != token['feats']:
+    CONLL_DATA1 = CoNLL.load_file('data/conllu/ur_udtb-ud-train.conllu')
+    CONLL_DATA2 = CoNLL.load_file('data/conllu/ur_udtb-ud-test.conllu')
+    CONLL_DATA3 = CoNLL.load_file('data/conllu/ur_udtb-ud-dev.conllu')
+    for CONLL_DATA in [CONLL_DATA1, CONLL_DATA2, CONLL_DATA3]:
+        for sentence in CONLL_DATA:
+            sent_meta, tokens = sentence
+            # print(f"Sentence ID: {sent_meta['sent_id']}")
+            # print(f"Sentence Text: {sent_meta['text']}")
+            for token in tokens:
+                # print(token)
+                try:
+                    if words_dict[token['text']] is None:
+                        words_dict[token['text']] = []
+                    # words_dict[token['text']].append(token)
+                    append=False
+                    for word_token in words_dict[token['text']]:
+                        if word_token['upos'] != token['upos'] or word_token['xpos'] != token['xpos'] or word_token['feats'] != token['feats']:
+                            append = True
+                        else:
+                            append = False
+                            break
+                    if len(words_dict[token['text']]) == 0:
                         append = True
-                    else:
-                        append = False
-                        break
-                if len(words_dict[token['text']]) == 0:
-                    append = True
-                if append:
-                    words_dict[token['text']].append(token)
-                    # print(words_dict[token['text']])
-            except:
-                continue
+                    if append:
+                        words_dict[token['text']].append(token)
+                        # print(words_dict[token['text']])
+                except:
+                    continue
     return words_dict
 def clean_urdu_word_dict(words_dict):
     words_dict2 = {}
