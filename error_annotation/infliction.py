@@ -173,7 +173,7 @@ def inflict(correct_doc):
                 if fits_kernel(sentence, i, kernel, for_type=DELETION):
                     try:
                         if SUBSTITUTION in kernel.split('_'):
-                            replace = substitution_infliction(sentence, i, kernel, annotations[kernel])
+                            replace = substitution_infliction(sentence, i, annotations[kernel])
                             print("pure replacemnet ", replace)
                             for replacement, error_id in replace:
                                 print("SENTENCE", sentence.text)
@@ -181,7 +181,7 @@ def inflict(correct_doc):
                                 err_sentence = sentence.text.replace(sentence.words[i].text, replacement)
                                 sentence_pairs.append((sentence.text, err_sentence, error_id))
                         elif INSERTION in kernel.split('_'):
-                            replacements = insertion_infliction(sentence, i, kernel, annotations[kernel])
+                            replacements = insertion_infliction(sentence, i, annotations[kernel])
                             for erroneous_sentence, error_id in replacements:
                                 sentence_pairs.append((sentence.text, erroneous_sentence, error_id))
                         elif DELETION in kernel.split('_'):
