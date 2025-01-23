@@ -1,5 +1,0 @@
-S This are gramamtical sentence
-A 1 2|||R:VERB:SVA|||is|||REQUIRED|||-NONE-|||0
-A 2 2|||M:DET|||a|||REQUIRED|||-NONE-|||0
-A 2 3|||R:SPELL|||grammatical|||REQUIRED|||-NONE-|||0
-

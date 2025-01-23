@@ -38,12 +38,15 @@ from collections.abc import MutableSequence
 
 class WordUPOSFeats(MutableSequence):
     def __init__(self, word):
+        self.has_word = False
         if isinstance(word, str):
             if word not in word_dict:
                 raise ValueError(f"Word {word} not found in the word_dict")
-            self.usage_list = WordUPOSFeats([UPOSFeats(temp['upos'], temp['feats']) for temp in word_dict[word]])
+            self.usage_list = [UPOSFeats(temp['upos'], temp['feats']) for temp in word_dict[word]]
             if self.is_empty():
                 raise ValueError(f"Features not found for word {word}")
+            self.word = word
+            self.has_word = True
         elif isinstance(word, list):
             assert all([isinstance(temp, UPOSFeats) for temp in word]) and len(word) > 0
             self.usage_list = word
@@ -122,7 +125,7 @@ def check_spelling_issues(word):
     return False
 
 def log(error):
-    with open('logs/errors.log', 'a') as f:
+    with open('logs/errors.log', 'a', encoding='utf-8') as f:
         f.write(f"{error}\n")
 
 def insertion_error_exist(t_annot, type_annotation):
@@ -159,7 +162,7 @@ def deletion_error_exist(t_annot, type_annotation):
     if t_annot['deleted_words'] != type_annotation['deleted_words']:
         return False
     if not all([
-                (WordUPOSFeats(type_annotation['kernel_feats'][i]) == WordUPOSFeats(t_annot['kernel_feats'][i]))
+                (type_annotation['kernel_feats'][i] == t_annot['kernel_feats'][i])
                 for i in range(KERNEL_SIZE)
                 ]):
         return False
@@ -169,23 +172,20 @@ def deletion_error_exist(t_annot, type_annotation):
 def set_kernel(i_minus_one, i, i_plus_one, sequence, type):
     feats = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
     kernel = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-    try:
-        if i_minus_one >= 0:
-            kernel[0] = sequence[i_minus_one].upos
-            if type != SUBSTITUTION:
-                feats[0] = WordUPOSFeats(sequence[i_minus_one].text)
-        if type != DELETION: # deletion errors will have a smaller kernel
-            kernel[1] = sequence[i].upos
-            if type != SUBSTITUTION:
-                feats[1] = WordUPOSFeats(sequence[i].text)
-        if i_plus_one < len(sequence):
-            kernel[2] = sequence[i_plus_one].upos
-            if type != SUBSTITUTION:
-                feats[2] = WordUPOSFeats(sequence[i_plus_one].text)
-    except:
-        pass
-        # raise Exception(f"Error in setting kernel, feats with args: {i_minus_one}, {i}, {i_plus_one}, {sequence}, {type}")
+    if i_minus_one >= 0:
+        kernel[0] = sequence[i_minus_one].upos
+        if type != SUBSTITUTION:
+            feats[0] = WordUPOSFeats(sequence[i_minus_one].text)
+    if type != DELETION: # deletion errors will have a smaller kernel
+        kernel[1] = sequence[i].upos
+        if type != SUBSTITUTION:
+            feats[1] = WordUPOSFeats(sequence[i].text)
+    if i_plus_one < len(sequence):
+        kernel[2] = sequence[i_plus_one].upos
+        if type != SUBSTITUTION:
+            feats[2] = WordUPOSFeats(sequence[i_plus_one].text)
     return ((kernel, feats) if type != SUBSTITUTION else kernel)
+
 
 def annotate(incorrect, correct, kernel_sorted_annotations):
     '''
@@ -339,7 +339,7 @@ if __name__ == '__main__':
             print(align.align_seq)
             annotate(orig, cor, annotations)
         num_processed_lines += 1
-        if num_processed_lines % 100 == 0:
+        if num_processed_lines % 1000 == 0:
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             # write in a json file

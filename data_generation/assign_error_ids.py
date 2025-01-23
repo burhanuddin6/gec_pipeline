@@ -1,6 +1,7 @@
 import json
 import uuid
 
+
 def assign_unique_ids(input_file, output_file):
     """
     Reads a JSON file, assigns unique IDs to each object, and writes the updated JSON to an output file.
@@ -10,7 +11,7 @@ def assign_unique_ids(input_file, output_file):
     """
     try:
         # Read the JSON data from the file
-        with open(input_file, 'r') as file:
+        with open(input_file, 'r', encoding='utf-8') as file:
             data = json.load(file)
         
         # Iterate over each key and its list of objects
@@ -22,7 +23,7 @@ def assign_unique_ids(input_file, output_file):
                 obj["id"] = unique_id
 
         # Write the updated JSON data back to the file
-        with open(output_file, 'w') as file:
+        with open(output_file, 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4)
 
         print(f"Unique IDs assigned and written to {output_file}")

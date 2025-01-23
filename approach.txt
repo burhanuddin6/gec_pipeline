@@ -1,0 +1,39 @@
+annotation substitution:
+1) collect the structure of the sentence through a kernel of POS (of size 3) centered around the word
+2) collect the of the correct and incorrect word. A word can occur in places with different sets of features. To accommodate, we actually concatenate all the sets of features. 
+
+annotation insertion
+1) collect the structure of the sentence through a kernel of POS (of size 3) centered around the word
+2) collect the features of all the words that fit correct sentence
+3) optionally also store the inserted word. The reason is that usually insertion errors happen on common words
+4) if the any of the above fails, for example if the any word is not found in features dict, then we abort.
+
+annotation deletion:
+1) same as 1 of insertion
+2) collect the features of all the words that fit the incorrect sentence
+3) store the deleted word
+4) if any of the above fails, say
+
+
+This is a pseudocode/explanation of the steps involved. The code is a bit unclean rn so it may help
+
+infliction substitution:
+for each annotated error data:
+	1) we first check if the structure of the kernel confirm to the structure of our annotated error data
+	2) then we check if the features of the center word match the corrected word (from annotated error data) by comparing this word 	features with the features of the corrected word
+	3) if ok then also check if you can find a substitution of this word from its different lemma forms that match the incorrect word 	(from annotated error data) features set.
+	4) if so then, replace the word and produce an erroneous pair.
+
+infliction insertion:
+for each annotated error data:
+	1) same as step 1 of substitution
+	2) check if the features of all three words that fit the kernel are similar to the features of all three corrected words (from annotated error data)
+	3) if so, then delete the center word and produce an erroneous pair
+	4) one observation: usually the insertion and deletion errors are produced on common words like pronouns and articles, one choice here is that we just limit our operation to words that we actually find in wikiedits. but one heuristic is also that ideally, the majority of insertion errors produced with our approach will contain only those words that are seen in the wikiedits errors.
+
+infliction deletion:
+for each annotated error data:
+	1) same as step 1 of substitution
+	2) check if for two words fitting indexes other than center one
+	3) after that take out the word from the deleted word (from annotated data) and insert that between the two words
+
