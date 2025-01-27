@@ -1,0 +1,5 @@
+`data`: this folder includes all the data files related to the project
+`data_generation`: this folder includes all the scripts that are used to clean/process the data
+`error_annotation`: this folder contains the code for error annotation and infliction
+`logs`: this folder can be used to store all the runtime logs (helps in case of an interrupt)
+`misc`: everything else
