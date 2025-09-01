@@ -7,7 +7,7 @@ import json
 from constants import *
 from urduhack.normalization import normalize_characters
 
-word_dict = json.load(open('data/urdu_word_dict2.json', 'r', encoding='utf-8'))
+word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 words = open('data/urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
 dictionary = {word.strip(): None for word in words}
 
