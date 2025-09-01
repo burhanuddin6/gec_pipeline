@@ -9,8 +9,6 @@ import random
 
 word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 annotations = json.load(open('data/annotations_with_ids.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
-words = open('data/urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
-dictionary = {word.strip(): None for word in words}
 lemma_dict = json.load(open('data/lemma_word_dict.json', 'r', encoding='utf-8'))
 
 
