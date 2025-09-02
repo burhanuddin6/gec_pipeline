@@ -113,13 +113,6 @@ def custom_decoder(dct: dict):
     return dct
 
 
-def check_spelling_issues(word):
-    global NUM_SPELLING_ISSUES
-    if word not in dictionary:
-        NUM_SPELLING_ISSUES += 1
-        return True
-    return False
-
 def log(error):
     with open('logs/errors.log', 'a', encoding='utf-8') as f:
         f.write(f"{error}\n")
@@ -194,8 +187,7 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
     for op, i1, i2, j1, j2 in seq:
         kernel = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
         if op == SUBSTITUTION:
-            
-            if not check_spelling_issues(incorrect.words[i1].text):
+            try:
                 # check if there is not a spelling issue:
                 incorrect_word = incorrect.words[i1].text
                 correct_word = correct.words[j1].text
@@ -227,11 +219,12 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                         kernel_sorted_annotations[tup_kernel].append(type_annotation.copy())
                 else:
                     kernel_sorted_annotations[tup_kernel] = [type_annotation.copy()]
+            except ValueError as e:
+                log(f"Skipping substitution due to error: {e}")
+                continue
 
         elif op == DELETION:
             deleted_word = incorrect.words[i1].text
-            if check_spelling_issues(deleted_word):
-                continue
             try:
                 kernel, kernel_feats = set_kernel(i1-1, None, i2, incorrect.words, DELETION)
                 tup_kernel = " ".join(kernel) + '_' + DELETION
@@ -266,8 +259,6 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
 
         elif op == INSERTION:
             inserted_word = correct.words[j1].text
-            if check_spelling_issues(inserted_word): # update this to check all words in kernel. It is not necessary that the inserted word is the only spelling issue
-                continue
             try:
                 kernel, kernel_feats = set_kernel(j1-1, j1, j1+1, correct.words, INSERTION)
                 tup_kernel = " ".join(kernel) + '_' + INSERTION
@@ -306,8 +297,6 @@ if __name__ == '__main__':
     nlp = urduhack.Pipeline()
 
     word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
-    words = open('data/urdu_words.txt', 'r', encoding='utf-8').read().split('\n')
-    dictionary = {word.strip(): None for word in words}
 
     orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
     cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
