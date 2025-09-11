@@ -210,5 +210,8 @@ if __name__ == '__main__':
         to_inflict = "\n".join(chunk)
         doc1 = nlp(to_inflict)
         pairs = inflict(doc1)
-        print(pairs)
-        exit()
+        for correct_sent, incorrect_sent, error_id in pairs:
+            corr_out_file.write(correct_sent + '\n')
+            incorr_out_file.write(incorrect_sent + '\n')
+            error_id_file.write(str(error_id) + '\n')
+        print(f"Processed chunk {i//step + 1}, found {len(pairs)} pairs.")
