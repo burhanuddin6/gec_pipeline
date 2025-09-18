@@ -6,6 +6,7 @@ import urduhack
 import json
 from constants import *
 from urduhack.normalization import normalize_characters
+import config
 
 NUM_SPELLING_ISSUES = 0
 
@@ -36,9 +37,9 @@ class WordUPOSFeats(MutableSequence):
     def __init__(self, word):
         self.has_word = False
         if isinstance(word, str):
-            if word not in word_dict:
+            if word not in config.word_dict:
                 raise ValueError(f"Word {word} not found in the word_dict")
-            self.usage_list = [UPOSFeats(temp['upos'], temp['feats']) for temp in word_dict[word]]
+            self.usage_list = [UPOSFeats(temp['upos'], temp['feats']) for temp in config.word_dict[word]]
             if self.is_empty():
                 raise ValueError(f"Features not found for word {word}")
             self.word = word
@@ -127,7 +128,7 @@ def insertion_error_exist(t_annot, type_annotation):
 def find_substitute_potentials(deleted_word, feats):
     # find the potential substitutes for the deleted word
     potential_substitutes = []
-    for word in word_dict:
+    for word in config.word_dict:
         if word == deleted_word:
             continue
         word_characterstics = WordUPOSFeats(word)
@@ -191,7 +192,7 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                 # check if there is not a spelling issue:
                 incorrect_word = incorrect.words[i1].text
                 correct_word = correct.words[j1].text
-                if incorrect_word not in word_dict or correct_word not in word_dict:
+                if incorrect_word not in config.word_dict or correct_word not in config.word_dict:
                     print(f"Word not found in the word_dict: {incorrect_word} or {correct_word}")
                     continue
 
@@ -296,7 +297,7 @@ if __name__ == '__main__':
     # Initializing the pipeline
     nlp = urduhack.Pipeline()
 
-    word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
     orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
     cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
@@ -335,4 +336,3 @@ if __name__ == '__main__':
             with open('data/annotations.json', 'w', encoding='utf-8') as f:
                 json.dump(annotations, f, ensure_ascii=False, indent=4, cls=WordUPOSFeatsEncoder)
             exit()
-            

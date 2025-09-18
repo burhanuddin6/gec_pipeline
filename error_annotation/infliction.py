@@ -5,9 +5,9 @@ from constants import *
 from urduhack.normalization import normalize_characters
 from annotation import WordUPOSFeats, custom_decoder
 import random
+import config 
 
 
-word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 annotations = json.load(open('data/annotations_with_ids.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 lemma_dict = json.load(open('data/lemma_word_dict.json', 'r', encoding='utf-8'))
 
@@ -64,7 +64,7 @@ def substitution_infliction(sentence, word_ind, sub_err_annotations):
     # populate word_forms with the different forms of the original word (with relevant info from word_dict)
     word_forms = []
     for word_form_word in word_forms_words: 
-        if (word_form_word != original_word) and (word_form_word in word_dict):
+        if (word_form_word != original_word) and (word_form_word in config.word_dict):
             word_forms.append(WordUPOSFeats(word_form_word))
     if not word_forms:
         print (f"Word {original_word}'s other forms not found in the word_dict")
@@ -194,6 +194,9 @@ def inflict(correct_doc):
     return sentence_pairs                    
 
 if __name__ == '__main__':
+
+    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+
     nlp = urduhack.Pipeline()
 
     correct_text = open('data/cleaned_correct_corpus/data_00.txt', 'r', encoding='utf-8').read()
