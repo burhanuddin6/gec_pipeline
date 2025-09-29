@@ -1,2 +1,7 @@
 __pycache__/
 data/cleaned_correct_corpus/makhzan*
+
+# WikiEdits
+urwikienv/
+urwiki-20250701-pages-meta-history.xml.7z
+wikiedits_urdu/
