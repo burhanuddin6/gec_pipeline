@@ -1,7 +1,13 @@
 from itertools import groupby
 from rapidfuzz.distance import Indel
-import spacy.parts_of_speech as POS
-from edit import Edit
+from .edit import Edit
+
+# Define POS constants (replacing spacy import)
+class POS:
+    ADJ = "ADJ"
+    ADV = "ADV" 
+    NOUN = "NOUN"
+    VERB = "VERB"
 
 class Alignment:
     # Protected class resource

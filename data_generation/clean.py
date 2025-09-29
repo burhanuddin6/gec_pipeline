@@ -148,7 +148,7 @@ def clean_misc_issues(corrfilename='data/wikiedits/correct1.txt', incorrfilename
         return (numeric_chars / total_chars) > numeric_ratio_threshold if total_chars > 0 else False
 
     def normalize(filename):
-        from urduhack.normalization import normalize_characters
+        from misc.urduhack_normalization import normalize_characters
         text = open(filename, 'r', encoding='utf-8').read()
         normalized_text = normalize_characters(text)
         return normalized_text
