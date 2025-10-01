@@ -455,11 +455,3 @@ if __name__ == '__main__':
         
         if num_processed_lines % 100 == 0:
             print(f"Total lines processed: {num_processed_lines}")
-
-    # Final save
-    with open('data/annotations.json', 'w', encoding='utf-8') as f:
-        json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
-    with open('logs/num_processed_lines.txt', 'w') as f:
-        f.write(str(num_processed_lines))
-    
-    print(f"Annotation complete! Total annotations: {len(annotations)}")

@@ -57,11 +57,11 @@ def create_sampled_files(ids_file, correct_file, incorrect_file, json_file, outp
 
 # Example usage
 create_sampled_files(
-    ids_file='data/out copy/error_id.txt',
-    correct_file='data/out copy/correct.txt',
-    incorrect_file='data/out copy/incorrect.txt',
+    ids_file='data/out/shrink_error_id.txt',
+    correct_file='data/out/shrink_correct.txt',
+    incorrect_file='data/out/shrink_incorrect.txt',
     json_file='data/annotations_dict.json',
-    output_ids='data/out copy/sampled_error_id.txt',
-    output_correct='data/out copy/sampled_correct.txt',
-    output_incorrect='data/out copy/sampled_incorrect.txt'
+    output_ids='data/out/sampled_error_id.txt',
+    output_correct='data/out/sampled_correct.txt',
+    output_incorrect='data/out/sampled_incorrect.txt'
 )

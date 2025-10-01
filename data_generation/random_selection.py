@@ -65,7 +65,7 @@ shrink_training_data_random(
     ids_file="data/out/error_id.txt",                # Input IDs file
     correct_file="data/out/correct.txt",        # Input correct sentences file
     incorrect_file="data/out/incorrect.txt",    # Input incorrect sentences file
-    output_ids="data/out/error_id.txt",     # Output filtered IDs file
-    output_correct="data/out/correct.txt",  # Output filtered correct sentences file
-    output_incorrect="data/out/incorrect.txt"  # Output filtered incorrect sentences file
+    output_ids="data/out/shrink_error_id.txt",     # Output filtered IDs file
+    output_correct="data/out/shrink_correct.txt",  # Output filtered correct sentences file
+    output_incorrect="data/out/shrink_incorrect.txt"  # Output filtered incorrect sentences file
 )

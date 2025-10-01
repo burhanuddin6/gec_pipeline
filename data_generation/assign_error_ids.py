@@ -24,7 +24,7 @@ def assign_unique_ids(input_file, output_file):
 
         # Write the updated JSON data back to the file
         with open(output_file, 'w', encoding='utf-8') as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, ensure_ascii=False, indent=4)
 
         print(f"Unique IDs assigned and written to {output_file}")
 

@@ -88,7 +88,7 @@ def fits_kernel(sentence_words: List[Dict], word_ind: int, kernel_upos: List[str
     return True
 
 def substitution_infliction(sentence_words: List[Dict], word_ind: int, 
-                           sub_err_annotations: List[Dict]) -> List[str]:
+                           sub_err_annotations: List[Dict]) -> List[Tuple[str, str]]:
     """
     Perform substitution infliction using context-aware morphological analysis
     
@@ -141,7 +141,7 @@ def substitution_infliction(sentence_words: List[Dict], word_ind: int,
                         if (entry.get('upos') == target_upos and 
                             entry.get('feats') == target_feats):
                             if word_form != original_word:  # Don't replace with the same word
-                                replacements.append(word_form)
+                                replacements.append((word_form, sub_err_annotation['id']))
                             break
                             
         except Exception as e:
@@ -151,7 +151,7 @@ def substitution_infliction(sentence_words: List[Dict], word_ind: int,
     return list(set(replacements))
 
 def insertion_infliction(sentence_words: List[Dict], word_ind: int, 
-                        ins_err_annotations: List[Dict]) -> List[str]:
+                        ins_err_annotations: List[Dict]) -> List[Tuple[str, str]]:
     """
     Perform insertion infliction (actually deletion from correct sentence)
     
@@ -174,7 +174,7 @@ def insertion_infliction(sentence_words: List[Dict], word_ind: int,
                           ins_err_annotation['kernel_feats'], 
                           INSERTION):
                 # If it fits, we can delete this word to create the error
-                deletions.append(sentence_words[word_ind]['text'])
+                deletions.append((sentence_words[word_ind]['text'], ins_err_annotation['id']))
                 break
                 
     except Exception as e:
@@ -183,7 +183,7 @@ def insertion_infliction(sentence_words: List[Dict], word_ind: int,
     return list(set(deletions))
 
 def deletion_infliction(sentence_words: List[Dict], word_ind: int, 
-                       del_err_annotations: List[Dict]) -> List[str]:
+                       del_err_annotations: List[Dict]) -> List[Tuple[str, str]]:
     """
     Perform deletion infliction (actually insertion into correct sentence)
     
@@ -208,8 +208,8 @@ def deletion_infliction(sentence_words: List[Dict], word_ind: int,
                 # If it fits, we can insert the deleted word here
                 for deleted_word in del_err_annotation['deleted_words']:
                     if is_word_in_dict(deleted_word):
-                        insertions.append(deleted_word)
-                        
+                        insertions.append((deleted_word, del_err_annotation['id']))
+
     except Exception as e:
         pass
     
@@ -294,20 +294,22 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
                 replacements = substitution_infliction(sentence_words, word_ind, substitutions)
                 for replacement in replacements:
                     # Create incorrect sentence
+                    replacement_word, error_id = replacement
                     incorrect_words = [w['text'] for w in sentence_words]
-                    incorrect_words[word_ind] = replacement
+                    incorrect_words[word_ind] = replacement_word
                     incorrect_sentence = ' '.join(incorrect_words)
-                    inflicted_pairs.append((incorrect_sentence, 'substitution'))
-            
+                    inflicted_pairs.append((incorrect_sentence, error_id))
+
             # Try insertion infliction (delete current word)
             if insertions:
                 deletions_possible = insertion_infliction(sentence_words, word_ind, insertions)
                 if deletions_possible:
                     # Create incorrect sentence by deleting current word
+                    error_id = deletions_possible[0][1]                
                     incorrect_words = [w['text'] for i, w in enumerate(sentence_words) if i != word_ind]
                     incorrect_sentence = ' '.join(incorrect_words)
-                    inflicted_pairs.append((incorrect_sentence, 'deletion'))
-        
+                    inflicted_pairs.append((incorrect_sentence, error_id))  # Using first error_id
+
         # Check for deletion infliction (insert between words)
         if word_ind < len(sentence_words) - 1:  # Not the last word
             # Create kernel for deletion (gap between current and next word)
@@ -328,13 +330,14 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
                 deletions = [ann for ann in annotations[del_kernel_key] if ann['type'] == DELETION]
                 if deletions:
                     insertions_possible = deletion_infliction(sentence_words, word_ind, deletions)
-                    for insertion_word in insertions_possible:
+                    for insertion in insertions_possible:
                         # Create incorrect sentence by inserting word
+                        insertion_word, error_id = insertion
                         incorrect_words = [w['text'] for w in sentence_words]
                         incorrect_words.insert(word_ind + 1, insertion_word)
                         incorrect_sentence = ' '.join(incorrect_words)
-                        inflicted_pairs.append((incorrect_sentence, 'insertion'))
-    
+                        inflicted_pairs.append((incorrect_sentence, error_id))
+
     return inflicted_pairs
 
 if __name__ == '__main__':
@@ -344,9 +347,10 @@ if __name__ == '__main__':
     # Open output files
     corr_out_file = open('data/out/correct.txt', 'a', encoding='utf-8')
     incorr_out_file = open('data/out/incorrect.txt', 'a', encoding='utf-8')
+    error_id_file = open('data/out/error_id.txt', 'a', encoding='utf-8')
     
     # Read correct sentences
-    correct_text = open('data/cleaned_correct_corpus/data_00.txt', 'r', encoding='utf-8').read()
+    correct_text = open('data/cleaned_correct_corpus/makhzan_sentences.txt', 'r', encoding='utf-8').read()
     correct_text = normalize_characters(correct_text)
     lines = correct_text.split('\n')
 
@@ -354,8 +358,10 @@ if __name__ == '__main__':
     for i in range(0, len(lines)):
         inflicted_results = inflict(lines[i])
         if inflicted_results:
-            for incorrect_sent, error_type in inflicted_results:
+            for incorrect_sent, error_id in inflicted_results:
                 corr_out_file.write(lines[i] + '\n')
                 incorr_out_file.write(incorrect_sent + '\n')
+                error_id_file.write(error_id + '\n')
+
         else:
             print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")

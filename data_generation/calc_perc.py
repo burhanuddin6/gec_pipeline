@@ -24,15 +24,15 @@ def process_json_with_ids(input_file, output_file):
                 id_dict[obj_id] = obj
                 
                 # Accumulate the total occurrences
-                total_occurrences += obj["occurence"]
+                total_occurrences += obj["occurrence"]
         
         # Calculate percentages for each ID
         for obj_id, obj in id_dict.items():
-            obj["percentage"] = (obj["occurence"] / total_occurrences) * 100
+            obj["percentage"] = (obj["occurrence"] / total_occurrences) * 100
         
         # Write the updated dictionary back to a file
         with open(output_file, 'w') as file:
-            json.dump(dict(sorted(id_dict.items(), key=lambda item: item[1]["percentage"], reverse=True)), file, indent=4)
+            json.dump(dict(sorted(id_dict.items(), key=lambda item: item[1]["percentage"], reverse=True)), file, ensure_ascii=False, indent=4)
 
         print(f"Processed data written to {output_file}")
 

@@ -44,7 +44,7 @@ def remove_duplicate_edits(corrfilename='data/wikiedits/correct.txt', incorrfile
 
 
 
-def create_two_files_from_one(filename='wikiedits.txt', output_correct='data/wikiedits/correct.txt', output_incorrect='data/wikiedits/incorrect.txt'):
+def create_two_files_from_one(filename='data/raw_wikiedits.txt', output_correct='data/wikiedits/correct.txt', output_incorrect='data/wikiedits/incorrect.txt'):
     with open(filename, 'r', encoding='utf-8') as f:
         lines = f.read().strip().split('\n\n')
         correct_lines = [line.split('\n')[1] for line in lines]
@@ -208,10 +208,10 @@ def train_test_split(corrfilename='data/wikiedits/correct2.txt', incorrfilename=
         f.write('\n'.join(incorrsentences[train_size:]))
 
 if __name__ == '__main__':
-    # create_two_files_from_one()
-    # remove_duplicate_edits()
-    # remove_similar_ones()
-    # clean_misc_issues()
-    train_test_split()
+    create_two_files_from_one()
+    remove_duplicate_edits()
+    remove_similar_ones()
+    clean_misc_issues()
+    # train_test_split()
 
 
