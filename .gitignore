@@ -6,3 +6,6 @@ checkpoints/
 urwikienv/
 urwiki-20250701-pages-meta-history.xml.7z
 wikiedits_urdu/
+
+models/
+.venv/
