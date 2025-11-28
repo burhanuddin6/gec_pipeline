@@ -1,0 +1,26 @@
+Input: data/urdu_word_dict.json
+Unique word entries (keys): 10802
+Total occurrences (sum of list lengths / counts): 22272
+
+Top 20 words by occurrences:
+ہیں     54
+کی      45
+کریں    40
+کے      37
+ہوئے    36
+جائے    35
+کیے     34
+تھے     34
+ہے      31
+کئے     29
+ان      28
+رہے     27
+کیا     25
+جانے    25
+پہلے    25
+ساتھ    25
+اپنے    24
+تھا     24
+وجہ     24
+ہوں     24
+PS C:\Users\arsalan\source\repos\gec_pipeline>

@@ -79,7 +79,7 @@ def analyze_sentence_with_stanza(sentence_text: str) -> List[Dict[str, Any]]:
     return words_info
 
 def log(error):
-    with open('logs/errors.log', 'a', encoding='utf-8') as f:
+    with open('logs/gold_errors.log', 'a', encoding='utf-8') as f:
         f.write(f"{error}\n")
 
 def is_word_in_dict(word: str) -> bool:
@@ -418,14 +418,14 @@ if __name__ == '__main__':
     config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/wikiedits/incorrect2.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/correct2.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/consolidated_gold_incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/consolidated_gold_correct.txt', 'r', encoding='utf-8').read()
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
     
     try:
-        num_processed_lines = int(open('logs/num_processed_lines.txt', 'r').read())
+        num_processed_lines = int(open('logs/gold_num_processed_lines.txt', 'r').read())
     except:
         num_processed_lines = 0
         
@@ -435,7 +435,7 @@ if __name__ == '__main__':
     if num_processed_lines == 0:
         annotations = {}
     else:
-        annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        annotations = json.load(open('data/gold_annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
@@ -447,9 +447,9 @@ if __name__ == '__main__':
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
             # Save progress
-            with open('data/annotations.json', 'w', encoding='utf-8') as f:
+            with open('data/gold_annotations.json', 'w', encoding='utf-8') as f:
                 json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
-            with open('logs/num_processed_lines.txt', 'w') as f:
+            with open('logs/gold_num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
         
