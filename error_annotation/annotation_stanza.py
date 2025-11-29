@@ -47,7 +47,8 @@ class StanzaPipeline:
                 self._pipeline = stanza.Pipeline(
                     lang="ur", 
                     verbose=False, 
-                    processors='tokenize,pos,lemma'
+                    processors='tokenize,pos,lemma',
+                    device="cpu"
                 )
             print("✅ Stanza pipeline initialized successfully.")
         return self._pipeline
@@ -187,7 +188,7 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
         # For INSERTION and DELETION, return kernel UPOS and features
         return kernel_upos, kernel_feats
 
-def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict):
+def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict):
     """
     Main annotation function using Stanza for context-aware morphological analysis
     """
@@ -230,7 +231,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 correct_word = correct_words[j1]['text']
                 
                 if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
-                    log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word}")
+                    log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word} at sentence index {id}")
                     continue
                 
                 # Get context indices
@@ -269,7 +270,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                     
             except Exception as e:
-                log(f"Error processing substitution: {e}")
+                log(f"Error processing substitution: {e} at sentence index {id}")
                 continue
 
         elif op == DELETION:
@@ -278,7 +279,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 
                 # OOV check for the deleted word and context words
                 if not is_word_in_dict(deleted_word):
-                    log(f"OOV check failed for deleted word: {deleted_word}")
+                    log(f"OOV check failed for deleted word: {deleted_word} at sentence index {id}")
                     continue
                 
                 # OOV check for context words
@@ -292,7 +293,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     context_words_valid = False
                 
                 if not context_words_valid:
-                    log(f"OOV check failed for deletion context around: {deleted_word}")
+                    log(f"OOV check failed for deletion context around: {deleted_word} at sentence index {id}")
                     continue
                 
                 # Create kernel for deletion (middle position is NONE)
@@ -327,7 +328,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                     
             except Exception as e:
-                log(f"Error processing deletion: {e}")
+                log(f"Error processing deletion: {e} at sentence index {id}")
                 continue
 
         elif op == INSERTION:
@@ -336,7 +337,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 
                 # OOV check for inserted word and all context words in kernel
                 if not is_word_in_dict(inserted_word):
-                    log(f"OOV check failed for inserted word: {inserted_word}")
+                    log(f"OOV check failed for inserted word: {inserted_word} at sentence index {id}")
                     continue
                 
                 # For insertion, we need to check context in the correct sentence
@@ -350,7 +351,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     context_words_valid = False
                 
                 if not context_words_valid:
-                    log(f"OOV check failed for insertion context around: {inserted_word}")
+                    log(f"OOV check failed for insertion context around: {inserted_word} at sentence index {id}")
                     continue
                 
                 # Create kernel for insertion
@@ -385,7 +386,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                     
             except Exception as e:
-                log(f"Error processing insertion: {e}")
+                log(f"Error processing insertion: {e} at sentence index {id}")
                 continue
 
     return kernel_sorted_annotations
@@ -415,7 +416,7 @@ def custom_decoder(dct: dict):
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/makhzan_wordFrequency.json', 'r', encoding='utf-8'))
 
     # Load input texts
     orig_text = open('data/consolidated_gold_incorrect.txt', 'r', encoding='utf-8').read()
@@ -440,9 +441,9 @@ if __name__ == '__main__':
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
     
-    for sentence1, sentence2 in zip(orig_text, cor_text):
+    for id, (sentence1, sentence2) in enumerate(zip(orig_text, cor_text)):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
-            annotations = annotate(sentence1.strip(), sentence2.strip(), annotations)
+            annotations = annotate(id, sentence1.strip(), sentence2.strip(), annotations)
         
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:

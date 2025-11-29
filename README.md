@@ -1,3 +1,5 @@
+**This repo currently only supports Python 3.11.**
+
 `data`: this folder includes all the data files related to the project
 `data_generation`: this folder includes all the scripts that are used to clean/process the data
 `error_annotation`: this folder contains the code for error annotation and infliction

@@ -32,7 +32,7 @@ def assign_unique_ids(input_file, output_file):
         print(f"An error occurred: {e}")
 
 # Example usage
-input_file = "data/annotations.json"  # Replace with your input JSON file path
-output_file = "data/annotations_with_ids.json"  # Replace with your desired output JSON file path
+input_file = "data/gold_annotations.json"  # Replace with your input JSON file path
+output_file = "data/gold_annotations_with_ids.json"  # Replace with your desired output JSON file path
 
 assign_unique_ids(input_file, output_file)
