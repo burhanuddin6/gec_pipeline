@@ -286,14 +286,22 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 i_minus_one = i1 - 1 if i1 > 0 else -1
                 i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
                 
-                context_words_valid = True
-                if i_minus_one >= 0 and not is_word_in_dict(incorrect_words[i_minus_one]['text']):
-                    context_words_valid = False
-                if i_plus_one < len(incorrect_words) and not is_word_in_dict(incorrect_words[i_plus_one]['text']):
-                    context_words_valid = False
-                
-                if not context_words_valid:
-                    log(f"OOV check failed for deletion context around: {deleted_word} at sentence index {id}")
+                # Check left/right context individually and report which context words failed
+                missing = []
+                left_word = incorrect_words[i_minus_one]['text'] if i_minus_one >= 0 else None
+                right_word = incorrect_words[i_plus_one]['text'] if i_plus_one < len(incorrect_words) else None
+
+                if left_word is not None and not is_word_in_dict(left_word):
+                    missing.append(("left", left_word))
+                if right_word is not None and not is_word_in_dict(right_word):
+                    missing.append(("right", right_word))
+
+                if missing:
+                    # Build informative message with context and which side(s) failed
+                    context_repr = f"left='{left_word}'" if left_word is not None else "left=None"
+                    context_repr += f", right='{right_word}'" if right_word is not None else ", right=None"
+                    missing_str = ", ".join([f"{pos}='{w}'" for pos, w in missing])
+                    log(f"OOV check failed for deletion around: '{deleted_word}' at sentence index {id}; context: {context_repr}; missing: {missing_str}")
                     continue
                 
                 # Create kernel for deletion (middle position is NONE)
@@ -344,14 +352,21 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 j_minus_one = j1 - 1 if j1 > 0 else -1
                 j_plus_one = j1 + 1 if j1 + 1 < len(correct_words) else len(correct_words)
                 
-                context_words_valid = True
-                if j_minus_one >= 0 and not is_word_in_dict(correct_words[j_minus_one]['text']):
-                    context_words_valid = False
-                if j_plus_one < len(correct_words) and not is_word_in_dict(correct_words[j_plus_one]['text']):
-                    context_words_valid = False
-                
-                if not context_words_valid:
-                    log(f"OOV check failed for insertion context around: {inserted_word} at sentence index {id}")
+                # Check left/right context individually and report which context words failed
+                missing = []
+                left_word = correct_words[j_minus_one]['text'] if j_minus_one >= 0 else None
+                right_word = correct_words[j_plus_one]['text'] if j_plus_one < len(correct_words) else None
+
+                if left_word is not None and not is_word_in_dict(left_word):
+                    missing.append(("left", left_word))
+                if right_word is not None and not is_word_in_dict(right_word):
+                    missing.append(("right", right_word))
+
+                if missing:
+                    context_repr = f"left='{left_word}'" if left_word is not None else "left=None"
+                    context_repr += f", right='{right_word}'" if right_word is not None else ", right=None"
+                    missing_str = ", ".join([f"{pos}='{w}'" for pos, w in missing])
+                    log(f"OOV check failed for insertion around: '{inserted_word}' at sentence index {id}; context: {context_repr}; missing: {missing_str}")
                     continue
                 
                 # Create kernel for insertion
