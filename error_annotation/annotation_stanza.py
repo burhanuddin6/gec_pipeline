@@ -431,11 +431,11 @@ def custom_decoder(dct: dict):
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('data/makhzan_wordFrequency.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/consolidated_gold_incorrect.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/consolidated_gold_correct.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/consolidated_gold_incorrect_no_punct.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/consolidated_gold_correct_no_punct.txt', 'r', encoding='utf-8').read()
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
