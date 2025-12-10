@@ -196,13 +196,16 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
     incorrect_text = normalize_characters(incorrect_text)
     correct_text = normalize_characters(correct_text)
     
+    # Track number of errors in this sentence
+    errors_in_sentence = 0
+    
     # Analyze sentences with Stanza
     try:
         incorrect_words = analyze_sentence_with_stanza(incorrect_text)
         correct_words = analyze_sentence_with_stanza(correct_text)
     except Exception as e:
         log(f"Stanza analysis failed for sentences: {incorrect_text} | {correct_text} | Error: {e}")
-        return kernel_sorted_annotations
+        return kernel_sorted_annotations, errors_in_sentence
     
     # Create simple word objects for alignment (compatibility with existing alignment code)
     class SimpleWord:
@@ -268,6 +271,8 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                         kernel_sorted_annotations[kernel_key].append(type_annotation)
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
+                
+                errors_in_sentence += 1
                     
             except Exception as e:
                 log(f"Error processing substitution: {e} at sentence index {id}")
@@ -334,6 +339,8 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                         kernel_sorted_annotations[kernel_key].append(type_annotation)
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
+                
+                errors_in_sentence += 1
                     
             except Exception as e:
                 log(f"Error processing deletion: {e} at sentence index {id}")
@@ -399,12 +406,14 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                         kernel_sorted_annotations[kernel_key].append(type_annotation)
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
+                
+                errors_in_sentence += 1
                     
             except Exception as e:
                 log(f"Error processing insertion: {e} at sentence index {id}")
                 continue
 
-    return kernel_sorted_annotations
+    return kernel_sorted_annotations, errors_in_sentence
 
 # Custom JSON encoder for UPOSFeats objects
 class UPOSFeatsEncoder(json.JSONEncoder):
@@ -456,9 +465,14 @@ if __name__ == '__main__':
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
     
+    # Statistics tracking: errors per sentence
+    from collections import defaultdict
+    error_statistics = defaultdict(int)  # {num_errors: count}
+    
     for id, (sentence1, sentence2) in enumerate(zip(orig_text, cor_text)):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
-            annotations = annotate(id, sentence1.strip(), sentence2.strip(), annotations)
+            annotations, num_errors = annotate(id, sentence1.strip(), sentence2.strip(), annotations)
+            error_statistics[num_errors] += 1
         
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
@@ -467,7 +481,21 @@ if __name__ == '__main__':
                 json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
             with open('logs/gold_num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
+            # Save error statistics
+            with open('logs/gold_error_statistics.json', 'w', encoding='utf-8') as f:
+                json.dump(dict(error_statistics), f, ensure_ascii=False, indent=2)
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
         
         if num_processed_lines % 100 == 0:
             print(f"Total lines processed: {num_processed_lines}")
+    
+    # Save final error statistics
+    with open('logs/gold_error_statistics.json', 'w', encoding='utf-8') as f:
+        json.dump(dict(error_statistics), f, ensure_ascii=False, indent=2)
+    
+    # Print summary
+    print("\n=== Error Statistics ===")
+    print(f"Total sentences processed: {sum(error_statistics.values())}")
+    for num_errors in sorted(error_statistics.keys()):
+        count = error_statistics[num_errors]
+        print(f"Sentences with {num_errors} error(s): {count}")
