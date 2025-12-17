@@ -125,7 +125,7 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                 incorrect_word = incorrect.words[i1].text
                 correct_word = correct.words[j1].text
                 if incorrect_word not in config.word_dict or correct_word not in config.word_dict:
-                    print(f"Word not found in the word_dict: {incorrect_word} or {correct_word}")
+                    print(f"[ERROR][{op}] Word not found in the word_dict: {incorrect_word} or {correct_word}")
                     continue
 
                 incorrect_feats = UPOSFeats(incorrect.words[i1].upos, incorrect.words[i1].feats)
@@ -192,6 +192,11 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
 
         elif op == INSERTION:
             inserted_word = correct.words[j1].text
+            
+            if incorrect_word not in config.word_dict:
+                print(f"[ERROR][{op}] Word not found in the word_dict: {incorrect_word}")
+                continue
+
             try:
                 kernel, kernel_feats = set_kernel(j1-1, j1, j1+1, correct.words, INSERTION)
                 tup_kernel = " ".join(kernel) + '_' + INSERTION
