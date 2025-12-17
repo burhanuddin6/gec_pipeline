@@ -1,6 +1,6 @@
 from itertools import groupby
 from rapidfuzz.distance import Indel
-from .edit import Edit
+from edit import Edit
 
 # Define POS constants (replacing spacy import)
 class POS:
