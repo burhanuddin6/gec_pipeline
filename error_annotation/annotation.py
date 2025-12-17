@@ -1,12 +1,15 @@
 from alignment import Alignment
 import numpy as np
 import time
-import urduhack
+# import urduhack
 # from data_generation.generate_word_dict import generate_word_dict
 import json
 from constants import *
 from urduhack.normalization import normalize_characters
 import config
+import contextlib
+import stanza
+import os
 
 NUM_SPELLING_ISSUES = 0
 
@@ -31,86 +34,26 @@ class UPOSFeats:
     def __eq__(self, value):
         return self.upos == value.upos and self.feats == value.feats
     
-from collections.abc import MutableSequence
-
-class WordUPOSFeats(MutableSequence):
-    def __init__(self, word):
-        self.has_word = False
-        if isinstance(word, str):
-            if word not in config.word_dict:
-                raise ValueError(f"Word {word} not found in the word_dict")
-            self.usage_list = [UPOSFeats(temp['upos'], temp['feats']) for temp in config.word_dict[word]]
-            if self.is_empty():
-                raise ValueError(f"Features not found for word {word}")
-            self.word = word
-            self.has_word = True
-        elif isinstance(word, list):
-            assert all([isinstance(temp, UPOSFeats) for temp in word]) and len(word) > 0
-            self.usage_list = word
-        else:
-            raise ValueError(f"Invalid type for word: {type(word)}")
-    def __getitem__(self, index):
-        return self.usage_list[index]
-
-    def __setitem__(self, index, value):
-        self.usage_list[index] = value
-
-    def __delitem__(self, index):
-        del self.usage_list[index]
-
-    def __len__(self):
-        return len(self.usage_list)
-
-    def insert(self, index, value):
-        self.usage_list.insert(index, value)
-
-    def to_dict(self):
-        return [value.to_dict() for value in self.usage_list]
-    
-    def __eq__(self, value):
-        return WordUPOSFeats.features_are_similar(self, value)
-    
-    def is_empty(self):
-        return len(self.usage_list) == 0
-
-    @staticmethod
-    def features_are_similar(check_for_word, check_in_word):
-        '''
-        check_for_word: (str) features to check for
-        check_in_word: str features to check check_for_word in/from
-        '''
-        assert isinstance(check_for_word, WordUPOSFeats) and isinstance(check_in_word, WordUPOSFeats)
-        return all(word_characterstics in check_in_word for word_characterstics in check_for_word) or all(word_characterstics in check_for_word for word_characterstics in check_in_word)
-
-import json
-from typing import Any
-
-class WordUPOSFeatsEncoder(json.JSONEncoder):
-    def default(self, obj: Any) -> Any:
-        if isinstance(obj, WordUPOSFeats):
-            # Serialize WordUPOSFeats into a dictionary of UPOSFeats
-            return obj.to_dict()  # Uses the to_dict() method from WordUPOSFeats class
-        elif isinstance(obj, UPOSFeats):
-            # Serialize UPOSFeats directly as a dictionary
+class UPOSFeatsEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UPOSFeats):
             return obj.to_dict()
-        return super().default(obj)  # Delegate to the default encoder if it's not one of our classes
+        return super().default(obj)
     
 def custom_decoder(dct: dict):
-    # Check if the dictionary contains any keys related to "*feats"
+    """Custom decoder to reconstruct UPOSFeats objects from JSON"""
     for key, value in dct.items():
-        if key == 'kernel_feats':
-            # If the key ends with "*feats", we need to create a WordUPOSFeats instance
+        if key == 'kernel_feats' and isinstance(value, list):
+            # Convert list of dictionaries back to UPOSFeats objects
             dct[key] = []
-            for value2 in value:
-                if isinstance(value2, str):
-                    # Convert the value into a WordUPOSFeats instance (assumes the value is a list of dictionaries for UPOSFeats)
-                    dct[key].append(NONE_LABEL)
+            for item in value:
+                if isinstance(item, dict) and 'upos' in item and 'feats' in item:
+                    dct[key].append(UPOSFeats(item['upos'], item['feats']))
                 else:
-                    # Convert each element into WordUPOSFeats (assumes the value is a list of dictionaries for UPOSFeats)
-                    dct[key].append(WordUPOSFeats([UPOSFeats(**item) for item in value2]))
-        elif key == 'incorrect_feats' or key == 'correct_feats':
-            # Convert the value into a WordUPOSFeats instance (assumes the value is a list of dictionaries for UPOSFeats)
-            dct[key] = WordUPOSFeats([UPOSFeats(**item) for item in value])
+                    dct[key].append(item)  # Keep None values as is
+        elif key in ['incorrect_feats', 'correct_feats'] and isinstance(value, dict):
+            if 'upos' in value and 'feats' in value:
+                dct[key] = UPOSFeats(value['upos'], value['feats'])
     return dct
 
 
@@ -125,17 +68,6 @@ def insertion_error_exist(t_annot, type_annotation):
         return False
     return True
     
-def find_substitute_potentials(deleted_word, feats):
-    # find the potential substitutes for the deleted word
-    potential_substitutes = []
-    for word in config.word_dict:
-        if word == deleted_word:
-            continue
-        word_characterstics = WordUPOSFeats(word)
-        if WordUPOSFeats.features_are_similar(feats, word_characterstics):
-            potential_substitutes.append(word)
-    return potential_substitutes
-
 def substitution_error_exist(t_annot, type_annotation):
     
     if t_annot['type'] != SUBSTITUTION:
@@ -165,15 +97,15 @@ def set_kernel(i_minus_one, i, i_plus_one, sequence, type):
     if i_minus_one >= 0:
         kernel[0] = sequence[i_minus_one].upos
         if type != SUBSTITUTION:
-            feats[0] = WordUPOSFeats(sequence[i_minus_one].text)
+            feats[0] = UPOSFeats(sequence[i_minus_one].upos, sequence[i_minus_one].feats)
     if type != DELETION: # deletion errors will have a smaller kernel
         kernel[1] = sequence[i].upos
         if type != SUBSTITUTION:
-            feats[1] = WordUPOSFeats(sequence[i].text)
+            feats[1] = UPOSFeats(sequence[i].upos, sequence[i].feats)
     if i_plus_one < len(sequence):
         kernel[2] = sequence[i_plus_one].upos
         if type != SUBSTITUTION:
-            feats[2] = WordUPOSFeats(sequence[i_plus_one].text)
+            feats[2] = UPOSFeats(sequence[i_plus_one].upos, sequence[i].feats)
     return ((kernel, feats) if type != SUBSTITUTION else kernel)
 
 
@@ -196,8 +128,8 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                     print(f"Word not found in the word_dict: {incorrect_word} or {correct_word}")
                     continue
 
-                incorrect_feats = WordUPOSFeats(incorrect_word)
-                correct_feats = WordUPOSFeats(correct_word)
+                incorrect_feats = UPOSFeats(incorrect.words[i1].upos, incorrect.words[i1].feats)
+                correct_feats = UPOSFeats(correct.words[j1].upos, correct.words[j1].feats)
                 kernel = set_kernel(j1-1, j1, j1+1, correct.words, SUBSTITUTION)
                 tup_kernel = " ".join(kernel) + '_' + SUBSTITUTION
 
@@ -292,10 +224,35 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
 
     return kernel_sorted_annotations
     
+class StanzaPipeline:
+    """Singleton class to manage Stanza pipeline"""
+    _instance = None
+    _pipeline = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(StanzaPipeline, cls).__new__(cls)
+        return cls._instance
+    
+    def get_pipeline(self):
+        if self._pipeline is None:
+            print("Initializing Stanza pipeline...")
+            # Suppress Stanza's verbose output during initialization
+            with contextlib.redirect_stdout(open(os.devnull, 'w')):
+                self._pipeline = stanza.Pipeline(
+                    lang="ur", 
+                    verbose=False, 
+                    processors='tokenize,pos,lemma'
+                )
+            print("Stanza pipeline initialized successfully.")
 
+        return self._pipeline
+    
 if __name__ == '__main__':
-    # Initializing the pipeline
-    nlp = urduhack.Pipeline()
+
+    # Global pipeline instance
+    stanza_pipeline = StanzaPipeline()
+    nlp = stanza_pipeline.get_pipeline()
 
     config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
@@ -316,7 +273,7 @@ if __name__ == '__main__':
     if num_processed_lines == 0:
         annotations = {}
     else:
-        annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        annotations = json.load(open('data/sample.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 
     print(f"Starting from line number: {num_processed_lines}")
     print(f"annotations: {annotations}")
@@ -333,6 +290,6 @@ if __name__ == '__main__':
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             # write in a json file
-            with open('data/annotations.json', 'w', encoding='utf-8') as f:
-                json.dump(annotations, f, ensure_ascii=False, indent=4, cls=WordUPOSFeatsEncoder)
+            with open('data/sample.json', 'w', encoding='utf-8') as f:
+                json.dump(annotations, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
             exit()
