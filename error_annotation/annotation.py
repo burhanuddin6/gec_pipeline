@@ -108,8 +108,60 @@ def set_kernel(i_minus_one, i, i_plus_one, sequence, type):
             feats[2] = UPOSFeats(sequence[i_plus_one].upos, sequence[i].feats)
     return ((kernel, feats) if type != SUBSTITUTION else kernel)
 
+def extract_window_features(sentence, i: int) -> list: # list of size Kernel
+    lst = []
+    for k in [i-1, i, i+1]:
+        try:
+            lst.append(UPOSFeats(sentence.words[k].upos, sentence.words[k].feats).to_dict())
+        except IndexError:
+            lst.append({})
+    return lst
 
-def annotate(incorrect, correct, kernel_sorted_annotations):
+def filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, index, incorrect_seq, correct_seq):
+    '''
+    Checks whether the given input sequence (potentially incorrect) has valid grammar features.
+    If the input sequence has valid grammar features, we add that in excluded samples and return True
+    Else we add the input sequence in included samples and return False
+
+    Returns True if the sample should be filtered out
+    '''
+    # check whether the incorrect sequence is not a valid grammatical sequence
+    window_features = str(extract_window_features(incorrect_seq, index))
+    if window_features in valid_grammar_features:
+        if window_features in excluded_samples:
+            excluded_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': index,
+                    'type': op
+                })
+        else:
+            excluded_samples[window_features] = [{
+                'potentially incorrect': incorrect_seq.text,
+                'potentially correct': correct_seq.text,
+                'index': index,
+                'type': op
+            }]
+        # The should be filtered (excluded)
+        return True
+    else: # cannot find this in valid grammar sequences
+        if window_features in included_samples:
+            included_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': index,
+                    'type': op
+                })
+        else:
+            included_samples[window_features] = [{
+                'potentially incorrect': incorrect_seq.text,
+                'potentially correct': correct_seq.text,
+                'index': index,
+                'type': op
+            }]
+        return False
+
+def annotate(incorrect, correct, kernel_sorted_annotations, excluded_samples, included_samples, valid_grammar_features):
     '''
     incorrect and correct are both of class Sentence from urduhack library
     '''
@@ -142,6 +194,8 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                     'correct_feats': correct_feats,
                     'occurence': 1
                 }
+                if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect, correct):
+                    continue
                 
                 if tup_kernel in kernel_sorted_annotations:
                     for t_annot in kernel_sorted_annotations[tup_kernel]:
@@ -174,6 +228,9 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                 'correct_text': correct.text,
                 'alignment': "  ".join([",".join(str(tup_element)) for tup_element in alignment.align_seq])
             }
+            if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect, correct):
+                continue
+
             if tup_kernel in kernel_sorted_annotations:
                 for t_annot in kernel_sorted_annotations[tup_kernel]:
                     if deletion_error_exist(t_annot, type_annotation):
@@ -185,16 +242,11 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
             else:
                 kernel_sorted_annotations[tup_kernel] = [type_annotation.copy()]
 
-            print(f"Deletion: {incorrect.words[i1].text}")
-            print(f"Incorrect text: {incorrect.text}")
-            print(f"Correct text: {correct.text}")
-            print(f"alignment: {alignment.align_seq}")
-
         elif op == INSERTION:
             inserted_word = correct.words[j1].text
             
-            if incorrect_word not in config.word_dict:
-                print(f"[ERROR][{op}] Word not found in the word_dict: {incorrect_word}")
+            if inserted_word not in config.word_dict:
+                print(f"[ERROR][{op}] Word not found in the word_dict: {inserted_word}")
                 continue
 
             try:
@@ -211,6 +263,9 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                 'kernel_feats': kernel_feats,
                 'occurence': 1
             }
+            if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect, correct):
+                continue
+
             if tup_kernel in kernel_sorted_annotations:
                 for t_annot in kernel_sorted_annotations[tup_kernel]:
                     if insertion_error_exist(t_annot, type_annotation):
@@ -220,11 +275,6 @@ def annotate(incorrect, correct, kernel_sorted_annotations):
                     kernel_sorted_annotations[tup_kernel].append(type_annotation.copy())
             else:
                 kernel_sorted_annotations[tup_kernel] = [type_annotation.copy()]
-
-            print(f"Insertion: {correct.words[j1].text}")
-            print(f"Incorrect text: {incorrect.text}")
-            print(f"Correct text: {correct.text}")
-            print(f"alignment: {alignment.align_seq}")
 
 
     return kernel_sorted_annotations
@@ -260,6 +310,7 @@ if __name__ == '__main__':
     nlp = stanza_pipeline.get_pipeline()
 
     config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+    valid_grammar_features = json.load(open('data/valid_grammar_features.json', 'r', encoding='utf-8'))
 
     orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
     cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
@@ -277,8 +328,12 @@ if __name__ == '__main__':
     
     if num_processed_lines == 0:
         annotations = {}
+        excluded_samples = {}
+        included_samples = {}
     else:
-        annotations = json.load(open('data/sample.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        excluded_samples = json.load(open('data/excluded_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        included_samples = json.load(open('data/included_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 
     print(f"Starting from line number: {num_processed_lines}")
     print(f"annotations: {annotations}")
@@ -289,12 +344,16 @@ if __name__ == '__main__':
         for orig, cor in zip(doc1.sentences, doc2.sentences):
             align = Alignment(orig, cor)
             print(align.align_seq)
-            annotate(orig, cor, annotations)
+            annotate(orig, cor, annotations, excluded_samples, included_samples, valid_grammar_features)
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             # write in a json file
-            with open('data/sample.json', 'w', encoding='utf-8') as f:
+            with open('data/annotations.json', 'w', encoding='utf-8') as f:
                 json.dump(annotations, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
+            with open('data/excluded_samples.json', 'w', encoding='utf-8') as f:
+                json.dump(excluded_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
+            with open('data/included_samples.json', 'w', encoding='utf-8') as f:
+                json.dump(included_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
             exit()
