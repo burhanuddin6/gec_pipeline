@@ -297,7 +297,8 @@ class StanzaPipeline:
                 self._pipeline = stanza.Pipeline(
                     lang="ur", 
                     verbose=False, 
-                    processors='tokenize,pos,lemma'
+                    processors='tokenize,pos,lemma',
+                    use_gpu = True
                 )
             print("Stanza pipeline initialized successfully.")
 

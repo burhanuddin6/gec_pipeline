@@ -187,7 +187,60 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
         # For INSERTION and DELETION, return kernel UPOS and features
         return kernel_upos, kernel_feats
 
-def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict):
+def extract_window_features(sentence, i: int) -> list: # list of size Kernel
+    lst = []
+    for k in [i-1, i, i+1]:
+        try:
+            lst.append(UPOSFeats(sentence.words[k].upos, sentence.words[k].feats).to_dict())
+        except IndexError:
+            lst.append({})
+    return lst
+
+def filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, index, incorrect_seq, correct_seq):
+    '''
+    Checks whether the given input sequence (potentially incorrect) has valid grammar features.
+    If the input sequence has valid grammar features, we add that in excluded samples and return True
+    Else we add the input sequence in included samples and return False
+
+    Returns True if the sample should be filtered out
+    '''
+    # check whether the incorrect sequence is not a valid grammatical sequence
+    window_features = str(extract_window_features(incorrect_seq, index))
+    if window_features in valid_grammar_features:
+        if window_features in excluded_samples:
+            excluded_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': index,
+                    'type': op
+                })
+        else:
+            excluded_samples[window_features] = [{
+                'potentially incorrect': incorrect_seq.text,
+                'potentially correct': correct_seq.text,
+                'index': index,
+                'type': op
+            }]
+        # The should be filtered (excluded)
+        return True
+    else: # cannot find this in valid grammar sequences
+        if window_features in included_samples:
+            included_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': index,
+                    'type': op
+                })
+        else:
+            included_samples[window_features] = [{
+                'potentially incorrect': incorrect_seq.text,
+                'potentially correct': correct_seq.text,
+                'index': index,
+                'type': op
+            }]
+        return False
+
+def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict, excluded_samples, included_samples, valid_grammar_features):
     """
     Main annotation function using Stanza for context-aware morphological analysis
     """
@@ -205,14 +258,15 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
     
     # Create simple word objects for alignment (compatibility with existing alignment code)
     class SimpleWord:
-        def __init__(self, text, lemma, upos):
+        def __init__(self, text, lemma, upos, feats):
             self.text = text
             self.lemma = lemma
             self.upos = upos
+            self.feats = feats
     
     class SimpleSentence:
         def __init__(self, words_info):
-            self.words = [SimpleWord(w['text'], w['lemma'], w['upos']) for w in words_info]
+            self.words = [SimpleWord(w['text'], w['lemma'], w['upos'], w['feats']) for w in words_info]
             self.text = ' '.join([w['text'] for w in words_info])
     
     incorrect_sentence = SimpleSentence(incorrect_words)
@@ -254,7 +308,10 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     'correct_text': correct_text,
                     'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
                 }
-                
+
+                if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect_sentence, correct_sentence):
+                    continue
+
                 # Check if this exact substitution pattern exists
                 if kernel_key in kernel_sorted_annotations:
                     found_existing = False
@@ -313,6 +370,9 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
                 }
                 
+                if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect_sentence, correct_sentence):
+                    continue
+
                 # Check if this exact deletion pattern exists
                 if kernel_key in kernel_sorted_annotations:
                     found_existing = False
@@ -370,7 +430,10 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     'correct_text': correct_text,
                     'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
                 }
-                
+
+                if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, incorrect_sentence, correct_sentence):
+                    continue
+
                 # Check if this exact insertion pattern exists
                 if kernel_key in kernel_sorted_annotations:
                     found_existing = False
@@ -416,10 +479,11 @@ def custom_decoder(dct: dict):
 if __name__ == '__main__':
     # Load word dictionary
     config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+    valid_grammar_features = json.load(open('data/valid_grammar_features.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/wikiedits/incorrect2.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/correct2.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
@@ -434,15 +498,19 @@ if __name__ == '__main__':
     
     if num_processed_lines == 0:
         annotations = {}
+        excluded_samples = {}
+        included_samples = {}
     else:
         annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        excluded_samples = json.load(open('data/excluded_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+        included_samples = json.load(open('data/included_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
     
     for sentence1, sentence2 in zip(orig_text, cor_text):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
-            annotations = annotate(sentence1.strip(), sentence2.strip(), annotations)
+            annotations = annotate(sentence1.strip(), sentence2.strip(), annotations, excluded_samples, included_samples, valid_grammar_features)
         
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
@@ -451,6 +519,10 @@ if __name__ == '__main__':
                 json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
+            with open('data/excluded_samples.json', 'w', encoding='utf-8') as f:
+                json.dump(excluded_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
+            with open('data/included_samples.json', 'w', encoding='utf-8') as f:
+                json.dump(included_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)            
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
         
         if num_processed_lines % 100 == 0:

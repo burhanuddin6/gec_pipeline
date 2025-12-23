@@ -9,14 +9,14 @@ def extract_clean_sentence_features(correct, storage):
         storage[str(value)] = value
 
     
-if __name__ == '__main__':
-
+if __name__ == '__main__':    
     # Global pipeline instance
     stanza_pipeline = StanzaPipeline()
     nlp = stanza_pipeline.get_pipeline()
+    print("Pipeline device:", nlp.device)
 
-    clean_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
-    print("clean text: ", clean_text)
+    clean_text = open('data\\cleaned_correct_corpus\\makhzan_sentences.txt', 'r', encoding='utf-8').read()
+    # print("clean text: ", clean_text)
     clean_text = normalize_characters(clean_text)
     
     try:
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         annotations = json.load(open('data/valid_grammar_features.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
 
     print(f"Starting from line number: {num_processed_lines}")
-    print(f"annotations: {annotations}")
+    # print(f"annotations: {annotations}")
     
     for sentence in clean_text:
         doc = nlp(sentence)
@@ -41,6 +41,7 @@ if __name__ == '__main__':
             extract_clean_sentence_features(orig, annotations)
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
+            print(num_processed_lines)
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             # write in a json file
