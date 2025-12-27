@@ -10,8 +10,60 @@ import config
 import contextlib
 import stanza
 import os
+import argparse
 
 NUM_SPELLING_ISSUES = 0
+
+def parse_arguments(
+    default_word_dict,
+    default_valid_grammar,
+    default_incorrect_file,
+    default_correct_file,
+    default_log_lines,
+    default_annotations,
+    default_excluded,
+    default_included,
+    default_error_log
+):
+    parser = argparse.ArgumentParser(description="Annotation script")
+    parser.add_argument('--word_dict', default=default_word_dict, help='Path to word dictionary')
+    parser.add_argument('--valid_grammar', default=default_valid_grammar, help='Path to valid grammar features')
+    parser.add_argument('--incorrect_file', default=default_incorrect_file, help='Path to incorrect samples file')
+    parser.add_argument('--correct_file', default=default_correct_file, help='Path to correct samples file')
+    parser.add_argument('--log_lines', default=default_log_lines, help='Path to log processed lines')
+    parser.add_argument('--annotations', default=default_annotations, help='Path to annotations file')
+    parser.add_argument('--excluded', default=default_excluded, help='Path to excluded samples file')
+    parser.add_argument('--included', default=default_included, help='Path to included samples file')
+    parser.add_argument('--error_log', default=default_error_log, help='Path to error log file')
+    args = vars(parser.parse_args())
+
+    config.word_dict = json.load(open(args['word_dict'], 'r', encoding='utf-8'))
+    valid_grammar_features = json.load(open(args['valid_grammar'], 'r', encoding='utf-8'))
+
+    orig_text = open(args['incorrect_file'], 'r', encoding='utf-8').read()
+    cor_text = open(args['correct_file'], 'r', encoding='utf-8').read()
+
+    orig_text = normalize_characters(orig_text)
+    cor_text = normalize_characters(cor_text)
+    
+    try:
+        num_processed_lines = open(args['log_lines'], 'r').read()
+        num_processed_lines = int(num_processed_lines)
+    except:
+        num_processed_lines = 0
+    orig_text = orig_text.split('\n')[num_processed_lines:]
+    cor_text = cor_text.split('\n')[num_processed_lines:]
+    
+    if num_processed_lines == 0:
+        annotations = {}
+        excluded_samples = {}
+        included_samples = {}
+    else:
+        annotations = json.load(open(args['annotations'], 'r', encoding='utf-8'), object_hook=custom_decoder)
+        excluded_samples = json.load(open(args['excluded'], 'r', encoding='utf-8'), object_hook=custom_decoder)
+        included_samples = json.load(open(args['included'], 'r', encoding='utf-8'), object_hook=custom_decoder)
+
+    return args, valid_grammar_features, orig_text, cor_text, annotations, included_samples, excluded_samples, num_processed_lines
 
 class UPOSFeats:
     def __init__(self, dictionary: dict):
@@ -57,8 +109,8 @@ def custom_decoder(dct: dict):
     return dct
 
 
-def log(error):
-    with open('logs/errors.log', 'a', encoding='utf-8') as f:
+def log(error, log_file='logs/errors.log'):
+    with open(log_file, 'a', encoding='utf-8') as f:
         f.write(f"{error}\n")
 
 def insertion_error_exist(t_annot, type_annotation):
@@ -304,36 +356,19 @@ class StanzaPipeline:
         return self._pipeline
     
 if __name__ == '__main__':
-
     # Global pipeline instance
     stanza_pipeline = StanzaPipeline()
     nlp = stanza_pipeline.get_pipeline()
 
-    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
-    valid_grammar_features = json.load(open('data/valid_grammar_features.json', 'r', encoding='utf-8'))
-
-    orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
-
-    orig_text = normalize_characters(orig_text)
-    cor_text = normalize_characters(cor_text)
-    
-    try:
-        num_processed_lines = open('logs/num_processed_lines.txt', 'r').read()
-        num_processed_lines = int(num_processed_lines)
-    except:
-        num_processed_lines = 0
-    orig_text = orig_text.split('\n')[num_processed_lines:]
-    cor_text = cor_text.split('\n')[num_processed_lines:]
-    
-    if num_processed_lines == 0:
-        annotations = {}
-        excluded_samples = {}
-        included_samples = {}
-    else:
-        annotations = json.load(open('data/annotations.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
-        excluded_samples = json.load(open('data/excluded_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
-        included_samples = json.load(open('data/included_samples.json', 'r', encoding='utf-8'), object_hook=custom_decoder)
+    args, valid_grammar_features, orig_text, cor_text, annotations, included_samples, excluded_samples, num_processed_lines = parse_arguments(default_word_dict='data/urdu_word_dict.json',
+        default_valid_grammar='data/valid_grammar_features.json',
+        default_incorrect_file='data/wikiedits/train_incorrect.txt',
+        default_correct_file='data/wikiedits/train_correct.txt',
+        default_log_lines='logs/num_processed_lines.txt',
+        default_annotations='data/annotations.json',
+        default_excluded='data/excluded_samples.json',
+        default_included='data/included_samples.json',
+        default_error_log='logs/errors.log')
 
     print(f"Starting from line number: {num_processed_lines}")
     print(f"annotations: {annotations}")
@@ -347,13 +382,21 @@ if __name__ == '__main__':
             annotate(orig, cor, annotations, excluded_samples, included_samples, valid_grammar_features)
         num_processed_lines += 1
         if num_processed_lines % 1000 == 0:
-            with open('logs/num_processed_lines.txt', 'w') as f:
+            with open(args['log_lines'], 'w') as f:
                 f.write(str(num_processed_lines))
             # write in a json file
-            with open('data/annotations.json', 'w', encoding='utf-8') as f:
+            with open(args['annotations'], 'w', encoding='utf-8') as f:
                 json.dump(annotations, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
-            with open('data/excluded_samples.json', 'w', encoding='utf-8') as f:
+            with open(args['excluded'], 'w', encoding='utf-8') as f:
                 json.dump(excluded_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
-            with open('data/included_samples.json', 'w', encoding='utf-8') as f:
+            with open(args['included'], 'w', encoding='utf-8') as f:
                 json.dump(included_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
-            exit()
+    with open(args['log_lines'], 'w') as f:
+        f.write(str(num_processed_lines))
+    # write in a json file
+    with open(args['annotations'], 'w', encoding='utf-8') as f:
+        json.dump(annotations, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
+    with open(args['excluded'], 'w', encoding='utf-8') as f:
+        json.dump(excluded_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
+    with open(args['included'], 'w', encoding='utf-8') as f:
+        json.dump(included_samples, f, ensure_ascii=False, indent=4, cls=UPOSFeatsEncoder)
