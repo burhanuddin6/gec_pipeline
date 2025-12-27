@@ -75,7 +75,7 @@ def analyze_sentence_with_stanza(sentence_text: str) -> List[Dict[str, Any]]:
                 'text': word.text,
                 'lemma': word.lemma,
                 'upos': word.upos,
-                'feats': word.feats if word.feats else 'None'
+                'feats': word.feats if word.feats else None
             })
     
     return words_info
@@ -214,11 +214,14 @@ def filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, 
         try:
             if i - 1 >= 0:
                 w = incorrect_seq.words[i-1]
-                incorrect_feats_list.append(UPOSFeats(w.upos, w.feats).to_dict())
+                left_feat = UPOSFeats(w.upos, w.feats).to_dict()
+                incorrect_feats_list.append(left_feat)
             else:
-                incorrect_feats_list.append({})
+                left_feat = {}
+                incorrect_feats_list.append(left_feat)
         except IndexError:
-            incorrect_feats_list.append({})
+            left_feat = {}
+            incorrect_feats_list.append(left_feat)
         
         # Center (The Missing Word - Empty in Incorrect Sentence)
         incorrect_feats_list.append({})
@@ -226,11 +229,71 @@ def filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, 
         # Right Context (i)
         try:
             w = incorrect_seq.words[i]
-            incorrect_feats_list.append(UPOSFeats(w.upos, w.feats).to_dict())
+            right_feat = UPOSFeats(w.upos, w.feats).to_dict()
+            incorrect_feats_list.append(right_feat)
         except IndexError:
-            incorrect_feats_list.append({})
+            right_feat = {}
+            incorrect_feats_list.append(right_feat)
         
         window_features = str(incorrect_feats_list)
+
+        # New logic: check for valid adjacent pairs in valid_grammar_features
+        left_right_valid = False
+        for valid_kernel_str in valid_grammar_features:
+            try:
+                valid_kernel = eval(valid_kernel_str)
+                # valid_kernel is a list of dicts: [left, middle, right]
+                if len(valid_kernel) != 3:
+                    continue
+                # Check left-middle and middle-right pairs
+                if (left_feat and right_feat):
+                    # left_feat == valid_kernel[0] and right_feat == valid_kernel[1]
+                    if left_feat == valid_kernel[0] and right_feat == valid_kernel[1]:
+                        left_right_valid = True
+                        break
+                    # left_feat == valid_kernel[1] and right_feat == valid_kernel[2]
+                    if left_feat == valid_kernel[1] and right_feat == valid_kernel[2]:
+                        left_right_valid = True
+                        break
+            except Exception:
+                continue
+        if left_right_valid:
+            if window_features in excluded_samples:
+                excluded_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': i,
+                    'type': op,
+                    'correct_seq': str(extract_window_features(correct_seq, j))
+                })
+            else:
+                excluded_samples[window_features] = [{
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': i,
+                    'type': op,
+                    'correct_seq': str(extract_window_features(correct_seq, j))
+                }]
+            return True
+        else:
+            if window_features in included_samples:
+                included_samples[window_features].append({
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': i,
+                    'type': op,
+                    'correct_seq': str(extract_window_features(correct_seq, j))
+                })
+            else:
+                included_samples[window_features] = [{
+                    'potentially incorrect': incorrect_seq.text,
+                    'potentially correct': correct_seq.text,
+                    'index': i,
+                    'type': op,
+                    'correct_seq': str(extract_window_features(correct_seq, j))
+                }]
+            return False
+
     else:
         # For SUBSTITUTION and DELETION, extract normally from incorrect sequence
         window_features = str(extract_window_features(incorrect_seq, i))
@@ -278,7 +341,7 @@ def filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, 
         'correct_seq': str(correct_feats_list) # <--- Added the features of the correct variant
     }
 
-    # 4. Filter logic
+    # 4. Filter logic for non-insertion
     if window_features in valid_grammar_features:
         if window_features in excluded_samples:
             excluded_samples[window_features].append(sample_data)
@@ -330,72 +393,72 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
     
     for op, i1, i2, j1, j2 in seq:
         if op == SUBSTITUTION:
-            # try:
-            #     # OOV check for both incorrect and correct words
-            #     incorrect_word = incorrect_words[i1]['text']
-            #     correct_word = correct_words[j1]['text']
+            try:
+                # OOV check for both incorrect and correct words
+                incorrect_word = incorrect_words[i1]['text']
+                correct_word = correct_words[j1]['text']
                 
-            #     if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
-            #         window_features = str(extract_window_features(incorrect_sentence, i1))
-            #         if window_features in excluded_samples:
-            #             excluded_samples[window_features].append({
-            #                     'potentially incorrect': incorrect_sentence.text,
-            #                     'potentially correct': correct_sentence.text,
-            #                     'index': i1,
-            #                     'type': op
-            #                 })
-            #         else:
-            #             excluded_samples[window_features] = [{
-            #                 'potentially incorrect': incorrect_sentence.text,
-            #                 'potentially correct': correct_sentence.text,
-            #                 'index': i1,
-            #                 'type': op
-            #             }]
-            #         log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word}")
-            #         continue
+                if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
+                    window_features = str(extract_window_features(incorrect_sentence, i1))
+                    if window_features in excluded_samples:
+                        excluded_samples[window_features].append({
+                                'potentially incorrect': incorrect_sentence.text,
+                                'potentially correct': correct_sentence.text,
+                                'index': i1,
+                                'type': op
+                            })
+                    else:
+                        excluded_samples[window_features] = [{
+                            'potentially incorrect': incorrect_sentence.text,
+                            'potentially correct': correct_sentence.text,
+                            'index': i1,
+                            'type': op
+                        }]
+                    log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word}")
+                    continue
                 
-            #     # Get context indices
-            #     i_minus_one = i1 - 1 if i1 > 0 else -1
-            #     i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
+                # Get context indices
+                i_minus_one = i1 - 1 if i1 > 0 else -1
+                i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
                 
-            #     # Create kernel with context-aware features
-            #     kernel_upos, incorrect_feats, correct_feats = set_kernel_with_stanza(
-            #         incorrect_words, correct_words, i_minus_one, i1, i_plus_one, SUBSTITUTION
-            #     )
+                # Create kernel with context-aware features
+                kernel_upos, incorrect_feats, correct_feats = set_kernel_with_stanza(
+                    incorrect_words, correct_words, i_minus_one, i1, i_plus_one, SUBSTITUTION
+                )
                 
-            #     kernel_key = str(kernel_upos)
+                kernel_key = str(kernel_upos)
                 
-            #     type_annotation = {
-            #         'type': SUBSTITUTION,
-            #         'kernel_upos': kernel_upos,
-            #         'incorrect_feats': incorrect_feats,
-            #         'correct_feats': correct_feats,
-            #         'occurrence': 1,
-            #         'incorrect_text': incorrect_text,
-            #         'correct_text': correct_text,
-            #         'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
-            #     }
+                type_annotation = {
+                    'type': SUBSTITUTION,
+                    'kernel_upos': kernel_upos,
+                    'incorrect_feats': incorrect_feats,
+                    'correct_feats': correct_feats,
+                    'occurrence': 1,
+                    'incorrect_text': incorrect_text,
+                    'correct_text': correct_text,
+                    'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
+                }
 
-            #     if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, j1, incorrect_sentence, correct_sentence):
-            #         continue
+                if filter_valid_grammatical_sequence(valid_grammar_features, excluded_samples, included_samples, op, i1, j1, incorrect_sentence, correct_sentence):
+                    continue
 
-            #     # Check if this exact substitution pattern exists
-            #     if kernel_key in kernel_sorted_annotations:
-            #         found_existing = False
-            #         for existing_annotation in kernel_sorted_annotations[kernel_key]:
-            #             if substitution_error_exist(existing_annotation, type_annotation):
-            #                 existing_annotation['occurrence'] += 1
-            #                 found_existing = True
-            #                 break
-            #         if not found_existing:
-            #             kernel_sorted_annotations[kernel_key].append(type_annotation)
-            #     else:
-            #         kernel_sorted_annotations[kernel_key] = [type_annotation]
+                # Check if this exact substitution pattern exists
+                if kernel_key in kernel_sorted_annotations:
+                    found_existing = False
+                    for existing_annotation in kernel_sorted_annotations[kernel_key]:
+                        if substitution_error_exist(existing_annotation, type_annotation):
+                            existing_annotation['occurrence'] += 1
+                            found_existing = True
+                            break
+                    if not found_existing:
+                        kernel_sorted_annotations[kernel_key].append(type_annotation)
+                else:
+                    kernel_sorted_annotations[kernel_key] = [type_annotation]
                     
-            # except Exception as e:
-            #     log(f"Error processing substitution: {e}")
-            #     continue
-            continue  # Skipping substitution processing as per current requirements
+            except Exception as e:
+                log(f"Error processing substitution: {e}")
+                continue
+            # continue  # Skipping substitution processing as per current requirements
 
         elif op == DELETION:
             try:
@@ -576,12 +639,12 @@ def custom_decoder(dct: dict):
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
-    valid_grammar_features = json.load(open('valid_grammar_features_makhzan_only.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
+    valid_grammar_features = json.load(open('data/valid_grammar_features.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('incorrect2.txt', 'r', encoding='utf-8').read()
-    cor_text = open('correct2.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/failed_samples_incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/failed_samples_correct.txt', 'r', encoding='utf-8').read()
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
     
