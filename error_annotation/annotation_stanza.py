@@ -232,6 +232,8 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 # OOV check for both incorrect and correct words
                 incorrect_word = incorrect_words[i1]['text']
                 correct_word = correct_words[j1]['text']
+                incorrect_lemma = incorrect_words[i1]['lemma']
+                correct_lemma = correct_words[j1]['lemma']
                 
                 if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
                     log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word} at sentence index {id}")
@@ -256,7 +258,10 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                     'occurrence': 1,
                     'incorrect_text': incorrect_text,
                     'correct_text': correct_text,
-                    'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq])
+                    'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq]),
+                    'lemma_mismatch': incorrect_lemma != correct_lemma,
+                    'incorrect_lemma': incorrect_lemma,
+                    'correct_lemma': correct_lemma
                 }
                 
                 # Check if this exact substitution pattern exists
