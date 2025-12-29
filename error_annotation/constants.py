@@ -4,3 +4,5 @@ KERNEL_CENTER = KERNEL_SIZE // 2
 SUBSTITUTION = 'S'
 DELETION = 'D'
 INSERTION = 'I'
+
+KERNEL_RADIUS = KERNEL_SIZE // 2  # Number of context tokens on each side

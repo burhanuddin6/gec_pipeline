@@ -135,49 +135,65 @@ def deletion_error_exist(t_annot, type_annotation):
 def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict], 
                           i_minus_one: int, i: int, i_plus_one: int, error_type: str):
     """
-    Create kernel with context-aware features from Stanza analysis
+    Create kernel with context-aware features from Stanza analysis.
+    Generalizes to support variable KERNEL_SIZE.
+    
+    Args:
+        incorrect_words: List of word dictionaries from incorrect sentence
+        correct_words: List of word dictionaries from correct sentence
+        i_minus_one: Legacy parameter (kept for backward compatibility, represents i-1)
+        i: Center position index
+        i_plus_one: Legacy parameter (kept for backward compatibility, represents i+1)
+        error_type: One of SUBSTITUTION, INSERTION, or DELETION
     
     Returns:
         For SUBSTITUTION: (kernel_upos, incorrect_feats, correct_feats)
         For INSERTION/DELETION: (kernel_upos, kernel_feats)
     """
-    kernel_upos = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-    kernel_feats = [None, None, None]
+    # Initialize kernel arrays with NONE_LABEL
+    kernel_upos = [NONE_LABEL] * KERNEL_SIZE
+    kernel_feats = [None] * KERNEL_SIZE
     
-    # Set left context
-    if i_minus_one >= 0:
-        if error_type == DELETION:
-            kernel_upos[0] = incorrect_words[i_minus_one]['upos']
-            kernel_feats[0] = UPOSFeats(incorrect_words[i_minus_one]['upos'], 
-                                       incorrect_words[i_minus_one]['feats'])
-        else:  # SUBSTITUTION or INSERTION
-            kernel_upos[0] = incorrect_words[i_minus_one]['upos']
-            kernel_feats[0] = UPOSFeats(incorrect_words[i_minus_one]['upos'], 
-                                       incorrect_words[i_minus_one]['feats'])
+    # Build context window around position i
+    for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+        kernel_idx = offset + KERNEL_RADIUS  # Map offset to kernel array index [0, KERNEL_SIZE-1]
+        context_pos = i + offset
+        
+        # Handle center position specially based on error type
+        if offset == 0:  # Center position
+            if error_type == SUBSTITUTION:
+                # For substitution, center stores the incorrect word's UPOS
+                kernel_upos[kernel_idx] = incorrect_words[i]['upos']
+                # Separate incorrect and correct features will be returned at the end
+            elif error_type == INSERTION:
+                # For insertion, center is the inserted word from correct sentence
+                if i < len(correct_words):
+                    kernel_upos[kernel_idx] = correct_words[i]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(correct_words[i]['upos'], 
+                                                         correct_words[i]['feats'])
+            # For DELETION, center remains NONE_LABEL
+            
+        else:  # Context positions (not center)
+            if error_type == DELETION:
+                # For DELETION, use incorrect_words for all context
+                if 0 <= context_pos < len(incorrect_words):
+                    kernel_upos[kernel_idx] = incorrect_words[context_pos]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(incorrect_words[context_pos]['upos'],
+                                                         incorrect_words[context_pos]['feats'])
+            elif error_type == INSERTION:
+                # For INSERTION, use correct_words for context (grammatically correct context)
+                if 0 <= context_pos < len(correct_words):
+                    kernel_upos[kernel_idx] = correct_words[context_pos]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(correct_words[context_pos]['upos'],
+                                                         correct_words[context_pos]['feats'])
+            else:  # SUBSTITUTION
+                # For SUBSTITUTION, use incorrect_words for context (indices align since same length)
+                if 0 <= context_pos < len(incorrect_words):
+                    kernel_upos[kernel_idx] = incorrect_words[context_pos]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(incorrect_words[context_pos]['upos'],
+                                                         incorrect_words[context_pos]['feats'])
     
-    # Set middle position
-    if error_type == SUBSTITUTION:
-        # For substitution, we store both incorrect and correct word features
-        kernel_upos[1] = incorrect_words[i]['upos']
-        # We'll return separate incorrect and correct features
-    elif error_type == INSERTION:
-        # For insertion, the middle word is from the correct sentence (inserted word)
-        kernel_upos[1] = correct_words[i]['upos']
-        kernel_feats[1] = UPOSFeats(correct_words[i]['upos'], correct_words[i]['feats'])
-    # For DELETION, middle remains NONE_LABEL
-    
-    # Set right context
-    if error_type == DELETION:
-        if i_plus_one < len(incorrect_words):
-            kernel_upos[2] = incorrect_words[i_plus_one]['upos']
-            kernel_feats[2] = UPOSFeats(incorrect_words[i_plus_one]['upos'], 
-                                       incorrect_words[i_plus_one]['feats'])
-    else:  # SUBSTITUTION or INSERTION
-        if i_plus_one < len(incorrect_words):
-            kernel_upos[2] = incorrect_words[i_plus_one]['upos']
-            kernel_feats[2] = UPOSFeats(incorrect_words[i_plus_one]['upos'], 
-                                       incorrect_words[i_plus_one]['feats'])
-    
+    # Return based on error type
     if error_type == SUBSTITUTION:
         # Return kernel UPOS and separate features for incorrect and correct words
         incorrect_feats = UPOSFeats(incorrect_words[i]['upos'], incorrect_words[i]['feats'])

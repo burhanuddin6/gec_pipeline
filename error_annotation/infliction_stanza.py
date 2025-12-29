@@ -27,7 +27,8 @@ def is_word_in_dict(word: str) -> bool:
 def fits_kernel(sentence_words: List[Dict], word_ind: int, kernel_upos: List[str], 
                 kernel_feats: List[UPOSFeats], for_type: str = SUBSTITUTION) -> bool:
     """
-    Check if the kernel matches the context at word_ind in the sentence
+    Check if the kernel matches the context at word_ind in the sentence.
+    Supports variable KERNEL_SIZE.
     
     Args:
         sentence_words: List of word dictionaries from Stanza analysis
@@ -39,51 +40,32 @@ def fits_kernel(sentence_words: List[Dict], word_ind: int, kernel_upos: List[str
     Returns:
         True if the kernel matches, False otherwise
     """
-    if for_type == DELETION:
-        # For deletion, check if we can fit the kernel around the deletion point
-        left_ind = word_ind - 1
-        right_ind = word_ind + 1
+    # Check each position in the kernel
+    for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+        kernel_idx = offset + KERNEL_RADIUS  # Map offset to kernel array index
+        context_pos = word_ind + offset
         
-        # Check left context
-        if left_ind >= 0:
-            if (sentence_words[left_ind]['upos'] != kernel_upos[0] or 
-                sentence_words[left_ind]['feats'] != kernel_feats[0].feats):
-                return False
-        elif kernel_upos[0] != NONE_LABEL:
-            return False
-            
-        # Check right context
-        if right_ind < len(sentence_words):
-            if (sentence_words[right_ind]['upos'] != kernel_upos[2] or 
-                sentence_words[right_ind]['feats'] != kernel_feats[2].feats):
-                return False
-        elif kernel_upos[2] != NONE_LABEL:
-            return False
-            
-    else:  # SUBSTITUTION or INSERTION
-        left_ind = word_ind - 1
-        right_ind = word_ind + 1
-        
-        # Check left context
-        if left_ind >= 0:
-            if (sentence_words[left_ind]['upos'] != kernel_upos[0] or 
-                sentence_words[left_ind]['feats'] != kernel_feats[0].feats):
-                return False
-        elif kernel_upos[0] != NONE_LABEL:
-            return False
-            
-        # Check middle word
-        if (sentence_words[word_ind]['upos'] != kernel_upos[1] or 
-            sentence_words[word_ind]['feats'] != kernel_feats[1].feats):
-            return False
-            
-        # Check right context
-        if right_ind < len(sentence_words):
-            if (sentence_words[right_ind]['upos'] != kernel_upos[2] or 
-                sentence_words[right_ind]['feats'] != kernel_feats[2].feats):
-                return False
-        elif kernel_upos[2] != NONE_LABEL:
-            return False
+        # Handle center position
+        if offset == 0:
+            if for_type == DELETION:
+                # For deletion, center should remain NONE_LABEL (skip check)
+                continue
+            else:
+                # For SUBSTITUTION or INSERTION, check middle word
+                if (sentence_words[word_ind]['upos'] != kernel_upos[kernel_idx] or 
+                    sentence_words[word_ind]['feats'] != kernel_feats[kernel_idx].feats):
+                    return False
+        else:
+            # Context positions
+            if 0 <= context_pos < len(sentence_words):
+                # If within bounds, check UPOS and features
+                if (sentence_words[context_pos]['upos'] != kernel_upos[kernel_idx] or 
+                    sentence_words[context_pos]['feats'] != kernel_feats[kernel_idx].feats):
+                    return False
+            else:
+                # If out of bounds, kernel should have NONE_LABEL
+                if kernel_upos[kernel_idx] != NONE_LABEL:
+                    return False
     
     return True
 
@@ -251,26 +233,19 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
             continue
         
         # Create kernel for current position
-        left_ind = word_ind - 1 if word_ind > 0 else -1
-        right_ind = word_ind + 1 if word_ind + 1 < len(sentence_words) else len(sentence_words)
+        # Create kernel UPOS dynamically based on KERNEL_SIZE
+        kernel_upos = [NONE_LABEL] * KERNEL_SIZE
+        kernel_feats = [None] * KERNEL_SIZE
         
-        # Create kernel UPOS
-        kernel_upos = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-        kernel_feats = [None, None, None]
-        
-        if left_ind >= 0:
-            kernel_upos[0] = sentence_words[left_ind]['upos']
-            kernel_feats[0] = UPOSFeats(sentence_words[left_ind]['upos'], 
-                                       sentence_words[left_ind]['feats'])
-        
-        kernel_upos[1] = sentence_words[word_ind]['upos']
-        kernel_feats[1] = UPOSFeats(sentence_words[word_ind]['upos'], 
-                                   sentence_words[word_ind]['feats'])
-        
-        if right_ind < len(sentence_words):
-            kernel_upos[2] = sentence_words[right_ind]['upos']
-            kernel_feats[2] = UPOSFeats(sentence_words[right_ind]['upos'], 
-                                       sentence_words[right_ind]['feats'])
+        # Build kernel using KERNEL_RADIUS
+        for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+            kernel_idx = offset + KERNEL_RADIUS
+            context_pos = word_ind + offset
+            
+            if 0 <= context_pos < len(sentence_words):
+                kernel_upos[kernel_idx] = sentence_words[context_pos]['upos']
+                kernel_feats[kernel_idx] = UPOSFeats(sentence_words[context_pos]['upos'], 
+                                                    sentence_words[context_pos]['feats'])
         
         kernel_key = str(kernel_upos)
         
@@ -313,16 +288,30 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
         # Check for deletion infliction (insert between words)
         if word_ind < len(sentence_words) - 1:  # Not the last word
             # Create kernel for deletion (gap between current and next word)
-            del_kernel_upos = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-            del_kernel_feats = [None, None, None]
+            # For deletion, center is NONE_LABEL, left and right are adjacent words
+            del_kernel_upos = [NONE_LABEL] * KERNEL_SIZE
+            del_kernel_feats = [None] * KERNEL_SIZE
             
-            del_kernel_upos[0] = sentence_words[word_ind]['upos']
-            del_kernel_feats[0] = UPOSFeats(sentence_words[word_ind]['upos'], 
-                                           sentence_words[word_ind]['feats'])
+            # Build deletion kernel: context around deletion point
+            # Left context: words before word_ind
+            for offset in range(-KERNEL_RADIUS, 0):
+                kernel_idx = offset + KERNEL_RADIUS
+                context_pos = word_ind + offset
+                if 0 <= context_pos < len(sentence_words):
+                    del_kernel_upos[kernel_idx] = sentence_words[context_pos]['upos']
+                    del_kernel_feats[kernel_idx] = UPOSFeats(sentence_words[context_pos]['upos'], 
+                                                            sentence_words[context_pos]['feats'])
             
-            del_kernel_upos[2] = sentence_words[word_ind + 1]['upos']
-            del_kernel_feats[2] = UPOSFeats(sentence_words[word_ind + 1]['upos'], 
-                                           sentence_words[word_ind + 1]['feats'])
+            # Center remains NONE_LABEL for deletion
+            
+            # Right context: words after word_ind
+            for offset in range(1, KERNEL_RADIUS + 1):
+                kernel_idx = offset + KERNEL_RADIUS
+                context_pos = word_ind + offset
+                if 0 <= context_pos < len(sentence_words):
+                    del_kernel_upos[kernel_idx] = sentence_words[context_pos]['upos']
+                    del_kernel_feats[kernel_idx] = UPOSFeats(sentence_words[context_pos]['upos'], 
+                                                            sentence_words[context_pos]['feats'])
             
             del_kernel_key = str(del_kernel_upos)
             
