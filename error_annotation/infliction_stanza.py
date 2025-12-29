@@ -344,7 +344,7 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('makhzan_wordFrequency_normalized', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
 
     # Open output files
     corr_out_file = open('data/out/correct.txt', 'a', encoding='utf-8')
@@ -357,7 +357,7 @@ if __name__ == '__main__':
     lines = correct_text.split('\n')
 
     # Iterate through each line and inflict errors
-    for i in tqdm.tqdm(range(0, len(lines))):
+    for i in tqdm.tqdm(range(0, 100)):
         inflicted_results = inflict(lines[i])
         if inflicted_results:
             for incorrect_sent, error_id in inflicted_results:
