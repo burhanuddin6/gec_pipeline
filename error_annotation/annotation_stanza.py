@@ -10,6 +10,8 @@ from .constants import *
 from misc.urduhack_normalization import normalize_characters
 from . import config
 
+import tqdm
+
 NUM_SPELLING_ISSUES = 0
 
 class UPOSFeats:
@@ -431,11 +433,14 @@ def custom_decoder(dct: dict):
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
 
     # Load input texts
     orig_text = open('data/wikiedits/incorrect2.txt', 'r', encoding='utf-8').read()
     cor_text = open('data/wikiedits/correct2.txt', 'r', encoding='utf-8').read()
+
+    if len(orig_text.split('\n')) != len(cor_text.split('\n')):
+        raise ValueError("Original and Correct files have different number of lines.")
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
@@ -456,7 +461,8 @@ if __name__ == '__main__':
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
     
-    for sentence1, sentence2 in zip(orig_text, cor_text):
+    # for sentence1, sentence2 in zip(orig_text, cor_text):
+    for sentence1, sentence2 in tqdm.tqdm(zip(orig_text, cor_text), total=min(len(orig_text), len(cor_text))):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
             annotations = annotate(sentence1.strip(), sentence2.strip(), annotations)
         
@@ -468,6 +474,3 @@ if __name__ == '__main__':
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
-        
-        if num_processed_lines % 100 == 0:
-            print(f"Total lines processed: {num_processed_lines}")
