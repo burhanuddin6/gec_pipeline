@@ -5,10 +5,10 @@ import stanza
 from functools import lru_cache
 from typing import Dict, List, Any, Optional, Tuple
 
-from .constants import *
+from error_annotation.constants import *
 from misc.urduhack_normalization import normalize_characters
-from .annotation_stanza import UPOSFeats, StanzaPipeline, analyze_sentence_with_stanza, custom_decoder
-from . import config
+from error_annotation.annotation_stanza import UPOSFeats, StanzaPipeline, analyze_sentence_with_stanza, custom_decoder
+from error_annotation import config
 
 import tqdm
 

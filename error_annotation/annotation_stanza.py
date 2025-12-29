@@ -5,10 +5,10 @@ import stanza
 from functools import lru_cache
 from typing import Dict, List, Any, Optional
 
-from .alignment import Alignment
-from .constants import *
+from error_annotation.alignment import Alignment
+from error_annotation.constants import *
 from misc.urduhack_normalization import normalize_characters
-from . import config
+from error_annotation import config
 
 import tqdm
 
