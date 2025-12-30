@@ -6,3 +6,5 @@ DELETION = 'D'
 INSERTION = 'I'
 
 KERNEL_RADIUS = KERNEL_SIZE // 2  # Number of context tokens on each side
+
+STEP_COUNT = 1000

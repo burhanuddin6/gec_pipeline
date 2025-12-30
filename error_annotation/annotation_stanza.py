@@ -467,7 +467,7 @@ if __name__ == '__main__':
             annotations = annotate(sentence1.strip(), sentence2.strip(), annotations)
         
         num_processed_lines += 1
-        if num_processed_lines % 1000 == 0:
+        if num_processed_lines % STEP_COUNT == 0:
             # Save progress
             with open('data/annotations.json', 'w', encoding='utf-8') as f:
                 json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
