@@ -436,8 +436,8 @@ if __name__ == '__main__':
     config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/wikiedits/incorrect2.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/correct2.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
 
     if len(orig_text.split('\n')) != len(cor_text.split('\n')):
         raise ValueError("Original and Correct files have different number of lines.")
