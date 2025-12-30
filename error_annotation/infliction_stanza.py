@@ -356,14 +356,18 @@ if __name__ == '__main__':
     correct_text = normalize_characters(correct_text)
     lines = correct_text.split('\n')
 
+    rate = 0
     # Iterate through each line and inflict errors
-    for i in tqdm.tqdm(range(0, 100)):
+    for i in tqdm.tqdm(range(0, len(lines))):
         inflicted_results = inflict(lines[i])
         if inflicted_results:
+            rate += 1
             for incorrect_sent, error_id in inflicted_results:
                 corr_out_file.write(lines[i] + '\n')
                 incorr_out_file.write(incorrect_sent + '\n')
                 error_id_file.write(error_id + '\n')
-
-        else:
-            print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")
+        if i % 10000 == 0:
+            print(f"Processed {i} sentences, Infliction rate so far: {rate / (i + 1):.4f}")
+        # else:
+        #     # print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")
+        #     print(f"No errors could be inflicted on sentence {i}")
