@@ -112,6 +112,11 @@ def substitution_error_exist(t_annot, type_annotation):
         type_annotation['correct_feats'].upos != t_annot['correct_feats'].upos or
         type_annotation['correct_feats'].feats != t_annot['correct_feats'].feats):
         return False
+    # Check if the full kernel features match (for all positions)
+    if not all([(type_annotation['kernel_feats'][i].upos == t_annot['kernel_feats'][i].upos and 
+                type_annotation['kernel_feats'][i].feats == t_annot['kernel_feats'][i].feats) 
+                for i in range(KERNEL_SIZE)]):
+        return False
     return True
 
 def deletion_error_exist(t_annot, type_annotation):
@@ -135,7 +140,7 @@ def deletion_error_exist(t_annot, type_annotation):
     return True
 
 def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict], 
-                          i_minus_one: int, i: int, i_plus_one: int, error_type: str):
+                          i_minus_one: int, i: int, i_plus_one: int, error_type: str, j: int = None):
     """
     Create kernel with context-aware features from Stanza analysis.
     Generalizes to support variable KERNEL_SIZE.
@@ -144,29 +149,47 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
         incorrect_words: List of word dictionaries from incorrect sentence
         correct_words: List of word dictionaries from correct sentence
         i_minus_one: Legacy parameter (kept for backward compatibility, represents i-1)
-        i: Center position index
+        i: Center position index in incorrect sentence
         i_plus_one: Legacy parameter (kept for backward compatibility, represents i+1)
         error_type: One of SUBSTITUTION, INSERTION, or DELETION
+        j: Center position index in correct sentence (required for SUBSTITUTION, optional for others)
     
     Returns:
-        For SUBSTITUTION: (kernel_upos, incorrect_feats, correct_feats)
+        For SUBSTITUTION: (kernel_upos, incorrect_feats, correct_feats, kernel_feats)
         For INSERTION/DELETION: (kernel_upos, kernel_feats)
     """
+    # For SUBSTITUTION, j must be provided to handle misaligned indices
+    if error_type == SUBSTITUTION and j is None:
+        raise ValueError("For SUBSTITUTION, correct sentence index 'j' must be provided")
+    
+    # Use j for correct sentence access in SUBSTITUTION, otherwise use i
+    correct_center_idx = j if error_type == SUBSTITUTION else i
     # Initialize kernel arrays with NONE_LABEL
     kernel_upos = [NONE_LABEL] * KERNEL_SIZE
     kernel_feats = [None] * KERNEL_SIZE
     
-    # Build context window around position i
+    # Build context window around position i (or j for SUBSTITUTION correct sentence)
     for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
         kernel_idx = offset + KERNEL_RADIUS  # Map offset to kernel array index [0, KERNEL_SIZE-1]
-        context_pos = i + offset
+        # For SUBSTITUTION, use correct_center_idx (j) to calculate context positions in correct sentence
+        if error_type == SUBSTITUTION:
+            context_pos = correct_center_idx + offset
+        elif error_type == DELETION:
+            # For DELETION, gap is at position i, so right neighbors need offset - 1
+            context_pos = i + offset - 1 if offset > 0 else i + offset
+        else:
+            context_pos = i + offset
         
         # Handle center position specially based on error type
         if offset == 0:  # Center position
             if error_type == SUBSTITUTION:
-                # For substitution, center stores the incorrect word's UPOS
-                kernel_upos[kernel_idx] = incorrect_words[i]['upos']
-                # Separate incorrect and correct features will be returned at the end
+                # For substitution, store the CORRECT word's UPOS at center
+                # (During infliction, we match against correct sentences to find where to substitute)
+                # Use correct_center_idx (j) to handle index misalignment
+                kernel_upos[kernel_idx] = correct_words[correct_center_idx]['upos']
+                # Store the CORRECT word's features at center for kernel matching during infliction
+                kernel_feats[kernel_idx] = UPOSFeats(correct_words[correct_center_idx]['upos'], 
+                                                     correct_words[correct_center_idx]['feats'])
             elif error_type == INSERTION:
                 # For insertion, center is the inserted word from correct sentence
                 if i < len(correct_words):
@@ -177,11 +200,12 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
             
         else:  # Context positions (not center)
             if error_type == DELETION:
-                # For DELETION, use incorrect_words for all context
-                if 0 <= context_pos < len(incorrect_words):
-                    kernel_upos[kernel_idx] = incorrect_words[context_pos]['upos']
-                    kernel_feats[kernel_idx] = UPOSFeats(incorrect_words[context_pos]['upos'],
-                                                         incorrect_words[context_pos]['feats'])
+                # For DELETION, use correct_words for all context
+                # (During infliction, we match against correct sentences to find where to insert)
+                if 0 <= context_pos < len(correct_words):
+                    kernel_upos[kernel_idx] = correct_words[context_pos]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(correct_words[context_pos]['upos'],
+                                                         correct_words[context_pos]['feats'])
             elif error_type == INSERTION:
                 # For INSERTION, use correct_words for context (grammatically correct context)
                 if 0 <= context_pos < len(correct_words):
@@ -189,18 +213,20 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
                     kernel_feats[kernel_idx] = UPOSFeats(correct_words[context_pos]['upos'],
                                                          correct_words[context_pos]['feats'])
             else:  # SUBSTITUTION
-                # For SUBSTITUTION, use incorrect_words for context (indices align since same length)
-                if 0 <= context_pos < len(incorrect_words):
-                    kernel_upos[kernel_idx] = incorrect_words[context_pos]['upos']
-                    kernel_feats[kernel_idx] = UPOSFeats(incorrect_words[context_pos]['upos'],
-                                                         incorrect_words[context_pos]['feats'])
+                # For SUBSTITUTION, use correct_words for context
+                # (During infliction, we match against correct sentences to find where to substitute)
+                if 0 <= context_pos < len(correct_words):
+                    kernel_upos[kernel_idx] = correct_words[context_pos]['upos']
+                    kernel_feats[kernel_idx] = UPOSFeats(correct_words[context_pos]['upos'],
+                                                         correct_words[context_pos]['feats'])
     
     # Return based on error type
     if error_type == SUBSTITUTION:
-        # Return kernel UPOS and separate features for incorrect and correct words
+        # Return kernel UPOS, separate features for incorrect and correct words, AND full kernel_feats
+        # Use correct_center_idx (j) for correct sentence to handle index misalignment
         incorrect_feats = UPOSFeats(incorrect_words[i]['upos'], incorrect_words[i]['feats'])
-        correct_feats = UPOSFeats(correct_words[i]['upos'], correct_words[i]['feats'])
-        return kernel_upos, incorrect_feats, correct_feats
+        correct_feats = UPOSFeats(correct_words[correct_center_idx]['upos'], correct_words[correct_center_idx]['feats'])
+        return kernel_upos, incorrect_feats, correct_feats, kernel_feats
     else:
         # For INSERTION and DELETION, return kernel UPOS and features
         return kernel_upos, kernel_feats
@@ -256,8 +282,9 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
                 
                 # Create kernel with context-aware features
-                kernel_upos, incorrect_feats, correct_feats = set_kernel_with_stanza(
-                    incorrect_words, correct_words, i_minus_one, i1, i_plus_one, SUBSTITUTION
+                # Pass j1 to handle index misalignment between incorrect and correct sentences
+                kernel_upos, incorrect_feats, correct_feats, kernel_feats = set_kernel_with_stanza(
+                    incorrect_words, correct_words, i_minus_one, i1, i_plus_one, SUBSTITUTION, j=j1
                 )
                 
                 kernel_key = str(kernel_upos)
@@ -265,6 +292,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 type_annotation = {
                     'type': SUBSTITUTION,
                     'kernel_upos': kernel_upos,
+                    'kernel_feats': kernel_feats,
                     'incorrect_feats': incorrect_feats,
                     'correct_feats': correct_feats,
                     'occurrence': 1,
@@ -299,23 +327,25 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     log(f"OOV check failed for deleted word: {deleted_word}")
                     continue
                 
-                # OOV check for context words
-                i_minus_one = i1 - 1 if i1 > 0 else -1
-                i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
+                # OOV check for context words in CORRECT sentence
+                # (since during infliction we match against correct sentences)
+                j_minus_one = j1 - 1 if j1 > 0 else -1
+                j_plus_one = j1 + 1 if j1 + 1 < len(correct_words) else len(correct_words)
                 
                 context_words_valid = True
-                if i_minus_one >= 0 and not is_word_in_dict(incorrect_words[i_minus_one]['text']):
+                if j_minus_one >= 0 and not is_word_in_dict(correct_words[j_minus_one]['text']):
                     context_words_valid = False
-                if i_plus_one < len(incorrect_words) and not is_word_in_dict(incorrect_words[i_plus_one]['text']):
+                if j_plus_one < len(correct_words) and not is_word_in_dict(correct_words[j_plus_one]['text']):
                     context_words_valid = False
                 
                 if not context_words_valid:
                     log(f"OOV check failed for deletion context around: {deleted_word}")
                     continue
                 
-                # Create kernel for deletion (middle position is NONE)
+                # Create kernel for deletion from CORRECT sentence perspective
+                # (middle position is NONE - representing where to insert)
                 kernel_upos, kernel_feats = set_kernel_with_stanza(
-                    incorrect_words, correct_words, i_minus_one, i1, i_plus_one, DELETION
+                    incorrect_words, correct_words, j_minus_one, j1, j_plus_one, DELETION
                 )
                 
                 kernel_key = str(kernel_upos)
@@ -433,11 +463,11 @@ def custom_decoder(dct: dict):
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/wikiedits/train_incorrect.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/wikiedits/train_correct.txt', 'r', encoding='utf-8').read()
+    orig_text = open('only_included_incorrect_with_oov.txt', 'r', encoding='utf-8').read()
+    cor_text = open('only_included_correct_with_oov.txt', 'r', encoding='utf-8').read()
 
     if len(orig_text.split('\n')) != len(cor_text.split('\n')):
         raise ValueError("Original and Correct files have different number of lines.")
@@ -474,3 +504,9 @@ if __name__ == '__main__':
             with open('logs/num_processed_lines.txt', 'w') as f:
                 f.write(str(num_processed_lines))
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
+    # Final save
+    with open('data/annotations.json', 'w', encoding='utf-8') as f:
+        json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
+    with open('logs/num_processed_lines.txt', 'w') as f:
+        f.write(str(num_processed_lines))
+    print(f"Processing complete. Total lines processed: {num_processed_lines}")

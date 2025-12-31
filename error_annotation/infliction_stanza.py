@@ -29,11 +29,13 @@ def is_word_in_dict(word: str) -> bool:
 def fits_kernel(sentence_words: List[Dict], word_ind: int, kernel_upos: List[str], 
                 kernel_feats: List[UPOSFeats], for_type: str = SUBSTITUTION) -> bool:
     """
-    Check if the kernel matches the context at word_ind in the sentence
+    Check if the kernel matches the context at word_ind in the sentence.
+    Supports variable KERNEL_SIZE by using KERNEL_RADIUS and dynamic indexing.
     
     Args:
         sentence_words: List of word dictionaries from Stanza analysis
-        word_ind: Index of the word in the sentence
+        word_ind: Index of the word in the sentence (for SUBSTITUTION/INSERTION), 
+                 or gap position (for DELETION)
         kernel_upos: UPOS tags of the kernel
         kernel_feats: Feature objects of the kernel
         for_type: Type of error (SUBSTITUTION, INSERTION, DELETION)
@@ -41,51 +43,42 @@ def fits_kernel(sentence_words: List[Dict], word_ind: int, kernel_upos: List[str
     Returns:
         True if the kernel matches, False otherwise
     """
-    if for_type == DELETION:
-        # For deletion, check if we can fit the kernel around the deletion point
-        left_ind = word_ind - 1
-        right_ind = word_ind + 1
+    # Iterate through all kernel positions
+    for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+        kernel_idx = offset + KERNEL_RADIUS  # Map offset to kernel array index [0, KERNEL_SIZE-1]
         
-        # Check left context
-        if left_ind >= 0:
-            if (sentence_words[left_ind]['upos'] != kernel_upos[0] or 
-                sentence_words[left_ind]['feats'] != kernel_feats[0].feats):
-                return False
-        elif kernel_upos[0] != NONE_LABEL:
-            return False
-            
-        # Check right context
-        if right_ind < len(sentence_words):
-            if (sentence_words[right_ind]['upos'] != kernel_upos[2] or 
-                sentence_words[right_ind]['feats'] != kernel_feats[2].feats):
-                return False
-        elif kernel_upos[2] != NONE_LABEL:
-            return False
-            
-    else:  # SUBSTITUTION or INSERTION
-        left_ind = word_ind - 1
-        right_ind = word_ind + 1
+        if for_type == DELETION:
+            # For DELETION, word_ind is the gap position (center of kernel)
+            # Right neighbors need offset - 1 since gap doesn't occupy a position
+            context_pos = word_ind + offset - 1 if offset > 0 else word_ind + offset
+        else:
+            # For SUBSTITUTION/INSERTION, word_ind is the word position
+            context_pos = word_ind + offset
         
-        # Check left context
-        if left_ind >= 0:
-            if (sentence_words[left_ind]['upos'] != kernel_upos[0] or 
-                sentence_words[left_ind]['feats'] != kernel_feats[0].feats):
-                return False
-        elif kernel_upos[0] != NONE_LABEL:
-            return False
-            
-        # Check middle word
-        if (sentence_words[word_ind]['upos'] != kernel_upos[1] or 
-            sentence_words[word_ind]['feats'] != kernel_feats[1].feats):
-            return False
-            
-        # Check right context
-        if right_ind < len(sentence_words):
-            if (sentence_words[right_ind]['upos'] != kernel_upos[2] or 
-                sentence_words[right_ind]['feats'] != kernel_feats[2].feats):
-                return False
-        elif kernel_upos[2] != NONE_LABEL:
-            return False
+        # Handle center position specially based on error type
+        if offset == 0:  # Center position
+            if for_type == DELETION:
+                # For deletion, center should be NONE_LABEL (no word exists at deletion point)
+                if kernel_upos[kernel_idx] != NONE_LABEL:
+                    return False
+            else:  # SUBSTITUTION or INSERTION
+                # Check middle word exists and matches
+                if context_pos >= len(sentence_words) or context_pos < 0:
+                    return False
+                if (sentence_words[context_pos]['upos'] != kernel_upos[kernel_idx] or 
+                    sentence_words[context_pos]['feats'] != kernel_feats[kernel_idx].feats):
+                    return False
+        else:  # Context positions (not center)
+            # Check if position is within sentence bounds
+            if 0 <= context_pos < len(sentence_words):
+                # Position exists in sentence - check if it matches kernel
+                if (sentence_words[context_pos]['upos'] != kernel_upos[kernel_idx] or 
+                    sentence_words[context_pos]['feats'] != kernel_feats[kernel_idx].feats):
+                    return False
+            else:
+                # Position doesn't exist in sentence - kernel at this position must be NONE_LABEL
+                if kernel_upos[kernel_idx] != NONE_LABEL:
+                    return False
     
     return True
 
@@ -122,6 +115,14 @@ def substitution_infliction(sentence_words: List[Dict], word_ind: int,
     # For each substitution annotation
     for sub_err_annotation in sub_err_annotations:
         try:
+            # First, check if the full kernel context matches
+            # This ensures we're in the right grammatical context
+            if not fits_kernel(sentence_words, word_ind, 
+                              sub_err_annotation['kernel_upos'], 
+                              sub_err_annotation['kernel_feats'], 
+                              SUBSTITUTION):
+                continue
+            
             # Check if the current word's features match the "correct" features in the annotation
             current_word_feats = UPOSFeats(sentence_words[word_ind]['upos'], 
                                           sentence_words[word_ind]['feats'])
@@ -184,14 +185,14 @@ def insertion_infliction(sentence_words: List[Dict], word_ind: int,
     
     return list(set(deletions))
 
-def deletion_infliction(sentence_words: List[Dict], word_ind: int, 
+def deletion_infliction(sentence_words: List[Dict], gap_position: int, 
                        del_err_annotations: List[Dict]) -> List[Tuple[str, str]]:
     """
     Perform deletion infliction (actually insertion into correct sentence)
     
     Args:
         sentence_words: List of word dictionaries from Stanza analysis
-        word_ind: Index where to insert the word
+        gap_position: Position where the gap is (where to insert the word)
         del_err_annotations: List of deletion error annotations
     
     Returns:
@@ -202,8 +203,8 @@ def deletion_infliction(sentence_words: List[Dict], word_ind: int,
     try:
         # Check if the current context matches any deletion annotation
         for del_err_annotation in del_err_annotations:
-            # Check if kernel fits (for deletion, we check the gap between words)
-            if fits_kernel(sentence_words, word_ind, 
+            # Check if kernel fits (for deletion, gap_position is the center of the kernel)
+            if fits_kernel(sentence_words, gap_position, 
                           del_err_annotation['kernel_upos'], 
                           del_err_annotation['kernel_feats'], 
                           DELETION):
@@ -252,27 +253,20 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
         if not is_word_in_dict(current_word):
             continue
         
-        # Create kernel for current position
-        left_ind = word_ind - 1 if word_ind > 0 else -1
-        right_ind = word_ind + 1 if word_ind + 1 < len(sentence_words) else len(sentence_words)
+        # Create kernel for current position using KERNEL_SIZE
+        kernel_upos = [NONE_LABEL] * KERNEL_SIZE
+        kernel_feats = [None] * KERNEL_SIZE
         
-        # Create kernel UPOS
-        kernel_upos = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-        kernel_feats = [None, None, None]
-        
-        if left_ind >= 0:
-            kernel_upos[0] = sentence_words[left_ind]['upos']
-            kernel_feats[0] = UPOSFeats(sentence_words[left_ind]['upos'], 
-                                       sentence_words[left_ind]['feats'])
-        
-        kernel_upos[1] = sentence_words[word_ind]['upos']
-        kernel_feats[1] = UPOSFeats(sentence_words[word_ind]['upos'], 
-                                   sentence_words[word_ind]['feats'])
-        
-        if right_ind < len(sentence_words):
-            kernel_upos[2] = sentence_words[right_ind]['upos']
-            kernel_feats[2] = UPOSFeats(sentence_words[right_ind]['upos'], 
-                                       sentence_words[right_ind]['feats'])
+        # Build kernel around current word position
+        for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+            kernel_idx = offset + KERNEL_RADIUS  # Map offset to kernel array index [0, KERNEL_SIZE-1]
+            context_pos = word_ind + offset
+            
+            # Check if position is within sentence bounds
+            if 0 <= context_pos < len(sentence_words):
+                kernel_upos[kernel_idx] = sentence_words[context_pos]['upos']
+                kernel_feats[kernel_idx] = UPOSFeats(sentence_words[context_pos]['upos'], 
+                                                    sentence_words[context_pos]['feats'])
         
         kernel_key = str(kernel_upos)
         
@@ -315,28 +309,40 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
         # Check for deletion infliction (insert between words)
         if word_ind < len(sentence_words) - 1:  # Not the last word
             # Create kernel for deletion (gap between current and next word)
-            del_kernel_upos = [NONE_LABEL, NONE_LABEL, NONE_LABEL]
-            del_kernel_feats = [None, None, None]
+            del_kernel_upos = [NONE_LABEL] * KERNEL_SIZE
+            del_kernel_feats = [None] * KERNEL_SIZE
             
-            del_kernel_upos[0] = sentence_words[word_ind]['upos']
-            del_kernel_feats[0] = UPOSFeats(sentence_words[word_ind]['upos'], 
-                                           sentence_words[word_ind]['feats'])
+            # The gap is at position word_ind+1 (before the next word)
+            # Build context around this gap position
+            gap_position = word_ind + 1
             
-            del_kernel_upos[2] = sentence_words[word_ind + 1]['upos']
-            del_kernel_feats[2] = UPOSFeats(sentence_words[word_ind + 1]['upos'], 
-                                           sentence_words[word_ind + 1]['feats'])
+            for offset in range(-KERNEL_RADIUS, KERNEL_RADIUS + 1):
+                kernel_idx = offset + KERNEL_RADIUS
+                
+                if offset == 0:
+                    # Center position - leave as NONE_LABEL for deletion
+                    continue
+                
+                # Calculate position relative to gap_position
+                # For deletion, right neighbors need offset - 1 since gap doesn't occupy a position
+                context_pos = gap_position + offset - 1 if offset > 0 else gap_position + offset
+                
+                if 0 <= context_pos < len(sentence_words):
+                    del_kernel_upos[kernel_idx] = sentence_words[context_pos]['upos']
+                    del_kernel_feats[kernel_idx] = UPOSFeats(sentence_words[context_pos]['upos'], 
+                                                            sentence_words[context_pos]['feats'])
             
             del_kernel_key = str(del_kernel_upos)
             
             if del_kernel_key in annotations:
                 deletions = [ann for ann in annotations[del_kernel_key] if ann['type'] == DELETION]
                 if deletions:
-                    insertions_possible = deletion_infliction(sentence_words, word_ind, deletions)
+                    insertions_possible = deletion_infliction(sentence_words, gap_position, deletions)
                     for insertion in insertions_possible:
                         # Create incorrect sentence by inserting word
                         insertion_word, error_id = insertion
                         incorrect_words = [w['text'] for w in sentence_words]
-                        incorrect_words.insert(word_ind + 1, insertion_word)
+                        incorrect_words.insert(gap_position, insertion_word)
                         incorrect_sentence = ' '.join(incorrect_words)
                         inflicted_pairs.append((incorrect_sentence, error_id))
 
@@ -344,7 +350,7 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
 
 if __name__ == '__main__':
     # Load word dictionary
-    config.word_dict = json.load(open('makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
+    config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
     # Open output files
     corr_out_file = open('data/out/correct.txt', 'a', encoding='utf-8')
@@ -368,6 +374,5 @@ if __name__ == '__main__':
                 error_id_file.write(error_id + '\n')
         if i % 10000 == 0:
             print(f"Processed {i} sentences, Infliction rate so far: {rate / (i + 1):.4f}")
-        # else:
-        #     # print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")
-        #     print(f"No errors could be inflicted on sentence {i}")
+        else:
+            print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")
