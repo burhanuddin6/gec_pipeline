@@ -88,14 +88,21 @@ def is_word_in_dict(word: str) -> bool:
     """Check if word exists in urdu_word_dict.json (OOV check)"""
     return word in config.word_dict
 
+def _compare_kernel_feats(feats1, feats2):
+    """Safely compare two kernel_feats entries, handling None values."""
+    if feats1 is None and feats2 is None:
+        return True
+    if feats1 is None or feats2 is None:
+        return False
+    return feats1.upos == feats2.upos and feats1.feats == feats2.feats
+
 def insertion_error_exist(t_annot, type_annotation):
     if t_annot['type'] != INSERTION:
         return False
     if not all([(type_annotation['kernel_upos'][i] == t_annot['kernel_upos'][i]) for i in range(KERNEL_SIZE)]):
         return False
     # Check if the context-specific features match
-    if not all([(type_annotation['kernel_feats'][i].upos == t_annot['kernel_feats'][i].upos and 
-                type_annotation['kernel_feats'][i].feats == t_annot['kernel_feats'][i].feats) 
+    if not all([_compare_kernel_feats(type_annotation['kernel_feats'][i], t_annot['kernel_feats'][i])
                 for i in range(KERNEL_SIZE)]):
         return False
     return True
@@ -113,8 +120,7 @@ def substitution_error_exist(t_annot, type_annotation):
         type_annotation['correct_feats'].feats != t_annot['correct_feats'].feats):
         return False
     # Check if the full kernel features match (for all positions)
-    if not all([(type_annotation['kernel_feats'][i].upos == t_annot['kernel_feats'][i].upos and 
-                type_annotation['kernel_feats'][i].feats == t_annot['kernel_feats'][i].feats) 
+    if not all([_compare_kernel_feats(type_annotation['kernel_feats'][i], t_annot['kernel_feats'][i])
                 for i in range(KERNEL_SIZE)]):
         return False
     return True
@@ -131,9 +137,7 @@ def deletion_error_exist(t_annot, type_annotation):
                 ]):
         return False
     # Check context features (excluding middle position)
-    if not all([
-                (type_annotation['kernel_feats'][i].upos == t_annot['kernel_feats'][i].upos and
-                 type_annotation['kernel_feats'][i].feats == t_annot['kernel_feats'][i].feats)
+    if not all([_compare_kernel_feats(type_annotation['kernel_feats'][i], t_annot['kernel_feats'][i])
                 for i in range(KERNEL_SIZE) if i != KERNEL_CENTER
                 ]):
         return False
@@ -231,7 +235,7 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
         # For INSERTION and DELETION, return kernel UPOS and features
         return kernel_upos, kernel_feats
 
-def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict):
+def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict, count):
     """
     Main annotation function using Stanza for context-aware morphological analysis
     """
@@ -315,7 +319,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                     
             except Exception as e:
-                log(f"Error processing substitution: {e}")
+                log(f"Error in line {count} while processing substitution: {e}")
                 continue
 
         elif op == DELETION:
@@ -491,10 +495,12 @@ if __name__ == '__main__':
     print(f"Starting from line number: {num_processed_lines}")
     print(f"Number of existing annotations: {len(annotations)}")
     
-    # for sentence1, sentence2 in zip(orig_text, cor_text):
+
+    count = 0
     for sentence1, sentence2 in tqdm.tqdm(zip(orig_text, cor_text), total=min(len(orig_text), len(cor_text))):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
-            annotations = annotate(sentence1.strip(), sentence2.strip(), annotations)
+            count += 1
+            annotations = annotate(sentence1.strip(), sentence2.strip(), annotations, count)
         
         num_processed_lines += 1
         if num_processed_lines % STEP_COUNT == 0:
