@@ -278,7 +278,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                 correct_word = correct_words[j1]['text']
                 
                 if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
-                    log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word}")
+                    log(f"OOV check failed in sentence number {count} for substitution: {incorrect_word} -> {correct_word}")
                     continue
                 
                 # Get context indices
