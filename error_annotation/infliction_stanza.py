@@ -10,6 +10,8 @@ from misc.urduhack_normalization import normalize_characters
 from error_annotation.annotation_stanza import UPOSFeats, StanzaPipeline, analyze_sentence_with_stanza, custom_decoder
 from error_annotation import config
 
+import logging
+
 import tqdm
 
 # Load annotations and lemma dictionary
@@ -349,6 +351,14 @@ def inflict(correct_text: str) -> List[Tuple[str, str]]:
     return inflicted_pairs
 
 if __name__ == '__main__':
+    # Configure logging
+    logging.basicConfig(
+        filename='logs/infliction.log',
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        encoding='utf-8'
+    )
+    
     # Load word dictionary
     config.word_dict = json.load(open('data/urdu_word_dict.json', 'r', encoding='utf-8'))
 
@@ -372,7 +382,7 @@ if __name__ == '__main__':
                 corr_out_file.write(lines[i] + '\n')
                 incorr_out_file.write(incorrect_sent + '\n')
                 error_id_file.write(error_id + '\n')
+        else:
+            logging.info(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")
         if i % 10000 == 0:
             print(f"Processed {i} sentences, Infliction rate so far: {rate / (i + 1):.4f}")
-        else:
-            print(f"No errors could be inflicted on sentence {i}: '{lines[i]}'")

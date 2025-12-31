@@ -2,7 +2,8 @@ import random
 
 def shrink_training_data_random(ids_file, correct_file, incorrect_file, output_ids, output_correct, output_incorrect):
     """
-    Shrinks training data by randomly selecting one instance from consecutive duplicate IDs.
+    Shrinks training data by randomly selecting one instance from consecutive duplicate IDs
+    ONLY when they belong to the same correct sentence.
 
     :param ids_file: Path to the file containing IDs
     :param correct_file: Path to the file containing correct sentences
@@ -13,7 +14,9 @@ def shrink_training_data_random(ids_file, correct_file, incorrect_file, output_i
     """
     try:
         # Read all three input files
-        with open(ids_file, 'r', encoding='utf-8') as f_ids, open(correct_file, 'r', encoding='utf-8') as f_correct, open(incorrect_file, 'r', encoding='utf-8') as f_incorrect:
+        with open(ids_file, 'r', encoding='utf-8') as f_ids, \
+             open(correct_file, 'r', encoding='utf-8') as f_correct, \
+             open(incorrect_file, 'r', encoding='utf-8') as f_incorrect:
             ids = [line.strip() for line in f_ids.readlines()]
             correct_sentences = [line.strip() for line in f_correct.readlines()]
             incorrect_sentences = [line.strip() for line in f_incorrect.readlines()]
@@ -29,14 +32,23 @@ def shrink_training_data_random(ids_file, correct_file, incorrect_file, output_i
         
         # Process IDs and handle consecutive duplicates
         buffer = []  # Temporary storage for consecutive duplicate indices
+        
         for i, current_id in enumerate(ids):
-            if buffer and ids[buffer[-1]] != current_id:  # New ID encountered
-                # Randomly select one index from the buffer
-                selected_idx = random.choice(buffer)
-                unique_ids.append(ids[selected_idx])
-                unique_correct.append(correct_sentences[selected_idx])
-                unique_incorrect.append(incorrect_sentences[selected_idx])
-                buffer = []  # Reset the buffer
+            # Check if we need to process the previous buffer
+            if buffer:
+                last_idx = buffer[-1]
+                
+                # CRITICAL CHANGE: 
+                # A group is broken if the ID changes OR if the correct sentence changes.
+                # This ensures we only cull variations of the SAME sentence, not neighboring distinct sentences.
+                if ids[last_idx] != current_id or correct_sentences[last_idx] != correct_sentences[i]:
+                    
+                    # Randomly select one index from the buffer (culling lemma variations)
+                    selected_idx = random.choice(buffer)
+                    unique_ids.append(ids[selected_idx])
+                    unique_correct.append(correct_sentences[selected_idx])
+                    unique_incorrect.append(incorrect_sentences[selected_idx])
+                    buffer = []  # Reset the buffer
             
             buffer.append(i)  # Add the current index to the buffer
         
@@ -62,10 +74,10 @@ def shrink_training_data_random(ids_file, correct_file, incorrect_file, output_i
 
 # Example usage
 shrink_training_data_random(
-    ids_file="data/out/error_id.txt",                # Input IDs file
-    correct_file="data/out/correct.txt",        # Input correct sentences file
-    incorrect_file="data/out/incorrect.txt",    # Input incorrect sentences file
-    output_ids="data/out/shrink_error_id.txt",     # Output filtered IDs file
-    output_correct="data/out/shrink_correct.txt",  # Output filtered correct sentences file
-    output_incorrect="data/out/shrink_incorrect.txt"  # Output filtered incorrect sentences file
+    ids_file="data/out/error_id.txt",
+    correct_file="data/out/correct.txt",
+    incorrect_file="data/out/incorrect.txt",
+    output_ids="data/out/shrink_error_id.txt",
+    output_correct="data/out/shrink_correct.txt",
+    output_incorrect="data/out/shrink_incorrect.txt"
 )
