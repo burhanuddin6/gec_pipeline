@@ -343,7 +343,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     context_words_valid = False
                 
                 if not context_words_valid:
-                    log(f"OOV check failed for deletion context around: {deleted_word}")
+                    log(f"OOV check failed on sentence number {count} for deletion context around: {deleted_word}")
                     continue
                 
                 # Create kernel for deletion from CORRECT sentence perspective
@@ -402,7 +402,7 @@ def annotate(incorrect_text: str, correct_text: str, kernel_sorted_annotations: 
                     context_words_valid = False
                 
                 if not context_words_valid:
-                    log(f"OOV check failed for insertion context around: {inserted_word}")
+                    log(f"OOV check failed on sentence number {count} for insertion context around: {inserted_word}")
                     continue
                 
                 # Create kernel for insertion
