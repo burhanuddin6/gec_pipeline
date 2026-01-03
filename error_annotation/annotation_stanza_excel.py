@@ -10,7 +10,10 @@ from .constants import *
 from misc.urduhack_normalization import normalize_characters
 from . import config
 
+from openpyxl import Workbook
+
 NUM_SPELLING_ISSUES = 0
+TOTAL_OOV_FAILURES = 0  # counts lexical OOV events recorded
 
 class UPOSFeats:
     def __init__(self, upos: str, feats: str):
@@ -87,34 +90,54 @@ def is_word_in_dict(word: str) -> bool:
     """Check if word exists in urdu_word_dict.json (OOV check)"""
     return word in config.word_dict
 
+def should_check_oov(word: Dict[str, Any]) -> bool:
+    """
+    Return True if this token should be checked against the dictionary.
+    We skip non-lexical tokens like punctuation and symbols.
+    """
+    upos = word.get('upos')
+    if upos is None:
+        return True
+    return upos not in {"PUNCT", "SYM"}
+
 def make_error_tag(op, incorrect_word=None, correct_word=None,
                    incorrect_feats=None, correct_feats=None):
     if op == SUBSTITUTION:
         pos = incorrect_feats.upos
-        if incorrect_word['lemma'] != correct_word['lemma']:
+        # incorrect_word and correct_word expected to be dicts with 'lemma'
+        if incorrect_word.get('lemma') != correct_word.get('lemma'):
             return f"R:{pos}"
         else:
             return f"R:{pos}:INFL"
 
     elif op == DELETION:
-        return f"M:{incorrect_word['upos']}"
+        # incorrect_word expected to be dict with 'upos'
+        return f"M:{incorrect_word.get('upos')}"
 
     elif op == INSERTION:
-        return f"U:{correct_word['upos']}"
-    
+        # correct_word expected to be dict with 'upos'
+        return f"U:{correct_word.get('upos')}"
 
 def record_oov(sentence_oov_events, sent_id, op, side, idx, word):
+    """
+    Record an OOV event using the Stanza-provided fields (text, upos, lemma, feats).
+    'word' should be the dict returned by analyze_sentence_with_stanza.
+    Only records lexical OOVs (punctuation/symbols are skipped earlier).
+    Also increments the global TOTAL_OOV_FAILURES counter.
+    """
+    global TOTAL_OOV_FAILURES
     sentence_oov_events.append({
         "sentence_id": sent_id,
         "op": op,
         "side": side,
         "token_index": idx,
-        "token": word['text'],
-        "upos": word['upos'],
-        "lemma": word['lemma'],        # may be None
-        "feats": word['feats'],        # may be 'None'
+        "token": word.get('text'),
+        "upos": word.get('upos'),
+        "lemma": word.get('lemma'),
+        "feats": word.get('feats'),
         "reason": "OOV_DICT"
     })
+    TOTAL_OOV_FAILURES += 1
 
 def insertion_error_exist(t_annot, type_annotation):
     if t_annot['type'] != INSERTION:
@@ -220,8 +243,15 @@ def set_kernel_with_stanza(incorrect_words: List[Dict], correct_words: List[Dict
 def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_annotations: Dict):
     """
     Main annotation function using Stanza for context-aware morphological analysis
+    
+    Returns:
+      kernel_sorted_annotations,
+      errors_in_sentence,
+      sentence_error_tags (list of strings),
+      sentence_oov_events (list of dicts)
     """
-    sentence_error_tags = []
+    sentence_error_tags: List[str] = []
+    sentence_oov_events: List[Dict[str, Any]] = []
 
     # Normalize the input texts
     incorrect_text = normalize_characters(incorrect_text)
@@ -236,7 +266,7 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
         correct_words = analyze_sentence_with_stanza(correct_text)
     except Exception as e:
         log(f"Stanza analysis failed for sentences: {incorrect_text} | {correct_text} | Error: {e}")
-        return kernel_sorted_annotations, errors_in_sentence
+        return kernel_sorted_annotations, errors_in_sentence, sentence_error_tags, sentence_oov_events
     
     # Create simple word objects for alignment (compatibility with existing alignment code)
     class SimpleWord:
@@ -260,14 +290,19 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
     for op, i1, i2, j1, j2 in seq:
         if op == SUBSTITUTION:
             try:
-                # OOV check for both incorrect and correct words
-                incorrect_word = incorrect_words[i1]['text']
-                correct_word = correct_words[j1]['text']
-                incorrect_lemma = incorrect_words[i1]['lemma']
-                correct_lemma = correct_words[j1]['lemma']
+                # Use dicts for convenience
+                incorrect_w = incorrect_words[i1]
+                correct_w = correct_words[j1]
                 
-                if not is_word_in_dict(incorrect_word) or not is_word_in_dict(correct_word):
-                    log(f"OOV check failed for substitution: {incorrect_word} -> {correct_word} at sentence index {id}")
+                # OOV check for both incorrect and correct words — record precise events
+                op_oov_before = len(sentence_oov_events)
+                if should_check_oov(incorrect_w) and not is_word_in_dict(incorrect_w['text']):
+                    record_oov(sentence_oov_events, id, SUBSTITUTION, "incorrect", i1, incorrect_w)
+                if should_check_oov(correct_w) and not is_word_in_dict(correct_w['text']):
+                    record_oov(sentence_oov_events, id, SUBSTITUTION, "correct", j1, correct_w)
+                # If any OOVs were recorded for this operation, skip processing this op
+                if len(sentence_oov_events) > op_oov_before:
+                    # skip this substitution (we log OOVs for manual annotation later)
                     continue
                 
                 # Get context indices
@@ -290,9 +325,9 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                     'incorrect_text': incorrect_text,
                     'correct_text': correct_text,
                     'alignment': "  ".join([",".join([str(elem) for elem in tup]) for tup in alignment.align_seq]),
-                    'lemma_mismatch': incorrect_lemma != correct_lemma,
-                    'incorrect_lemma': incorrect_lemma,
-                    'correct_lemma': correct_lemma
+                    'lemma_mismatch': incorrect_w.get('lemma') != correct_w.get('lemma'),
+                    'incorrect_lemma': incorrect_w.get('lemma'),
+                    'correct_lemma': correct_w.get('lemma')
                 }
                 
                 # Check if this exact substitution pattern exists
@@ -308,6 +343,15 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                 
+                # Add an automatic error tag for this op
+                try:
+                    tag = make_error_tag(SUBSTITUTION, incorrect_word=incorrect_w, correct_word=correct_w,
+                                         incorrect_feats=incorrect_feats, correct_feats=correct_feats)
+                    sentence_error_tags.append(tag)
+                except Exception as e:
+                    # if tagging fails, log but do not break the pipeline
+                    log(f"Tagging failed for substitution at sentence {id}: {e}")
+                
                 errors_in_sentence += 1
                     
             except Exception as e:
@@ -316,33 +360,27 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
 
         elif op == DELETION:
             try:
-                deleted_word = incorrect_words[i1]['text']
+                deleted_w = incorrect_words[i1]
                 
-                # OOV check for the deleted word and context words
-                if not is_word_in_dict(deleted_word):
-                    log(f"OOV check failed for deleted word: {deleted_word} at sentence index {id}")
-                    continue
-                
+                # OOV check for the deleted word and context words — record precise events
+                op_oov_before = len(sentence_oov_events)
+                if should_check_oov(deleted_w) and not is_word_in_dict(deleted_w['text']):
+                    record_oov(sentence_oov_events, id, DELETION, "incorrect", i1, deleted_w)
+                    # skip further checks for this op (we still want to collect context OOVs too though)
                 # OOV check for context words
                 i_minus_one = i1 - 1 if i1 > 0 else -1
                 i_plus_one = i1 + 1 if i1 + 1 < len(incorrect_words) else len(incorrect_words)
                 
-                # Check left/right context individually and report which context words failed
-                missing = []
-                left_word = incorrect_words[i_minus_one]['text'] if i_minus_one >= 0 else None
-                right_word = incorrect_words[i_plus_one]['text'] if i_plus_one < len(incorrect_words) else None
+                left_word = incorrect_words[i_minus_one] if i_minus_one >= 0 else None
+                right_word = incorrect_words[i_plus_one] if i_plus_one < len(incorrect_words) else None
 
-                if left_word is not None and not is_word_in_dict(left_word):
-                    missing.append(("left", left_word))
-                if right_word is not None and not is_word_in_dict(right_word):
-                    missing.append(("right", right_word))
+                if left_word is not None and should_check_oov(left_word) and not is_word_in_dict(left_word['text']):
+                    record_oov(sentence_oov_events, id, DELETION, "left_context", i_minus_one, left_word)
+                if right_word is not None and should_check_oov(right_word) and not is_word_in_dict(right_word['text']):
+                    record_oov(sentence_oov_events, id, DELETION, "right_context", i_plus_one, right_word)
 
-                if missing:
-                    # Build informative message with context and which side(s) failed
-                    context_repr = f"left='{left_word}'" if left_word is not None else "left=None"
-                    context_repr += f", right='{right_word}'" if right_word is not None else ", right=None"
-                    missing_str = ", ".join([f"{pos}='{w}'" for pos, w in missing])
-                    log(f"OOV check failed for deletion around: '{deleted_word}' at sentence index {id}; context: {context_repr}; missing: {missing_str}")
+                # If any OOVs were recorded for this operation, skip processing this deletion
+                if len(sentence_oov_events) > op_oov_before:
                     continue
                 
                 # Create kernel for deletion (middle position is NONE)
@@ -356,7 +394,7 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                     'type': DELETION,
                     'kernel_upos': kernel_upos,
                     'kernel_feats': kernel_feats,
-                    'deleted_words': [deleted_word],
+                    'deleted_words': [deleted_w['text']],
                     'occurrence': 1,
                     'incorrect_text': incorrect_text,
                     'correct_text': correct_text,
@@ -376,6 +414,13 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                 
+                # Add an automatic error tag for this op
+                try:
+                    tag = make_error_tag(DELETION, incorrect_word=deleted_w)
+                    sentence_error_tags.append(tag)
+                except Exception as e:
+                    log(f"Tagging failed for deletion at sentence {id}: {e}")
+                
                 errors_in_sentence += 1
                     
             except Exception as e:
@@ -384,32 +429,26 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
 
         elif op == INSERTION:
             try:
-                inserted_word = correct_words[j1]['text']
+                inserted_w = correct_words[j1]
                 
-                # OOV check for inserted word and all context words in kernel
-                if not is_word_in_dict(inserted_word):
-                    log(f"OOV check failed for inserted word: {inserted_word} at sentence index {id}")
-                    continue
-                
+                # OOV check for inserted word and all context words in kernel — record precise events
+                op_oov_before = len(sentence_oov_events)
+                if should_check_oov(inserted_w) and not is_word_in_dict(inserted_w['text']):
+                    record_oov(sentence_oov_events, id, INSERTION, "correct", j1, inserted_w)
                 # For insertion, we need to check context in the correct sentence
                 j_minus_one = j1 - 1 if j1 > 0 else -1
                 j_plus_one = j1 + 1 if j1 + 1 < len(correct_words) else len(correct_words)
                 
-                # Check left/right context individually and report which context words failed
-                missing = []
-                left_word = correct_words[j_minus_one]['text'] if j_minus_one >= 0 else None
-                right_word = correct_words[j_plus_one]['text'] if j_plus_one < len(correct_words) else None
+                left_word = correct_words[j_minus_one] if j_minus_one >= 0 else None
+                right_word = correct_words[j_plus_one] if j_plus_one < len(correct_words) else None
 
-                if left_word is not None and not is_word_in_dict(left_word):
-                    missing.append(("left", left_word))
-                if right_word is not None and not is_word_in_dict(right_word):
-                    missing.append(("right", right_word))
+                if left_word is not None and should_check_oov(left_word) and not is_word_in_dict(left_word['text']):
+                    record_oov(sentence_oov_events, id, INSERTION, "left_context", j_minus_one, left_word)
+                if right_word is not None and should_check_oov(right_word) and not is_word_in_dict(right_word['text']):
+                    record_oov(sentence_oov_events, id, INSERTION, "right_context", j_plus_one, right_word)
 
-                if missing:
-                    context_repr = f"left='{left_word}'" if left_word is not None else "left=None"
-                    context_repr += f", right='{right_word}'" if right_word is not None else ", right=None"
-                    missing_str = ", ".join([f"{pos}='{w}'" for pos, w in missing])
-                    log(f"OOV check failed for insertion around: '{inserted_word}' at sentence index {id}; context: {context_repr}; missing: {missing_str}")
+                # If any OOVs were recorded for this operation, skip processing this insertion
+                if len(sentence_oov_events) > op_oov_before:
                     continue
                 
                 # Create kernel for insertion
@@ -423,7 +462,7 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                     'type': INSERTION,
                     'kernel_upos': kernel_upos,
                     'kernel_feats': kernel_feats,
-                    'inserted_word': inserted_word,
+                    'inserted_word': inserted_w['text'],
                     'occurrence': 1,
                     'incorrect_text': incorrect_text,
                     'correct_text': correct_text,
@@ -443,13 +482,20 @@ def annotate(id :int, incorrect_text: str, correct_text: str, kernel_sorted_anno
                 else:
                     kernel_sorted_annotations[kernel_key] = [type_annotation]
                 
+                # Add an automatic error tag for this op
+                try:
+                    tag = make_error_tag(INSERTION, correct_word=inserted_w)
+                    sentence_error_tags.append(tag)
+                except Exception as e:
+                    log(f"Tagging failed for insertion at sentence {id}: {e}")
+                
                 errors_in_sentence += 1
                     
             except Exception as e:
                 log(f"Error processing insertion: {e} at sentence index {id}")
                 continue
 
-    return kernel_sorted_annotations, errors_in_sentence
+    return kernel_sorted_annotations, errors_in_sentence, sentence_error_tags, sentence_oov_events
 
 # Custom JSON encoder for UPOSFeats objects
 class UPOSFeatsEncoder(json.JSONEncoder):
@@ -479,8 +525,8 @@ if __name__ == '__main__':
     config.word_dict = json.load(open('data/makhzan_wordFrequency_normalized.json', 'r', encoding='utf-8'))
 
     # Load input texts
-    orig_text = open('data/consolidated_gold_incorrect_normalized.txt', 'r', encoding='utf-8').read()
-    cor_text = open('data/consolidated_gold_correct_normalized.txt', 'r', encoding='utf-8').read()
+    orig_text = open('data/consolidated-gold-incorrect.txt', 'r', encoding='utf-8').read()
+    cor_text = open('data/consolidated-gold-correct.txt', 'r', encoding='utf-8').read()
 
     orig_text = normalize_characters(orig_text)
     cor_text = normalize_characters(cor_text)
@@ -504,10 +550,28 @@ if __name__ == '__main__':
     # Statistics tracking: errors per sentence
     from collections import defaultdict
     error_statistics = defaultdict(int)  # {num_errors: count}
+
+    # For Excel export
+    excel_rows = []
     
     for id, (sentence1, sentence2) in enumerate(zip(orig_text, cor_text)):
         if sentence1.strip() and sentence2.strip():  # Skip empty lines
-            annotations, num_errors = annotate(id, sentence1.strip(), sentence2.strip(), annotations)
+            annotations, num_errors, tags, oov_events = annotate(id, sentence1.strip(), sentence2.strip(), annotations)
+            # Aggregate automatic tags space-separated, or NONE
+            auto_tags_str = " ".join(tags) if tags else "NONE"
+            # oov_events now only contains lexical OOVs (punct/sym skipped)
+            has_oov = bool(oov_events)
+            oov_metadata_str = json.dumps(oov_events, ensure_ascii=False) if oov_events else ""
+            excel_rows.append({
+                "sentence_id": id,
+                "incorrect_sentence": sentence1.strip(),
+                "correct_sentence": sentence2.strip(),
+                "auto_error_tags": auto_tags_str,
+                "has_oov": has_oov,
+                "oov_metadata": oov_metadata_str,
+                "manual_error_tags": "",
+                "notes": ""
+            })
             error_statistics[num_errors] += 1
         
         num_processed_lines += 1
@@ -520,10 +584,60 @@ if __name__ == '__main__':
             # Save error statistics
             with open('logs/gold_error_statistics.json', 'w', encoding='utf-8') as f:
                 json.dump(dict(error_statistics), f, ensure_ascii=False, indent=2)
+            # Save Excel workbook checkpoint
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "GEC_Error_Annotations"
+
+            headers = [
+                "sentence_id",
+                "incorrect_sentence",
+                "correct_sentence",
+                "auto_error_tags",
+                "has_oov",
+                "oov_metadata",
+                "manual_error_tags",
+                "notes"
+            ]
+            ws.append(headers)
+            for row in excel_rows:
+                ws.append([row[h] for h in headers])
+            os.makedirs('data', exist_ok=True)
+            wb.save("data/gec_error_annotation_workbook.xlsx")
+
             print(f"Processed {num_processed_lines} lines, saved checkpoint")
         
         if num_processed_lines % 100 == 0:
             print(f"Total lines processed: {num_processed_lines}")
+    
+    # Save final annotations and Excel
+    with open('data/gold_annotations.json', 'w', encoding='utf-8') as f:
+        json.dump(annotations, f, ensure_ascii=False, indent=2, cls=UPOSFeatsEncoder)
+    with open('logs/gold_num_processed_lines.txt', 'w') as f:
+        f.write(str(num_processed_lines))
+    with open('logs/gold_error_statistics.json', 'w', encoding='utf-8') as f:
+        json.dump(dict(error_statistics), f, ensure_ascii=False, indent=2)
+    
+    # Final Excel save
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "GEC_Error_Annotations"
+
+    headers = [
+        "sentence_id",
+        "incorrect_sentence",
+        "correct_sentence",
+        "auto_error_tags",
+        "has_oov",
+        "oov_metadata",
+        "manual_error_tags",
+        "notes"
+    ]
+    ws.append(headers)
+    for row in excel_rows:
+        ws.append([row[h] for h in headers])
+    os.makedirs('data', exist_ok=True)
+    wb.save("data/gec_error_annotation_workbook.xlsx")
     
     # Save final error statistics
     with open('logs/gold_error_statistics.json', 'w', encoding='utf-8') as f:
@@ -535,3 +649,9 @@ if __name__ == '__main__':
     for num_errors in sorted(error_statistics.keys()):
         count = error_statistics[num_errors]
         print(f"Sentences with {num_errors} error(s): {count}")
+
+    # Print and save OOV failures summary
+    os.makedirs('logs', exist_ok=True)
+    print(f"\nTotal lexical OOV failures recorded: {TOTAL_OOV_FAILURES}")
+    with open('logs/gold_oov_count.txt', 'w', encoding='utf-8') as f:
+        f.write(str(TOTAL_OOV_FAILURES))
