@@ -1,0 +1,270 @@
+{
+  "total_sentences": 1613,
+  "total_errors": 3404,
+  "top10_most": [
+    {
+      "tag": "R:VERB:INFL",
+      "count": 301,
+      "percentage_of_errors": 8.842538190364277
+    },
+    {
+      "tag": "R:AUX:INFL",
+      "count": 290,
+      "percentage_of_errors": 8.519388954171562
+    },
+    {
+      "tag": "R:NOUN",
+      "count": 282,
+      "percentage_of_errors": 8.28437132784959
+    },
+    {
+      "tag": "R:SPELL",
+      "count": 213,
+      "percentage_of_errors": 6.257344300822562
+    },
+    {
+      "tag": "R:VERB",
+      "count": 208,
+      "percentage_of_errors": 6.110458284371328
+    },
+    {
+      "tag": "R:ADP",
+      "count": 159,
+      "percentage_of_errors": 4.670975323149236
+    },
+    {
+      "tag": "M:ADP",
+      "count": 156,
+      "percentage_of_errors": 4.582843713278495
+    },
+    {
+      "tag": "R:ADP:INFL",
+      "count": 129,
+      "percentage_of_errors": 3.7896592244418335
+    },
+    {
+      "tag": "U:ADP",
+      "count": 116,
+      "percentage_of_errors": 3.4077555816686247
+    },
+    {
+      "tag": "R:PRON",
+      "count": 112,
+      "percentage_of_errors": 3.290246768507638
+    }
+  ],
+  "top10_least": [
+    {
+      "tag": "M:X",
+      "count": 1,
+      "percentage_of_errors": 0.02937720329024677
+    },
+    {
+      "tag": "R:ADV:INFL",
+      "count": 1,
+      "percentage_of_errors": 0.02937720329024677
+    },
+    {
+      "tag": "R:PROPN:INFL",
+      "count": 1,
+      "percentage_of_errors": 0.02937720329024677
+    },
+    {
+      "tag": "M:ADV",
+      "count": 2,
+      "percentage_of_errors": 0.05875440658049354
+    },
+    {
+      "tag": "R:SCONJ:INFL",
+      "count": 2,
+      "percentage_of_errors": 0.05875440658049354
+    },
+    {
+      "tag": "U:ADV",
+      "count": 3,
+      "percentage_of_errors": 0.08813160987074031
+    },
+    {
+      "tag": "U:PROPN",
+      "count": 4,
+      "percentage_of_errors": 0.11750881316098707
+    },
+    {
+      "tag": "U:NUM",
+      "count": 6,
+      "percentage_of_errors": 0.17626321974148063
+    },
+    {
+      "tag": "U:DET",
+      "count": 7,
+      "percentage_of_errors": 0.2056404230317274
+    },
+    {
+      "tag": "M:PROPN",
+      "count": 10,
+      "percentage_of_errors": 0.2937720329024677
+    }
+  ],
+  "error_to_sentence": {
+    "0": {
+      "sentence_count": 19,
+      "percentage": 1.1779293242405457
+    },
+    "1": {
+      "sentence_count": 805,
+      "percentage": 49.90700557966522
+    },
+    "2": {
+      "sentence_count": 425,
+      "percentage": 26.348419094854307
+    },
+    "3": {
+      "sentence_count": 173,
+      "percentage": 10.725356478611284
+    },
+    "4": {
+      "sentence_count": 70,
+      "percentage": 4.3397396156230625
+    },
+    "5": {
+      "sentence_count": 42,
+      "percentage": 2.603843769373838
+    },
+    "6": {
+      "sentence_count": 23,
+      "percentage": 1.4259144451332921
+    },
+    "7": {
+      "sentence_count": 16,
+      "percentage": 0.9919404835709857
+    },
+    "8": {
+      "sentence_count": 9,
+      "percentage": 0.5579665220086795
+    },
+    "9": {
+      "sentence_count": 9,
+      "percentage": 0.5579665220086795
+    },
+    "10": {
+      "sentence_count": 3,
+      "percentage": 0.18598884066955984
+    },
+    "11": {
+      "sentence_count": 2,
+      "percentage": 0.12399256044637322
+    },
+    "12": {
+      "sentence_count": 1,
+      "percentage": 0.06199628022318661
+    },
+    "13": {
+      "sentence_count": 2,
+      "percentage": 0.12399256044637322
+    },
+    "14": {
+      "sentence_count": 3,
+      "percentage": 0.18598884066955984
+    },
+    "15": {
+      "sentence_count": 1,
+      "percentage": 0.06199628022318661
+    },
+    "16": {
+      "sentence_count": 3,
+      "percentage": 0.18598884066955984
+    },
+    "17": {
+      "sentence_count": 2,
+      "percentage": 0.12399256044637322
+    },
+    "18": {
+      "sentence_count": 2,
+      "percentage": 0.12399256044637322
+    },
+    "20": {
+      "sentence_count": 2,
+      "percentage": 0.12399256044637322
+    },
+    "32": {
+      "sentence_count": 1,
+      "percentage": 0.06199628022318661
+    }
+  },
+  "inflection": {
+    "count": 917,
+    "percentage_of_errors": 26.93889541715629
+  },
+  "spelling": {
+    "count": 213,
+    "percentage_of_errors": 6.257344300822562
+  },
+  "substitution": {
+    "count": 2023,
+    "percentage_of_errors": 59.430082256169214
+  },
+  "insertion": {
+    "count": 590,
+    "percentage_of_errors": 17.332549941245592
+  },
+  "deletion": {
+    "count": 578,
+    "percentage_of_errors": 16.98002350176263
+  },
+  "all_tag_counts": {
+    "R:PRON": 112,
+    "R:ADP:INFL": 129,
+    "R:VERB:INFL": 301,
+    "R:NOUN:INFL": 88,
+    "R:AUX:INFL": 290,
+    "R:DET": 11,
+    "R:VERB": 208,
+    "M:ADP": 156,
+    "U:ADP": 116,
+    "R:NOUN": 282,
+    "U:PUNCT": 110,
+    "R:PART": 26,
+    "R:ADP": 159,
+    "U:AUX": 81,
+    "M:PART": 41,
+    "M:AUX": 71,
+    "R:PRON:INFL": 73,
+    "R:ADJ": 81,
+    "R:SPELL": 213,
+    "R:AUX": 93,
+    "R:SCONJ": 23,
+    "M:CCONJ": 26,
+    "M:ADJ": 30,
+    "R:PROPN": 51,
+    "U:PART": 22,
+    "U:PRON": 59,
+    "M:PRON": 74,
+    "M:NOUN": 69,
+    "M:DET": 13,
+    "R:ADV": 13,
+    "U:SCONJ": 32,
+    "U:NOUN": 53,
+    "M:VERB": 40,
+    "M:PUNCT": 19,
+    "R:PUNCT": 20,
+    "U:CCONJ": 37,
+    "U:VERB": 40,
+    "R:SCONJ:INFL": 2,
+    "M:PROPN": 10,
+    "M:NUM": 15,
+    "U:ADJ": 20,
+    "M:SCONJ": 11,
+    "R:DET:INFL": 16,
+    "R:CCONJ": 17,
+    "U:ADV": 3,
+    "U:DET": 7,
+    "R:NUM": 10,
+    "M:ADV": 2,
+    "R:ADJ:INFL": 16,
+    "U:PROPN": 4,
+    "M:X": 1,
+    "R:ADV:INFL": 1,
+    "U:NUM": 6,
+    "R:PROPN:INFL": 1
+  }
+}

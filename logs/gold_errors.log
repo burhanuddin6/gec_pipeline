@@ -1,6 +1,3 @@
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 43
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 103
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 104
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 115
 Error processing insertion: list index out of range at sentence index 121
 Error processing insertion: list index out of range at sentence index 128
@@ -18,6 +15,7 @@ Error processing insertion: 'NoneType' object has no attribute 'upos' at sentenc
 Error processing substitution: list index out of range at sentence index 392
 Error processing substitution: list index out of range at sentence index 393
 Error processing substitution: list index out of range at sentence index 394
+Error processing substitution: list index out of range at sentence index 409
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 414
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 484
 Error processing substitution: list index out of range at sentence index 492
@@ -39,15 +37,14 @@ Error processing insertion: list index out of range at sentence index 671
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 686
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 699
 Error processing deletion: 'NoneType' object has no attribute 'upos' at sentence index 700
+Error processing substitution: list index out of range at sentence index 700
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 705
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 715
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 716
 Error processing insertion: list index out of range at sentence index 718
 Error processing insertion: list index out of range at sentence index 718
-Error processing insertion: list index out of range at sentence index 718
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 720
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 724
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 726
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 727
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 739
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 741
@@ -59,12 +56,14 @@ Error processing substitution: list index out of range at sentence index 747
 Error processing substitution: list index out of range at sentence index 749
 Error processing insertion: list index out of range at sentence index 750
 Error processing insertion: list index out of range at sentence index 752
+Error processing insertion: list index out of range at sentence index 752
 Error processing insertion: list index out of range at sentence index 753
 Error processing insertion: list index out of range at sentence index 757
 Error processing insertion: list index out of range at sentence index 758
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 761
 Error processing insertion: list index out of range at sentence index 764
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 766
+Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 767
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 770
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 771
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 771
@@ -88,11 +87,12 @@ Error processing insertion: list index out of range at sentence index 794
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 795
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 797
 Error processing insertion: list index out of range at sentence index 797
+Error processing insertion: list index out of range at sentence index 797
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 800
 Error processing deletion: 'NoneType' object has no attribute 'upos' at sentence index 801
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 802
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 803
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 806
+Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 808
+Error processing substitution: list index out of range at sentence index 809
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 811
 Error processing deletion: 'NoneType' object has no attribute 'upos' at sentence index 812
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 812
@@ -100,12 +100,16 @@ Error processing substitution: list index out of range at sentence index 813
 Error processing substitution: list index out of range at sentence index 813
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 814
 Error processing insertion: list index out of range at sentence index 814
+Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 820
 Error processing insertion: list index out of range at sentence index 820
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 822
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 822
+Error processing substitution: list index out of range at sentence index 824
 Error processing substitution: list index out of range at sentence index 825
 Error processing insertion: list index out of range at sentence index 826
 Error processing insertion: list index out of range at sentence index 827
+Error processing insertion: list index out of range at sentence index 828
+Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 829
 Error processing substitution: list index out of range at sentence index 830
 Error processing substitution: list index out of range at sentence index 830
 Error processing substitution: list index out of range at sentence index 831
@@ -131,9 +135,7 @@ Error processing insertion: list index out of range at sentence index 852
 Error processing insertion: list index out of range at sentence index 852
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 853
 Error processing insertion: list index out of range at sentence index 854
-Error processing substitution: list index out of range at sentence index 859
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 874
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 876
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 879
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 905
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 905
@@ -144,6 +146,7 @@ Error processing insertion: 'NoneType' object has no attribute 'upos' at sentenc
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 989
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1015
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1025
+Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1042
 Error processing insertion: list index out of range at sentence index 1076
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1095
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1097
@@ -155,7 +158,6 @@ Error processing insertion: 'NoneType' object has no attribute 'upos' at sentenc
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1129
 Error processing substitution: list index out of range at sentence index 1140
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1143
-Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1152
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1154
 Error processing insertion: list index out of range at sentence index 1154
 Error processing insertion: list index out of range at sentence index 1157
@@ -177,6 +179,7 @@ Error processing substitution: list index out of range at sentence index 1377
 Error processing substitution: list index out of range at sentence index 1420
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1461
 Error processing insertion: list index out of range at sentence index 1461
+Error processing substitution: list index out of range at sentence index 1531
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1534
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1577
 Error processing insertion: 'NoneType' object has no attribute 'upos' at sentence index 1578
