@@ -9,3 +9,17 @@ wikiedits_urdu/
 
 models/
 .venv/
+
+# Ignore LaTeX build outputs
+*.aux
+*.log
+*.toc
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+*.pdf
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
