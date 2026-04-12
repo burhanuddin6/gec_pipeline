@@ -182,7 +182,7 @@ The field of Grammatical Error Correction (GEC) has witnessed a paradigm shift i
 
 Urdu is a language with a rich heritage and a script influenced by Persian, Arabic, Hindi, Sanskrit, and Turkish. (\cite{ButtAhmed2011}, \cite{Mangrio2016Loanwords}) It is widely spoken in South Asian countries, including Pakistan and India, by a large population. Despite its complexity and the variety of grammatical components, unfortunately, there has been little work done in the field of Urdu GEC. An automated GEC system for Urdu would greatly enhance content creation, digital communication tools, and educational platforms. To build a state-of-the-art model that generalizes well to a wide range of human grammatical errors and outputs correct sentences for grammatically incorrect inputs, we need a large corpus of training data.
 
-To address this data scarcity, this paper proposes a robust method for synthetic data generation. We propose a pipeline that mines naturally occurring error patterns from Urdu Wikipedia revision histories and re-inflicts them onto clean text. In doing so, we tackle two primary research questions: (1) “Generation of synthetic datasets for a low-resource language like Urdu,” and (2) “Building a state-of-the-art model that can output correct sentences for input sentences that are grammatically incorrect.”
+To address this data scarcity, this paper proposes a robust method for synthetic data generation. We propose a pipeline that mines naturally occurring error patterns from Urdu Wikipedia revision histories and re-inflicts them onto clean text using basic morpho-syntactic analysis and widely available NLP tools, while avoiding manual annotation, proprietary resources, and language-specific handcrafted rules. Specifically, we ask: Can synthetic data generation for grammatical error correction of low resource Indic languages, operating under realistic low-resource constraints and assuming similar resource availability, achieve competitive or improved downstream performance compared to existing synthetic data generation paradigms while avoiding language-specific resources?
 
 Finally, given the substantial morphosyntactic similarities Urdu shares with other Indo-Aryan languages such as Hindi, Punjabi, and Sindhi \citep{ButtAhmed2011, Mangrio2021MorphoPhonological}, we hypothesize that our data generation pipeline is transferable to this broader linguistic family. Provided that prerequisite resources such as reliable POS taggers and dependency treebanks are available, this methodology can be effectively adapted to develop robust GEC systems for other low-resource Indic languages.
 
@@ -191,7 +191,7 @@ Finally, given the substantial morphosyntactic similarities Urdu shares with oth
 Research in GEC has largely focused on methods to overcome the scarcity of annotated training data through synthetic error generation \cite{bryant-etal-2023-grammatical}. This section outlines the evolution of these techniques from random noise injection to linguistically grounded probabilistic modeling.
 
 \subsection{The Shift to Neural GEC and Data Scarcity}
-As established by \citet{yuan-2016}, modeling GEC as a monolingual machine translation task allows for powerful generalization, provided sufficient parallel data exists. In the absence of large annotated corpora (such as NUCLE or Lang-8 used for English), researchers have turned to synthetic data generation. Early approaches, such as GenERRate by \citet{jennifer}, introduced probabilistic error-infliction tools to generate errors like POS insertions, deletions, and substitutions. While useful for small-to-medium corpora, purely random or simple rule-based noise often fails to capture the complexity of human errors, leading to models that do not generalize well to real-world inputs.
+As established by \citet{yuan-2016}, modeling GEC as a monolingual machine translation task allows for powerful generalization, provided sufficient parallel data exists. Recognizing this acute data scarcity, \citet{junczys-dowmunt-etal-2018-approaching} successfully bridged the performance gap between neural and statistical GEC models by treating the task as a low-resource machine translation problem, utilizing techniques like transfer learning and source-side corruption. In the absence of large annotated corpora (such as NUCLE or Lang-8 used for English), researchers have increasingly turned to synthetic data generation. Early approaches, such as GenERRate by \citet{jennifer}, introduced probabilistic error-infliction tools to generate errors like POS insertions, deletions, and substitutions. While useful for small-to-medium corpora, purely random or simple rule-based noise often fails to capture the complexity of human errors, leading to models that do not generalize well to real-world inputs.
 
 \subsection{Linguistically Grounded Error Generation}
 To improve the quality of synthetic data, recent work has emphasized the importance of linguistic context over random noise. \citet{sidorov-2013} argued that traditional lexical n-grams are insufficient for modeling syntactic relations and demonstrated that Syntactic N-grams (utilizing POS tags) significantly improve error detection and correction. This theoretical foundation supports the move toward "kernel-based" or pattern-based error generation.
@@ -204,7 +204,9 @@ Rather than manually crafting linguistic rules, modern approaches attempt to lea
 \subsection{GEC for Low-Resource and Indic Languages}
 In the context of utilizing web-scale resources, \citet{jared} proposed generating corpora using Wikipedia edit histories (WikiEdits). They employed a dual strategy of probabilistic error introduction and Round-Trip Translation (RTT) through a high-resource bridge language. Their work demonstrated that Wikipedia revision histories contain valuable "natural" errors that benefit models significantly when fine-tuned.
 
-Specific to Indic languages, \citet{hindi} adapted these strategies for Hindi, a language linguistically similar to Urdu. They generated a parallel corpus of synthetic errors by focusing on inflectional errors via a rule-based process and validated their models against scraped Wikipedia edit histories. Our work extends these methodologies to Urdu; however, rather than relying solely on rule-based inflection or random noise, we employ a kernel-based extraction method inspired by the syntactic dependencies highlighted by \citet{sidorov-2013} and the probabilistic mining approaches of \citet{felice-yuan-2014}, ensuring our synthetic corpus captures the specific morpho-syntactic nuances of Urdu.
+Specific to Indic languages, \citet{hindi} adapted these strategies for Hindi, a language linguistically similar to Urdu. They generated a parallel corpus of synthetic errors by focusing on inflectional errors via a rule-based process and validated their models against scraped Wikipedia edit histories. Our work extends these methodologies to Urdu with two key distinctions. First, unlike \citet{felice-yuan-2014}, who calculate probabilities from labeled learner corpora, we mine error patterns directly from noisy Wikipedia revision histories, removing the dependency on expensive human annotation. Second, distinct from \citet{sidorov-2013} who use syntactic features for rule-based correction, we utilize local morpho-syntactic kernels to synthesize training data, enabling the neural models to learn complex inflectional nuances.
+
+% Our work extends these methodologies to Urdu; however, rather than relying solely on rule-based inflection or random noise, we employ a kernel-based extraction method inspired by the syntactic dependencies highlighted by \citet{sidorov-2013} and the probabilistic mining approaches of \citet{felice-yuan-2014}, ensuring our synthetic corpus captures the specific morpho-syntactic nuances of Urdu.
 
 \section{Dataset Generation}
 \subsection{Methodology for Synthetically Generated Dataset}
@@ -410,9 +412,34 @@ Even though our Gold Test set contains a significant proportion of multi-edit se
 \subsection{Resulting synthetic GEC Corpora}
 \label{sec:Datasets}
 
-Based on the optimization study, we generated our final synthetic training corpus using \textbf{Kernel $k=3$}, \textbf{Temperature Sampling}, and \textbf{Single Edit} injection of length 1.27 million sentence pairs.
-\\
-To foster reproducibility and further research in Urdu NLP, we intend to release the \textbf{Synthetic Training Corpus} (1.27M pairs).
+Based on the optimization study, we generated our final synthetic training corpus using \textbf{Kernel $k=3$}, \textbf{Temperature Sampling}, and \textbf{Single Edit} injection of length 1.27 million sentence pairs. 
+
+To ensure our generation methodology successfully captured the linguistic properties of natural errors, we analyzed the distribution of error types within this final synthetic corpus. As detailed in Table \ref{tab:synthetic_stats}, the resulting error distribution roughly mirrors the morpho-syntactic focus observed in our Gold Test Set (Table \ref{tab:gold_stats}), maintaining a heavy concentration on verbal complexes and nominal inflections.
+
+\begin{table}[h]
+\centering
+\small
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{l | r r }
+\toprule
+\textbf{Error Category} & \textbf{Count} & \textbf{\%} \\
+\midrule
+Verb \& Aux & 534,990 & 42.11 \\
+Noun \& Pron & 326,889 & 25.73 \\
+Adpos & 241,476 & 19.01 \\
+Mod \& Misc & 141,136 & 11.11 \\
+Ortho & 26,008 & 2.05 \\
+\midrule
+\textbf{Total} & \textbf{1,270,499} & \textbf{100.00} \\
+\bottomrule
+\end{tabular}
+}
+\caption{Distribution of error types in the final 1.27M Synthetic Training Corpus. The distribution roughly mirrors the gold set's morpho-syntactic focus.}
+\label{tab:synthetic_stats}
+\end{table}
+
+To foster reproducibility and further research in Urdu NLP, we intend to release the \textbf{Synthetic Training Corpus} ($\approx$1.27M pairs) alongside the Gold Test Set.
+
 
 \section{Main Experiments}
 \label{sec:Main_Experiments}
@@ -422,7 +449,7 @@ To validate the efficacy of our proposed \textbf{Wiki-Edit Inflection} pipeline,
 
 \begin{enumerate}
     \item \textbf{Zero-Shot Baseline:} The raw pre-trained model without any GEC-specific fine-tuning. This serves as a control to measure the model's inherent ability to rewrite text.
-    \item \textbf{Random Noise Injection:} We adapted the noise generation strategy proposed by \citet{grundkiewicz-etal-2019-neural}. We generated a synthetic dataset of 1.27M sentence pairs by applying probabilistic edit operations (insertion, deletion, substitution, swap) to the clean Makhzan corpus. While maintaining the statistical error distribution of the original study, we utilized Levenshtein distance for word substitutions to account for the lack of Urdu spell-checking resources (see implementation details in Appendix \ref{sec:random_noise}). This tests whether our linguistically motivated "Kernels" provide value over stochastic noise.
+    \item \textbf{Random Noise Injection:} Treating GEC as a denoising task by introducing artificial corruption to the source text has proven to be a highly effective low-resource NMT technique \citep{junczys-dowmunt-etal-2018-approaching}. Building on this concept, we adapted the noise generation strategy proposed by \citet{grundkiewicz-etal-2019-neural}. We generated a synthetic dataset of 1.27M sentence pairs by applying probabilistic edit operations (insertion, deletion, substitution, swap) to the clean Makhzan corpus. While maintaining the statistical error distribution of the original study, we utilized Levenshtein distance for word substitutions to account for the lack of Urdu spell-checking resources (see implementation details in Appendix \ref{sec:random_noise}). This tests whether our linguistically motivated "Kernels" provide value over stochastic noise.
     \item \textbf{Neural AEG (Back-Translation):} Back translation is a widely used data augmentation technique in NLP where monolingual target-language text is translated back into the source language to create synthetic parallel data, thereby improving model robustness and performance in low-resource or error-correction settings. This approach has been identified as an effective artificial data generation method in recent surveys of grammatical error correction and translation research \citet{bryant-etal-2023-grammatical}. Following \citet{koyama-etal-2021-comparison}, \citet{rei-etal-2017-artificial}, and \citet{htut-tetreault-2019-unbearable}, we trained a sequence-to-sequence model to generate errors. We fine-tuned an \textbf{mT0-large} model on the \textit{Correct $\rightarrow$ Incorrect} direction using the raw Wiki-Edits data and used it to corrupt the clean Makhzan corpus. Then, following \citet{xie-etal-2018-noising}, we generated five predictions for each sentence with varying noise to equalize the dataset size. This compares our rule-based linguistic inflection against a purely neural approach. Then we trained the correction model using the same hyperparameters (listed in Appendix \ref{sec:Training_Hyperparameters}) as all our other models. We did not use a generative model as used by \citet{luhtaru-etal-2024-err} for the purposes of a fair comparison. We hypothesize the low scores to be the result of non-grammatical edits unfiltered in raw Wiki-Edits data, whereas our approach intrinsically performs the required filtering.
  
     \item \textbf{Raw Wiki-Edits:} We fine-tune directly on the \textbf{Wiki-Edits Dataset}, comprising approximately 240,000 parallel sentence pairs \ref{sec:clean_wikiedits} to test if our synthetic amplification provides benefits over the natural source data.
@@ -443,10 +470,20 @@ Our Approach & \textbf{40.50} & 15.00 & \textbf{30.22} & \textbf{69.08} \\
 \hline
 \end{tabular}}
 \caption{Our approach compared with baselines.}
-\label{tab:ablation_density}
+\label{tab:baseline_comparisons}
 \end{table}
 
 \end{enumerate}
+
+An analysis of the results in (Table \ref{tab:baseline_comparisons})  highlights several key advantages of our proposed methodology:
+
+\paragraph{Impact of Filtering on Precision:} Our method achieves significantly higher Precision (40.50) compared to Raw Wiki-Edits (20.74) and Neural AEG (10.51). This empirically validates that our 'Kernel-based' mining successfully filters out non-grammatical noise (e.g., factual edits) which otherwise confuses the model in the baseline approaches.
+
+\paragraph{Linguistic Validity vs. Stochastic Noise:} While Random Noise Injection improves fluency (high GLEU), it yields very low Recall (9.24). This suggests that random noise teaches the model to 'smooth' text but fails to teach specific Urdu morphological rules (e.g., case agreement), which our targeted inflection pipeline successfully captures.
+
+\paragraph{Neural AEG Sensitivity:} The low performance of Neural AEG confirms that back-translation methods are highly sensitive to the quality of the seed corpus; without the pre-filtering we propose, Neural AEG merely amplifies the noise found in raw Wikipedia history.
+
+\paragraph{Recall Drop vs. Zero-Shot:} We attribute the Recall drop largely to our synthetic training data, which was derived from extracted edits of raw Wikipedia revision histories for Urdu. Because our pipeline conservatively filtered these noisy, sparsely-covering edits to prioritize morpho-syntactic fixes (inflections, case) over non-grammatical edits, the model becomes a conservative corrector, giving high Precision on seen error types but lower Recall on unseen ones. Given that the standard GEC metric ($F_{0.5}$) favors Precision, this precision–recall trade-off is modest and does not substantially harm overall correction effectiveness.
 
 \subsection{Models and Implementation}
 We evaluated our finalized synthetic data on three competitive multilingual architectures to demonstrate model-agnostic gains:
