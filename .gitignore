@@ -9,6 +9,7 @@ wikiedits_urdu/
 
 models/
 .venv/
+tmp/
 
 # Ignore LaTeX build outputs
 *.aux
